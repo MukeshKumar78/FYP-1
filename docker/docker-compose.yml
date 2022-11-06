@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: "traefik:v2.9"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=mohsinshk4026@${DOMAIN}.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - proxy
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+    networks:
+      - proxy
+
+  auth:
+    container_name: campusme-auth
+    security_opt:
+      - no-new-privileges:true
+    build:
+      context: ../auth
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URI: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/auth
+    ports:
+      - "8000:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.auth.rule=Host(`auth.${DOMAIN}`)"
+      # - "traefik.http.routers.auth.tls=true"
+      - "traefik.http.services.auth.loadbalancer.server.port=8000"
+    networks:
+      - proxy
+      - internal
+
+  db:
+    container_name: campusme-db
+    image: postgres:14.5
+    healthcheck:
+      test: pg_isready -U postgres -h localhost
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_PASSWORD:
+    volumes:
+      - ./volumes/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - internal
+  
+networks:
+  proxy:
+    external: true
+  internal: {}
