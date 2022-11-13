@@ -1,0 +1,5 @@
+services:
+  users:
+    command: npm run dev:watch
+    volumes:
+      - ../users:/usr/src/app
