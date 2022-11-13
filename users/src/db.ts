@@ -1,8 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { User } from './models/User';
 
-const uri = process.env.DB_URI || '';
-export const connection = new Sequelize(uri, {
+export const connection = new Sequelize(process.env.DB_URI, {
   models: [__dirname + '/models'],
 });
 

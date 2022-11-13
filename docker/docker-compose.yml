@@ -5,23 +5,15 @@ services:
     image: "traefik:v2.9"
     container_name: "traefik"
     command:
-      #- "--log.level=DEBUG"
+      - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myresolver.acme.email=mohsinshk4026@${DOMAIN}.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
-      - "443:443"
       - "8080:8080"
     volumes:
-      - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - proxy
@@ -32,35 +24,38 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+      - "traefik.http.routers.whoami.middlewares=users@docker"
     networks:
       - proxy
 
-  auth:
-    container_name: campusme-auth
+  users:
+    container_name: campusme-users
     security_opt:
       - no-new-privileges:true
     build:
-      context: ../auth
+      context: ../users
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DB_URI: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/auth
+      DB_URI: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/users
+      JWT_SECRET:
+      PROVIDER_CLIENT_ID:
+      PROVIDER_CLIENT_SECRET:
     ports:
       - "8000:8000"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.auth.rule=Host(`auth.${DOMAIN}`)"
-      # - "traefik.http.routers.auth.tls=true"
-      - "traefik.http.services.auth.loadbalancer.server.port=8000"
+      - "traefik.http.routers.users.rule=Host(`${DOMAIN}`) && PathPrefix(`/users`)"
+      - "traefik.http.services.users.loadbalancer.server.port=8000"
+      - "traefik.http.middlewares.users.forwardauth.address=http://${DOMAIN}/users"
+      - 'traefik.http.middlewares.users.forwardAuth.trustForwardHeader=true'
     networks:
       - proxy
       - internal
-
+  
   db:
     container_name: campusme-db
     image: postgres:14.5

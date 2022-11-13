@@ -1,21 +1,23 @@
 import { initializeDatabase } from './db'
-
-import express, { Express, Request, Response } from 'express'
+import passport from 'passport';
+import express, { Express } from 'express'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser';
+
+import { googleStrategy, jwtStrategy } from './passport';
+import router from './routes';
 
 const app: Express = express()
+const port = 8000;
+
+passport.use(googleStrategy);
+passport.use(jwtStrategy);
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(cookieParser());
 app.use(bodyParser.raw())
-
-
-// REMOVE THIS
-app.get('/', (req: Request, res: Response) => {
-  return res.sendStatus(200);
-});
-
-const port = 8000;
+app.use(router);
 
 app.listen(port, async () => {
   await initializeDatabase()
