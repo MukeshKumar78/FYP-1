@@ -1,4 +1,9 @@
 services:
+  gateway:
+    command: ./mvnw spring-boot:run
+    volumes:
+      - ../gateway:/usr/src/app
+
   users:
     command: npm run dev:watch
     volumes:
