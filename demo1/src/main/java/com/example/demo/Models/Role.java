@@ -1,28 +1,20 @@
 package com.example.demo.Models;
 
 import javax.persistence.*;
+import java.util.Set;
 
-
-enum durationType {
-    annually,
-    semester,
-}
-
-@Entity
-public class Tenure {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
+    @OneToMany(mappedBy = "role")
+    private Set<Permission> Permission;
+
+    @Column
     private String code;
 
     @Column
-    @Enumerated(EnumType.ORDINAL)
-    private durationType duration;
-
-    // description is tenure date
-    @Column
     private String description;
 }
-
