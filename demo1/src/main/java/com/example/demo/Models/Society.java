@@ -9,7 +9,7 @@ public class Society {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
+    @OneToOne(mappedBy = "society")
     private DefinedSociety definedSocietyId;
 
     @OneToMany(mappedBy = "society")
@@ -27,4 +27,15 @@ public class Society {
     @Column
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "user_1_id")
+    private User1 user1;
+
+    public User1 getUser1() {
+        return user1;
+    }
+
+    public void setUser1(User1 user1) {
+        this.user1 = user1;
+    }
 }

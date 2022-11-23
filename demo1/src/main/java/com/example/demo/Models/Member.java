@@ -12,7 +12,6 @@ public class Member {
     @JoinColumn(name = "society_id", nullable = false)
     private Society societyId;
 
-
     @Column
     private String code;
 
