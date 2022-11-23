@@ -1,7 +1,4 @@
-package com.example.demo.Models;
-
-import jdk.javadoc.internal.doclets.toolkit.taglets.snippet.Style;
-import sun.awt.image.ImageWatched;
+package com.example.demo.model;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -9,10 +6,20 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames={"code"}),
+        @UniqueConstraint(columnNames={"description"})
+})
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(nullable = false)
+    private String code;
+
+    @Column(nullable = false)
+    private String description;
 
     // name of the event, or the title.
     @Column
@@ -38,10 +45,10 @@ public class Event {
 
     // get average rating.
     @Column
-    private int sumOfRatings;
+    private long sumOfRatings;
 
     @Column
-    private int totalRatings;
+    private long totalRatings;
 
     // Multiple comments for the event
     @OneToMany(mappedBy = "event")
@@ -49,35 +56,21 @@ public class Event {
 
     // Multiple Posts for the event
     @OneToMany(mappedBy = "event")
-    private Set<EventUpdate> eventUpdate;
+    private Set<Post> post;
 
     // Multiple file attachments for the event.
-    @Column
-    private Set<String> attachment;
+    @OneToMany(mappedBy = "event")
+    private Set<EventAttachment> attachment;
 
     // Event content as text.
-    @Column
+    @Column(columnDefinition="TEXT")
     private String text;
 
     // Link for event registration
-    @Column
+    @Column(columnDefinition="TEXT")
     private String regLink;
 
-    @Column
-    private String code;
-
-    @Column
-    private String description;
-
     @ManyToOne
-    @JoinColumn(name = "society_id")
+    @JoinColumn(name = "society_id", nullable = false)
     private Society society;
-
-    public Society getSociety() {
-        return society;
-    }
-
-    public void setSociety(Society society) {
-        this.society = society;
-    }
 }
