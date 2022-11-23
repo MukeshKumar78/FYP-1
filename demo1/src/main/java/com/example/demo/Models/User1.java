@@ -32,4 +32,8 @@ public class User1 {
     @Column
     private String description;
 
+    // Societies from which user doesn't want to receive notification from.
+    @OneToMany(mappedBy = "user1")
+    private Set<Society> mutedSociety;
+
 }

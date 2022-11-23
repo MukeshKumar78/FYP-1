@@ -14,5 +14,17 @@ public class DefinedSociety {
     @Column
     private String description;
 
+    @OneToOne(orphanRemoval = true)
+    @JoinTable(name = "defined_society_society",
+            joinColumns = @JoinColumn(name = "defined_society_id"),
+            inverseJoinColumns = @JoinColumn(name = "society_id"))
+    private Society society;
 
+    public Society getSociety() {
+        return society;
+    }
+
+    public void setSociety(Society society) {
+        this.society = society;
+    }
 }
