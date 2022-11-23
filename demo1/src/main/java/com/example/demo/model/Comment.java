@@ -1,8 +1,12 @@
-package com.example.demo.Models;
+package com.example.demo.model;
 
 import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames={"code"}),
+        @UniqueConstraint(columnNames={"description"})
+})
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -10,26 +14,14 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
-    private Event eventId;
+    private Event event;
 
     @Column
     private String text;
 
-    @Column
+    @Column(nullable = false)
     private String code;
 
-    @Column
+    @Column(nullable = false)
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "event_id")
-    private Event event;
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 }
