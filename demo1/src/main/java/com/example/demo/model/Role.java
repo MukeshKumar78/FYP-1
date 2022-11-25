@@ -18,19 +18,19 @@ public class Role {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @Column
     private String title;
 
     @OneToMany(mappedBy = "role")
-    private Set<Permission> permission;
+    private Set<RolePermission> permission;
 
     @ManyToOne
     @JoinColumn(name = "society_id", nullable = false)
     private Society society;
 
-    @OneToOne(mappedBy = "role")
-    private TeamMember teamMember;
+    @OneToMany(mappedBy = "role")
+    private Set<TeamMember> teamMember;
 }

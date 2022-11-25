@@ -18,7 +18,7 @@ public class Event {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     // name of the event, or the title.

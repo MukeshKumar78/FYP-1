@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 enum durationType {
@@ -22,14 +23,14 @@ public class Tenure {
     private String code;
 
     // description is tenure date
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @Column(length = 64)
     @Enumerated(EnumType.STRING)
     private durationType duration;
 
-    @OneToOne(mappedBy = "tenure")
-    private Society society;
+    @OneToMany(mappedBy = "tenure")
+    private Set<Society> societies;
 }
 

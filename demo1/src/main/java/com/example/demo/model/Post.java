@@ -13,7 +13,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    // Multiple attachments for the Post (EventUpdate)
+    // Multiple attachments for the Post (Event Update)
     @OneToMany(mappedBy = "post")
     private Set<PostAttachment> attachment;
 
@@ -24,7 +24,7 @@ public class Post {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     // EventUpdate is for a specific Event;

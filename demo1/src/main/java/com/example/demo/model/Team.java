@@ -16,7 +16,7 @@ public class Team {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @Column(nullable = false)
@@ -24,4 +24,11 @@ public class Team {
 
     @OneToMany(mappedBy = "team")
     private Set<TeamMember> members;
+
+    @OneToMany(mappedBy = "team")
+    private Set<TeamPermission> permissions;
+
+    @ManyToOne
+    @JoinColumn(name = "society_id", nullable = false)
+    private Society society;
 }

@@ -2,13 +2,14 @@ package com.example.demo.model;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.Date;
 
 @Entity
 @Table(uniqueConstraints={
         @UniqueConstraint(columnNames={"code"}),
         @UniqueConstraint(columnNames={"description"})
 })
-public class TeamMember {
+public class TeamMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,18 +20,13 @@ public class TeamMember {
     @Column
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column
+    private Date sentAt;
+
+    @Column(columnDefinition="TEXT")
+    private String text;
 
     @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false)
-    private Team team;
-
-    @ManyToOne
-    @JoinColumn(name ="role_id")
-    private Role role;
-
-    @OneToMany(mappedBy = "sender")
-    private Set<TeamMessage> messages;
+    @JoinColumn(name = "sender_id", nullable = false)
+    private TeamMember sender;
 }
