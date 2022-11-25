@@ -13,10 +13,13 @@ public class DefinedSociety {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column
+    private String title;
+
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @OneToMany(mappedBy = "definedSociety")

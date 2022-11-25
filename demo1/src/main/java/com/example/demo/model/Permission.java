@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints={
@@ -18,10 +19,12 @@ public class Permission {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    @OneToMany(mappedBy = "permission")
+    private Set<RolePermission> rolePermission;
+
+    @OneToMany(mappedBy = "permission")
+    private Set<TeamPermission> teamPermission;
 }

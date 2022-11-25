@@ -30,7 +30,7 @@ public class User {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
 //    // Societies from which user doesn't want to receive notification from.

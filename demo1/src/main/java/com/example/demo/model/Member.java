@@ -16,17 +16,17 @@ public class Member {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @OneToMany(mappedBy = "member")
     private Set<TeamMember> teamMember;
 
     @ManyToOne
-    @JoinColumn(name = "society_id", nullable = false)
-    private Society society;
-
-    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "society_id", nullable = false)
+    private Society society;
 }

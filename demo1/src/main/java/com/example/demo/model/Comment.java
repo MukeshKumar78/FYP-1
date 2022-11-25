@@ -22,6 +22,6 @@ public class Comment {
     @Column(nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 }

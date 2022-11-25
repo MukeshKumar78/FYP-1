@@ -1,14 +1,13 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints={
         @UniqueConstraint(columnNames={"code"}),
         @UniqueConstraint(columnNames={"description"})
 })
-public class TeamMember {
+public class TeamPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -20,17 +19,10 @@ public class TeamMember {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "permission_id", nullable = false)
+    private Permission permission;
 
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
-
-    @ManyToOne
-    @JoinColumn(name ="role_id")
-    private Role role;
-
-    @OneToMany(mappedBy = "sender")
-    private Set<TeamMessage> messages;
 }
