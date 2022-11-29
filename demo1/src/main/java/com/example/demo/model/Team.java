@@ -26,6 +26,9 @@ public class Team {
     private Set<TeamMember> members;
 
     @OneToMany(mappedBy = "team")
+    private Set<TeamMessage> messages;
+
+    @OneToMany(mappedBy = "team")
     private Set<TeamPermission> permissions;
 
     @ManyToOne
