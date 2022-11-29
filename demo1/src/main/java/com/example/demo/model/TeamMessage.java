@@ -29,4 +29,8 @@ public class TeamMessage {
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
     private TeamMember sender;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 }

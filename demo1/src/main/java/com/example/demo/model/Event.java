@@ -73,4 +73,9 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "society_id", nullable = false)
     private Society society;
+
+    // Event created by a Member
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

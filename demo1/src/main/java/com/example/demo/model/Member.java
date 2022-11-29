@@ -22,6 +22,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private Set<TeamMember> teamMember;
 
+    @OneToMany(mappedBy = "member")
+    private Set<Event> events;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
