@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="64e52c90-28b4-43ca-bed3-4c4c975bac3e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/tasks.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/src/main/java/com/campusme/discovery/EurekaServiceApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/discovery/src/test/java/com/campusme/discovery/EurekaServiceApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/META-INF/sql/create.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/src/main/java/com/campusme/crud/DemoApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/src/main/java/com/campusme/crud/config/RepositoryConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/src/main/java/com/campusme/crud/user/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/src/main/java/com/campusme/crud/user/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/src/main/resources/application.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/society-api/src/test/java/com/campusme/crud/DemoApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2IIXJpWVisEWAjsDGlLngBnXZie" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64e52c90-28b4-43ca-bed3-4c4c975bac3e" name="Changes" comment="" />
+      <created>1669870011715</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1669870011715</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
