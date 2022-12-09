@@ -24,20 +24,18 @@ public class TokenService {
 
     public Jwt generateToken(Authentication authentication) {
         Instant now = Instant.now();
-        // String scope = authentication.getAuthorities().stream()
-        //         .map(GrantedAuthority::getAuthority)
-        //         .collect(Collectors.joining(" "));
+
+        // TODO: Add name, given_name, family_name and picture in claims
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("http://localhost")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 .subject(authentication.getName())
-                // .claim("scope", scope)
                 .build();
+
         return this.encoder.encode(JwtEncoderParameters.from(
           JwsHeader.with(() -> "HS256").build(),
           claims
         ));
     }
-
 }
