@@ -15,32 +15,11 @@ spring:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/users
-    username: postgres
-    password: postgres
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQL82Dialect
-      javax:
-        persistence:
-          schema-generation:
-            create-source: metadata
-            drop-source: metadata
-            scripts:
-              action: create
-              create-target: META-INF/sql/create.sql
-            database:
-              action: drop-and-create
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     reactor.netty: DEBUG
 
-
+jwt:
+  # TODO: Replace with an environment variable
+  secret-key: 9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@
