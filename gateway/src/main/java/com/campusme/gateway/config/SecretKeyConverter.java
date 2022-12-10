@@ -15,5 +15,4 @@ class SecretKeyConverter implements Converter<String, SecretKey> {
     byte[] plainTextBytes = plainText.getBytes();
     return new SecretKeySpec(plainTextBytes, 0, plainTextBytes.length, "HmacSHA256");
   }
-
 }

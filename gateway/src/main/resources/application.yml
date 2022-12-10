@@ -1,5 +1,8 @@
 # TODO: Replace keys environment variables
 spring:
+  cloud:
+    gateway:
+      enabled: true
   application:
     name: gateway
 
