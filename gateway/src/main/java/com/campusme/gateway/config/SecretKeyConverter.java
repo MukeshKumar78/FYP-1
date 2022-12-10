@@ -8,12 +8,12 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-  @ConfigurationPropertiesBinding
-  class SecretKeyConverter implements Converter<String, SecretKey> {
-    @Override
-    public SecretKey convert(String plainText) {
-      byte[] plainTextBytes = plainText.getBytes();
-      return new SecretKeySpec(plainTextBytes, 0, plainTextBytes.length, "HmacSHA256");
-    }
-
+@ConfigurationPropertiesBinding
+class SecretKeyConverter implements Converter<String, SecretKey> {
+  @Override
+  public SecretKey convert(String plainText) {
+    byte[] plainTextBytes = plainText.getBytes();
+    return new SecretKeySpec(plainTextBytes, 0, plainTextBytes.length, "HmacSHA256");
   }
+
+}

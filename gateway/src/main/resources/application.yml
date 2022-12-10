@@ -1,15 +1,16 @@
+# TODO: Replace keys environment variables
 spring:
   application:
     name: gateway
 
   security:
     oauth2:
-      client:
-        registration:
-          google:
-            client-id: 623112692123-qme5o65dd50rsetvqp006ulrcva3t68k.apps.googleusercontent.com
-            client-secret: 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
-            scope: openid,profile,email
+      # client:
+      #   registration:
+      #     google:
+      #       client-id: 623112692123-qme5o65dd50rsetvqp006ulrcva3t68k.apps.googleusercontent.com
+      #       client-secret: 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
+      #       scope: openid,profile,email
       resourceserver:
         jwt:
           issuer-uri: https://accounts.google.com
@@ -21,5 +22,4 @@ logging:
     reactor.netty: DEBUG
 
 jwt:
-  # TODO: Replace with an environment variable
   secret-key: 9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@

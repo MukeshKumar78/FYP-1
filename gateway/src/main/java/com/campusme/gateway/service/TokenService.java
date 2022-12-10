@@ -11,31 +11,33 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-
-
 @Service
 public class TokenService {
 
-    private final JwtEncoder encoder;
+  private final JwtEncoder encoder;
 
-    public TokenService(JwtEncoder encoder) {
-        this.encoder = encoder;
-    }
+  public TokenService(JwtEncoder encoder) {
+    this.encoder = encoder;
+  }
 
-    public Jwt generateToken(Authentication authentication) {
-        Instant now = Instant.now();
+  public Jwt generateToken(Authentication authentication) {
+    Instant now = Instant.now();
 
-        // TODO: Add name, given_name, family_name and picture in claims
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("http://localhost")
-                .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                .subject(authentication.getName())
-                .build();
+    Jwt userClaims = (Jwt) authentication.getPrincipal();
 
-        return this.encoder.encode(JwtEncoderParameters.from(
-          JwsHeader.with(() -> "HS256").build(),
-          claims
-        ));
-    }
+    // TODO: see if other oauth2 providers have same claims
+    JwtClaimsSet claims = JwtClaimsSet.builder()
+        .issuer("http://localhost")
+        .issuedAt(now)
+        .expiresAt(now.plus(1, ChronoUnit.HOURS))
+        .subject(authentication.getName())
+        .claim("given_name", userClaims.getClaimAsString("given_name"))
+        .claim("family_name", userClaims.getClaimAsString("family_name"))
+        .claim("picture", userClaims.getClaimAsString("picture"))
+        .build();
+
+    return this.encoder.encode(JwtEncoderParameters.from(
+        JwsHeader.with(() -> "HS256").build(),
+        claims));
+  }
 }
