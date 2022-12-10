@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationProperties(prefix = "jwt")
 @ConfigurationPropertiesScan
 public class JwtConfig {
-
   private SecretKey secretKey;
 
   public SecretKey getSecretKey() {

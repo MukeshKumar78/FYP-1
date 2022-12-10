@@ -63,6 +63,7 @@ We have 2 options for passing down user details to downstream services [2]
 ### Future Work
 * Support multitenancy [3]
 * Create a separate Authorization server with key rotation 
+* Use access tokens for internal authorization instead
 
 ## Routing
 ### Requirements
