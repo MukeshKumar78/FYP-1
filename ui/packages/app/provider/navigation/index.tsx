@@ -1,6 +1,9 @@
-import { NavigationContainer } from '@react-navigation/native'
+import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native'
+import { useDripsyTheme } from 'dripsy'
 import * as Linking from 'expo-linking'
 import { useMemo } from 'react'
+
+export const navigationRef = createNavigationContainerRef()
 
 export function NavigationProvider({
   children,
@@ -16,7 +19,9 @@ export function NavigationProvider({
             initialRouteName: 'home',
             screens: {
               home: '',
+              login: 'login',
               'user-detail': 'user/:id',
+              settings: 'settings'
             },
           },
         }),

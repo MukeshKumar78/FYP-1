@@ -1,27 +1,19 @@
 import { View, Text, Image, H1 } from 'dripsy'
-import { createParam } from 'solito';
 import { useEffect } from 'react';
 
 import useAuth from 'app/provider/auth/useAuth';
 import { useNavigation } from '@react-navigation/native';
 
-const { useParam } = createParam<{ id: string }>()
 
-export function UserDetailScreen() {
-  const [id] = useParam('id');
+export function ProfileScreen() {
   const { userInfo } = useAuth();
   const navigation = useNavigation();
-
-  useEffect(() => {
-    if(userInfo?.user)
-      navigation.setOptions({ title: userInfo.user.name })
-  }, [])
 
   if(!userInfo?.user) 
     return <View>
       <Text
         sx={{ textAlign: 'center', mb: 16, fontWeight: 'bold' }}
-      >Error loading user</Text>
+      >Failed to load profile</Text>
     </View>
 
   return (
