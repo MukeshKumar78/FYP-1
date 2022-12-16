@@ -1,4 +1,4 @@
-package com.campusme.society.society;
+package com.campusme.society.security.role;
 
 import java.util.Set;
 
@@ -8,15 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.campusme.society.event.Event;
 import com.campusme.society.member.Member;
+import com.campusme.society.security.Permission;
 
 @Entity
-public class Society {
+public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
@@ -27,15 +28,12 @@ public class Society {
   @Column
   private String description;
 
-  @Column(nullable = false)
-  private String title;
+  @Column
+  private String name;
 
-  @ManyToOne
-  @JoinColumn(name = "tenure_id", nullable = false)
-  private Tenure tenure;
-
-  @OneToMany(mappedBy = "society")
-  private Set<Event> events;
+  @ManyToMany
+  @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
+  private Set<Permission> permissions;
 
   @OneToMany(mappedBy = "society")
   private Set<Member> members;
@@ -64,28 +62,12 @@ public class Society {
     this.description = description;
   }
 
-  public String getTitle() {
-    return title;
+  public Set<Permission> getPermissions() {
+    return permissions;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Tenure getTenure() {
-    return tenure;
-  }
-
-  public void setTenure(Tenure tenure) {
-    this.tenure = tenure;
-  }
-
-  public Set<Event> getEvents() {
-    return events;
-  }
-
-  public void setEvents(Set<Event> events) {
-    this.events = events;
+  public void setPermissions(Set<Permission> permissions) {
+    this.permissions = permissions;
   }
 
   public Set<Member> getMembers() {

@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.campusme.society.post.Post;
 import com.campusme.society.society.Society;
 
 @Entity
@@ -61,109 +62,64 @@ public class Event {
   // @OneToMany(mappedBy = "event")
   // private Set<Comment> comments;
 
-  // // Multiple Posts for the event
-  // @OneToMany(mappedBy = "event")
-  // private Set<Post> post;
-
-  // // Multiple file attachments for the event.
-  // @OneToMany(mappedBy = "event")
-  // private Set<EventAttachment> attachment;
-
+  // Multiple Posts for the event
+  @OneToMany(mappedBy = "event")
+  private Set<Post> post;
 
   public long getId() {
     return id;
-  }
-
-  public void setId(final long id) {
-    this.id = id;
   }
 
   public String getCode() {
     return code;
   }
 
-  public void setCode(final String code) {
-    this.code = code;
-  }
-
   public String getDescription() {
     return description;
-  }
-
-  public void setDescription(final String description) {
-    this.description = description;
   }
 
   public String getTitle() {
     return title;
   }
 
-  public void setTitle(final String title) {
-    this.title = title;
-  }
-
   public Date getStartDate() {
     return startDate;
-  }
-
-  public void setStartDate(final Date startDate) {
-    this.startDate = startDate;
   }
 
   public Date getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(final Date endDate) {
-    this.endDate = endDate;
-  }
-
   public boolean isPublished() {
     return published;
-  }
-
-  public void setPublished(final boolean published) {
-    this.published = published;
   }
 
   public long getRatingSum() {
     return ratingSum;
   }
 
-  public void setRatingSum(final long ratingSum) {
-    this.ratingSum = ratingSum;
-  }
-
   public long getRatingCount() {
     return ratingCount;
-  }
-
-  public void setRatingCount(final long ratingCount) {
-    this.ratingCount = ratingCount;
   }
 
   public String getText() {
     return text;
   }
 
-  public void setText(final String text) {
-    this.text = text;
-  }
-
   public String getRegistrationLink() {
     return registrationLink;
-  }
-
-  public void setRegistrationLink(final String registrationLink) {
-    this.registrationLink = registrationLink;
   }
 
   public Society getSociety() {
     return society;
   }
 
-  public void setSociety(final Society society) {
-    this.society = society;
+  public Set<Post> getPost() {
+    return post;
   }
+
+  // // Multiple file attachments for the event.
+  // @OneToMany(mappedBy = "event")
+  // private Set<EventAttachment> attachment;
 
 }

@@ -2441,3 +2441,431 @@ create sequence hibernate_sequence start 1 increment 1;
        add constraint FKl6oqyrk514hn9hfhes7n06stx 
        foreign key (tenure_id) 
        references tenure;
+create sequence hibernate_sequence start 1 increment 1;
+
+    create table event (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        end_date timestamp,
+        published boolean,
+        rating_count int8,
+        rating_sum int8,
+        registration_link TEXT,
+        start_date timestamp,
+        text TEXT not null,
+        title varchar(255),
+        society_id int8 not null,
+        primary key (id)
+    );
+
+    create table member (
+       id int8 not null,
+        role_id int8,
+        society_id int8,
+        user_id int8,
+        primary key (id)
+    );
+
+    create table permission (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        primary key (id)
+    );
+
+    create table post (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        end_date timestamp,
+        published boolean,
+        rating_count int8,
+        rating_sum int8,
+        registration_link TEXT,
+        start_date timestamp,
+        text TEXT not null,
+        title varchar(255),
+        society_id int8 not null,
+        primary key (id)
+    );
+
+    create table role (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        primary key (id)
+    );
+
+    create table roles_permissions (
+       role_id int8 not null,
+        permission_id int8 not null,
+        primary key (role_id, permission_id)
+    );
+
+    create table society (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        title varchar(255) not null,
+        tenure_id int8 not null,
+        primary key (id)
+    );
+
+    create table society_user (
+       id int8 not null,
+        email varchar(255),
+        name varchar(255) not null,
+        photo varchar(255),
+        primary key (id)
+    );
+
+    create table tenure (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        duration varchar(255),
+        primary key (id)
+    );
+
+    alter table event 
+       add constraint UK_7a0yrbljlpa8wfiere2aj6c9d unique (code);
+
+    alter table permission 
+       add constraint UK_a7ujv987la0i7a0o91ueevchc unique (code);
+
+    alter table post 
+       add constraint UK_tojhbicb8m3fuo82limwdqlaj unique (code);
+
+    alter table role 
+       add constraint UK_c36say97xydpmgigg38qv5l2p unique (code);
+
+    alter table society 
+       add constraint UK_1w88acmyl4hl43nbhryps5dsl unique (code);
+
+    alter table society_user 
+       add constraint UK_kskcwjhlg1ir3obmwl5gyqbyo unique (email);
+
+    alter table tenure 
+       add constraint UK_13qxpposc3gd1ej7vo2grmcx unique (code);
+
+    alter table event 
+       add constraint FKbxnb4cs37m3nd6ta0plpkg6r0 
+       foreign key (society_id) 
+       references society;
+
+    alter table member 
+       add constraint FK7cm1epoypfx0kcnrp01en2l3m 
+       foreign key (role_id) 
+       references role;
+
+    alter table member 
+       add constraint FK7btun19hg3laiolk6afff2yak 
+       foreign key (society_id) 
+       references society;
+
+    alter table member 
+       add constraint FKldr0is4x33wmmhp5j5xt2t6no 
+       foreign key (user_id) 
+       references society_user;
+
+    alter table post 
+       add constraint FKb0kh9u5tvvf8yjkij10w65t6y 
+       foreign key (society_id) 
+       references society;
+
+    alter table roles_permissions 
+       add constraint FKboeuhl31go7wer3bpy6so7exi 
+       foreign key (permission_id) 
+       references permission;
+
+    alter table roles_permissions 
+       add constraint FK4hrolwj4ned5i7qe8kyiaak6m 
+       foreign key (role_id) 
+       references role;
+
+    alter table society 
+       add constraint FKl6oqyrk514hn9hfhes7n06stx 
+       foreign key (tenure_id) 
+       references tenure;
+create sequence hibernate_sequence start 1 increment 1;
+
+    create table event (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        end_date timestamp,
+        published boolean,
+        rating_count int8,
+        rating_sum int8,
+        registration_link TEXT,
+        start_date timestamp,
+        text TEXT not null,
+        title varchar(255),
+        society_id int8 not null,
+        primary key (id)
+    );
+
+    create table member (
+       id int8 not null,
+        role_id int8,
+        society_id int8,
+        user_id int8,
+        primary key (id)
+    );
+
+    create table permission (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        primary key (id)
+    );
+
+    create table post (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        text TEXT not null,
+        event_id int8 not null,
+        primary key (id)
+    );
+
+    create table role (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        primary key (id)
+    );
+
+    create table roles_permissions (
+       role_id int8 not null,
+        permission_id int8 not null,
+        primary key (role_id, permission_id)
+    );
+
+    create table society (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        title varchar(255) not null,
+        tenure_id int8 not null,
+        primary key (id)
+    );
+
+    create table society_user (
+       id int8 not null,
+        email varchar(255),
+        name varchar(255) not null,
+        photo varchar(255),
+        primary key (id)
+    );
+
+    create table tenure (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        duration varchar(255),
+        primary key (id)
+    );
+
+    alter table event 
+       add constraint UK_7a0yrbljlpa8wfiere2aj6c9d unique (code);
+
+    alter table permission 
+       add constraint UK_a7ujv987la0i7a0o91ueevchc unique (code);
+
+    alter table post 
+       add constraint UK_tojhbicb8m3fuo82limwdqlaj unique (code);
+
+    alter table role 
+       add constraint UK_c36say97xydpmgigg38qv5l2p unique (code);
+
+    alter table society 
+       add constraint UK_1w88acmyl4hl43nbhryps5dsl unique (code);
+
+    alter table society_user 
+       add constraint UK_kskcwjhlg1ir3obmwl5gyqbyo unique (email);
+
+    alter table tenure 
+       add constraint UK_13qxpposc3gd1ej7vo2grmcx unique (code);
+
+    alter table event 
+       add constraint FKbxnb4cs37m3nd6ta0plpkg6r0 
+       foreign key (society_id) 
+       references society;
+
+    alter table member 
+       add constraint FK7cm1epoypfx0kcnrp01en2l3m 
+       foreign key (role_id) 
+       references role;
+
+    alter table member 
+       add constraint FK7btun19hg3laiolk6afff2yak 
+       foreign key (society_id) 
+       references society;
+
+    alter table member 
+       add constraint FKldr0is4x33wmmhp5j5xt2t6no 
+       foreign key (user_id) 
+       references society_user;
+
+    alter table post 
+       add constraint FK3v4llf5c3wukq0k29f522erpe 
+       foreign key (event_id) 
+       references event;
+
+    alter table roles_permissions 
+       add constraint FKboeuhl31go7wer3bpy6so7exi 
+       foreign key (permission_id) 
+       references permission;
+
+    alter table roles_permissions 
+       add constraint FK4hrolwj4ned5i7qe8kyiaak6m 
+       foreign key (role_id) 
+       references role;
+
+    alter table society 
+       add constraint FKl6oqyrk514hn9hfhes7n06stx 
+       foreign key (tenure_id) 
+       references tenure;
+create sequence hibernate_sequence start 1 increment 1;
+
+    create table event (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        end_date timestamp,
+        published boolean,
+        rating_count int8,
+        rating_sum int8,
+        registration_link TEXT,
+        start_date timestamp,
+        text TEXT not null,
+        title varchar(255),
+        society_id int8 not null,
+        primary key (id)
+    );
+
+    create table member (
+       id int8 not null,
+        role_id int8,
+        society_id int8,
+        user_id int8,
+        primary key (id)
+    );
+
+    create table permission (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        primary key (id)
+    );
+
+    create table post (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        text TEXT not null,
+        event_id int8 not null,
+        primary key (id)
+    );
+
+    create table role (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        name varchar(255),
+        primary key (id)
+    );
+
+    create table roles_permissions (
+       role_id int8 not null,
+        permission_id int8 not null,
+        primary key (role_id, permission_id)
+    );
+
+    create table society (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        title varchar(255) not null,
+        tenure_id int8 not null,
+        primary key (id)
+    );
+
+    create table society_user (
+       id int8 not null,
+        email varchar(255),
+        name varchar(255) not null,
+        photo varchar(255),
+        primary key (id)
+    );
+
+    create table tenure (
+       id int8 not null,
+        code varchar(255),
+        description varchar(255),
+        duration varchar(255),
+        primary key (id)
+    );
+
+    alter table event 
+       add constraint UK_7a0yrbljlpa8wfiere2aj6c9d unique (code);
+
+    alter table permission 
+       add constraint UK_a7ujv987la0i7a0o91ueevchc unique (code);
+
+    alter table post 
+       add constraint UK_tojhbicb8m3fuo82limwdqlaj unique (code);
+
+    alter table role 
+       add constraint UK_c36say97xydpmgigg38qv5l2p unique (code);
+
+    alter table society 
+       add constraint UK_1w88acmyl4hl43nbhryps5dsl unique (code);
+
+    alter table society_user 
+       add constraint UK_kskcwjhlg1ir3obmwl5gyqbyo unique (email);
+
+    alter table tenure 
+       add constraint UK_13qxpposc3gd1ej7vo2grmcx unique (code);
+
+    alter table event 
+       add constraint FKbxnb4cs37m3nd6ta0plpkg6r0 
+       foreign key (society_id) 
+       references society;
+
+    alter table member 
+       add constraint FK7cm1epoypfx0kcnrp01en2l3m 
+       foreign key (role_id) 
+       references role;
+
+    alter table member 
+       add constraint FK7btun19hg3laiolk6afff2yak 
+       foreign key (society_id) 
+       references society;
+
+    alter table member 
+       add constraint FKldr0is4x33wmmhp5j5xt2t6no 
+       foreign key (user_id) 
+       references society_user;
+
+    alter table post 
+       add constraint FK3v4llf5c3wukq0k29f522erpe 
+       foreign key (event_id) 
+       references event;
+
+    alter table roles_permissions 
+       add constraint FKboeuhl31go7wer3bpy6so7exi 
+       foreign key (permission_id) 
+       references permission;
+
+    alter table roles_permissions 
+       add constraint FK4hrolwj4ned5i7qe8kyiaak6m 
+       foreign key (role_id) 
+       references role;
+
+    alter table society 
+       add constraint FKl6oqyrk514hn9hfhes7n06stx 
+       foreign key (tenure_id) 
+       references tenure;

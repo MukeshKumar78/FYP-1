@@ -8,8 +8,8 @@ import com.campusme.society.config.JwtConfig;
 
 @SpringBootApplication
 @EnableConfigurationProperties(JwtConfig.class)
-public class DemoApplication {
+public class SocietyApiApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(SocietyApiApplication.class, args);
 	}
 }

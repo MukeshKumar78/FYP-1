@@ -1,10 +1,8 @@
 package com.campusme.society.user;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 
@@ -12,11 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.campusme.society.member.Member;
 
 
 @Entity
@@ -34,6 +33,9 @@ public class SocietyUser implements UserDetails {
   @Column(unique = true)
   private String email;
 
+  @OneToMany(mappedBy="user")
+  private List<Member> memberships;
+
   public SocietyUser(){}
 
   public SocietyUser(long id, String name, String email, String photo, List<String> roles) {
@@ -41,19 +43,14 @@ public class SocietyUser implements UserDetails {
     this.name = name;
     this.email = email;
     this.photo = photo;
-    this.roles = roles;
   }
 
   public SocietyUser(String name, String email, String photo) {
     this.name = name;
     this.email = email;
     this.photo = photo;
-    this.roles.add("USER");
   }
   
-  @Transient
-  private List<String> roles = new ArrayList<>();
-
   public long getId() {
     return this.id;
   }
@@ -89,10 +86,6 @@ public class SocietyUser implements UserDetails {
     //     getRoles().stream()
     //         .map(s -> "ROLE_" + s)
     //         .collect(Collectors.joining()));
-  }
-
-  private Collection<String> getRoles() {
-    return this.roles;
   }
 
   @Override
