@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/crud
+    url: jdbc:postgresql://localhost:5432/society
     username: postgres
     password: postgres
 
@@ -25,3 +25,6 @@ spring:
                 create-target: META-INF/sql/create.sql
               database:
                 action: drop-and-create
+
+jwt:
+  secret-key: 9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@
