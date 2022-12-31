@@ -3,7 +3,11 @@ server:
 
 spring:
   datasource:
+<<<<<<<< HEAD:teams-svc/src/main/resources/application.yaml
     url: jdbc:postgresql://localhost:5432/team
+========
+    url: jdbc:postgresql://localhost:5432/society
+>>>>>>>> main:society-api/src/main/resources/application.yaml
     username: postgres
     password: postgres
 
