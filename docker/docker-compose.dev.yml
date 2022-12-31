@@ -4,7 +4,6 @@ services:
     volumes:
       - ../gateway:/usr/src/app
 
-  users:
-    command: npm run dev:watch
-    volumes:
-      - ../users:/usr/src/app
+  db:
+    ports: 
+      - 5432:5432
