@@ -5,11 +5,11 @@ import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
-public class SocietyUserAuthenticationToken extends AbstractAuthenticationToken {
+public class AppUserAuthenticationToken extends AbstractAuthenticationToken {
 
-  private final SocietyUser societyUser;
+  private final AppUser societyUser;
 
-  public SocietyUserAuthenticationToken(SocietyUser societyUser, Collection<? extends GrantedAuthority> authorities) {
+  public AppUserAuthenticationToken(AppUser societyUser, Collection<? extends GrantedAuthority> authorities) {
     super(authorities);
     setAuthenticated(true);
     this.societyUser = societyUser;

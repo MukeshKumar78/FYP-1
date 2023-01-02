@@ -1,15 +1,13 @@
 server:
-  port: 8080
+  port: 8083
 
 spring:
   datasource:
-<<<<<<<< HEAD:teams-svc/src/main/resources/application.yaml
-    url: jdbc:postgresql://localhost:5432/team
-========
-    url: jdbc:postgresql://localhost:5432/society
->>>>>>>> main:society-api/src/main/resources/application.yaml
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/team
     username: postgres
-    password: postgres
+    password: ${POSTGRES_PASSWORD:postgres}
+  application:
+    name: TEAM
 
   jpa:
     hibernate:
@@ -30,5 +28,10 @@ spring:
               database:
                 action: drop-and-create
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka}
+
 jwt:
-  secret-key: 9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@
+  secret-key: ${JWT_SECRET:9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@}

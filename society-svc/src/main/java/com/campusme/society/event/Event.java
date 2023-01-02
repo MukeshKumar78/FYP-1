@@ -12,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import com.campusme.society.member.Member;
 import com.campusme.society.post.Post;
 import com.campusme.society.society.Society;
 
@@ -58,9 +60,21 @@ public class Event {
   @JoinColumn(name = "society_id", nullable = false)
   private Society society;
 
+  @OneToOne
+  @JoinColumn(name = "member_id", nullable = false)
+  private Member createdBy;
+
   // // Multiple comments for the event
   // @OneToMany(mappedBy = "event")
   // private Set<Comment> comments;
+
+  public Member getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setCreatedBy(Member createdBy) {
+    this.createdBy = createdBy;
+  }
 
   // Multiple Posts for the event
   @OneToMany(mappedBy = "event")

@@ -8,7 +8,6 @@
     <packaging>pom</packaging>
     <name>campusme-parent</name>
     <modules>
-        <module>demo1</module>
         <module>discovery</module>
         <module>gateway</module>
     </modules>

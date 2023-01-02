@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 
 import com.campusme.society.security.role.Role;
 import com.campusme.society.society.Society;
-import com.campusme.society.user.SocietyUser;
+import com.campusme.society.user.AppUser;
 
 @Entity
 public class Member {
@@ -27,7 +27,7 @@ public class Member {
 
   @ManyToOne
   @JoinColumn(name = "user_id")
-  private SocietyUser user;
+  private AppUser user;
 
   public long getId() {
     return id;
@@ -53,11 +53,11 @@ public class Member {
     this.society = society;
   }
 
-  public SocietyUser getUser() {
+  public AppUser getUser() {
     return user;
   }
 
-  public void setUser(SocietyUser user) {
+  public void setUser(AppUser user) {
     this.user = user;
   }
 }

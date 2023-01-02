@@ -1,8 +1,8 @@
 package com.campusme.society.security;
 
-import com.campusme.society.user.SocietyUser;
-import com.campusme.society.user.SocietyUserAuthenticationToken;
-import com.campusme.society.user.SocietyUserDetailsService;
+import com.campusme.society.user.AppUser;
+import com.campusme.society.user.AppUserAuthenticationToken;
+import com.campusme.society.user.AppUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -12,11 +12,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SocietyJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
-  private final SocietyUserDetailsService userDetailsService;
+public class UserJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+  private final AppUserDetailsService userDetailsService;
 
   @Autowired
-  public SocietyJwtAuthenticationConverter(SocietyUserDetailsService userDetailsService) {
+  public UserJwtAuthenticationConverter(AppUserDetailsService userDetailsService) {
     this.userDetailsService = userDetailsService;
   }
 
@@ -24,8 +24,8 @@ public class SocietyJwtAuthenticationConverter implements Converter<Jwt, Abstrac
   public AbstractAuthenticationToken convert(Jwt jwt) {
     UserDetails userDetails = userDetailsService.loadByPrincipal(jwt);
 
-    if (userDetails instanceof SocietyUser) {
-      return new SocietyUserAuthenticationToken((SocietyUser) userDetails,
+    if (userDetails instanceof AppUser) {
+      return new AppUserAuthenticationToken((AppUser) userDetails,
           userDetails.getAuthorities());
     } else {
       return null;
