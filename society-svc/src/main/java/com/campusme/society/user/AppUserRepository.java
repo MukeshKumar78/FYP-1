@@ -6,10 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 @Transactional
-public interface SocietyUserRepository extends CrudRepository<SocietyUser, Long> {
+public interface AppUserRepository extends CrudRepository<AppUser, Long> {
   @RestResource
-  SocietyUser findByEmail(String email);
-  // @Override
-  // @RestResource(exported = false)
-  // void deleteById(Long id);
+  AppUser findByEmail(String email);
 }

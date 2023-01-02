@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.campusme.society.security.SocietyJwtAuthenticationConverter;
+import com.campusme.society.security.UserJwtAuthenticationConverter;
 
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
@@ -15,12 +15,12 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 public class SecurityConfig {
 
   private final SecretKey key;
-  private final SocietyJwtAuthenticationConverter societyJwtAuthenticationConverter;
+  private final UserJwtAuthenticationConverter userJwtAuthenticationConverter;
 
 
-  public SecurityConfig(JwtConfig jwtConfig, SocietyJwtAuthenticationConverter societyJwtAuthenticationConverter) {
+  public SecurityConfig(JwtConfig jwtConfig, UserJwtAuthenticationConverter userJwtAuthenticationConverter) {
     this.key = jwtConfig.getSecretKey();
-    this.societyJwtAuthenticationConverter = societyJwtAuthenticationConverter;
+    this.userJwtAuthenticationConverter = userJwtAuthenticationConverter;
   }
 
   @Bean
@@ -29,7 +29,7 @@ public class SecurityConfig {
         .antMatchers("/**").fullyAuthenticated())
         .oauth2ResourceServer(oauth2 -> oauth2
             .jwt(jwt -> jwt
-                .jwtAuthenticationConverter(societyJwtAuthenticationConverter)
+                .jwtAuthenticationConverter(userJwtAuthenticationConverter)
                 .decoder(NimbusJwtDecoder.withSecretKey(key).build())
             )
         );

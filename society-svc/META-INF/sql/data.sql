@@ -1,4 +1,4 @@
-INSERT INTO society_user (name, email, photo) VALUES ('John Doe', 'yeah', 'nope');
+INSERT INTO app_user (name, email, photo) VALUES ('John Doe', 'email@email.com', 'https://picsum.photos/200');
 INSERT INTO tenure (code, duration) VALUES ('spring', 'Spring');
 INSERT INTO society (code, title, tenure_id) VALUES ('test', 'Test', 1);
 INSERT INTO permission (code) VALUES ('EVENTS_WRITE');

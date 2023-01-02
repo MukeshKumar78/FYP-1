@@ -6,10 +6,10 @@ ADD ./pom.xml pom.xml
 ADD ./src src/
 
 # package jar
-RUN mvn clean package
+RUN mvn package
 
 # Second stage: minimal runtime environment
-From openjdk:11-jre-slim
+FROM openjdk:11-jre-slim
 
 # copy jar from the first stage
 COPY --from=builder target/gateway-0.0.1-SNAPSHOT.jar gateway-0.0.1-SNAPSHOT.jar

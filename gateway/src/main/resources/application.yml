@@ -4,20 +4,19 @@ spring:
     gateway:
       enabled: true
   application:
-    name: gateway
+    name: GATEWAY
 
   security:
     oauth2:
-      # client:
-      #   registration:
-      #     google:
-      #       client-id: 623112692123-qme5o65dd50rsetvqp006ulrcva3t68k.apps.googleusercontent.com
-      #       client-secret: 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
-      #       scope: openid,profile,email
       resourceserver:
         jwt:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka}
 
 logging:
   level:
@@ -25,4 +24,4 @@ logging:
     reactor.netty: DEBUG
 
 jwt:
-  secret-key: 9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@
+  secret-key: ${JWT_SECRET:9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@}

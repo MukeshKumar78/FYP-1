@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 
 @Primary
 @Service
-public class SocietyUserDetailsService implements UserDetailsService {
-  private final SocietyUserRepository societyUserRepository;
+public class AppUserDetailsService implements UserDetailsService {
+  private final AppUserRepository societyUserRepository;
 
   @Autowired
-  public SocietyUserDetailsService(SocietyUserRepository societyUserRepository) {
+  public AppUserDetailsService(AppUserRepository societyUserRepository) {
     this.societyUserRepository = societyUserRepository;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    SocietyUser user = societyUserRepository.findByEmail(username);
+    AppUser user = societyUserRepository.findByEmail(username);
     if (user == null) {
       throw new UsernameNotFoundException(
           "No user could be found for user name '" + username + "'");
@@ -28,9 +28,9 @@ public class SocietyUserDetailsService implements UserDetailsService {
   }
 
   public UserDetails loadByPrincipal(Jwt jwt) {
-    SocietyUser user = societyUserRepository.findByEmail(jwt.getClaimAsString("email"));
+    AppUser user = societyUserRepository.findByEmail(jwt.getClaimAsString("email"));
     if (user == null) {
-      user = new SocietyUser(
+      user = new AppUser(
         jwt.getClaimAsString("name"),
         jwt.getClaimAsString("email"),
         jwt.getClaimAsString("photo")

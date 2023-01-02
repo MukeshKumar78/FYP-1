@@ -1,11 +1,13 @@
 server:
-  port: 8080
+  port: 8082
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/society
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/society
     username: postgres
-    password: postgres
+    password: ${POSTGRES_PASSWORD:postgres}
+  application:
+    name: SOCIETY
 
   jpa:
     hibernate:
@@ -27,5 +29,10 @@ spring:
                 action: drop-and-create
             sql-load-script-source: META-INF/sql/data.sql
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka}
+
 jwt:
-  secret-key: 9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@
+  secret-key: ${JWT_SECRET:9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@}

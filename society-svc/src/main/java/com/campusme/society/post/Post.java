@@ -1,15 +1,16 @@
 package com.campusme.society.post;
 
 import javax.persistence.Column;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.campusme.society.event.Event;
+import com.campusme.society.member.Member;
 
 @Entity
 public class Post {
@@ -29,6 +30,18 @@ public class Post {
   @ManyToOne
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;
+
+  @OneToOne
+  @JoinColumn(name = "member_id", nullable = false)
+  private Member createdBy;
+
+  public Member getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setCreatedBy(Member createdBy) {
+    this.createdBy = createdBy;
+  }
 
   public long getId() {
     return id;

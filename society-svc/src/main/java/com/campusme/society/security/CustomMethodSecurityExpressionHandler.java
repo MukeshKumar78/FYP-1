@@ -8,7 +8,7 @@ import org.springframework.security.authentication.AuthenticationTrustResolverIm
 import org.springframework.security.core.Authentication;
 import org.aopalliance.intercept.MethodInvocation;
 
-import com.campusme.society.user.SocietyUser;
+import com.campusme.society.user.AppUser;
 
 public class CustomMethodSecurityExpressionHandler
     extends DefaultMethodSecurityExpressionHandler {
@@ -36,7 +36,7 @@ class CustomMethodSecurityExpressionRoot
   }
 
   public boolean isMember(long societyId) {
-    SocietyUser user = (SocietyUser) this.getPrincipal();
+    AppUser user = (AppUser) this.getPrincipal();
     return user.getMemberships().stream().anyMatch(m -> m.getId() == societyId);
   }
 
