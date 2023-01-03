@@ -50,7 +50,6 @@ export function UserDetailScreen() {
           marginTop: 20,
         }}
       >
-        <Text style={{margin: 10}}>sussy</Text>
       </View>
     </View>
   )

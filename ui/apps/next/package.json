@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/next-adapter": "^4.0.12",
     "app": "*",
+    "cross-env": "^7.0.3",
     "next": "13.0.1",
     "raf": "^3.4.1"
   },

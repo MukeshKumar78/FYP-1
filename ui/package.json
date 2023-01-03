@@ -14,6 +14,6 @@
   },
   "scripts": {
     "native": "cd apps/expo && expo start",
-    "web": "cd apps/next && yarn next"
+    "web": "cd apps/next && cross-env NODE_OPTIONS='--openssl-legacy-provider' yarn next"
   }
 }
