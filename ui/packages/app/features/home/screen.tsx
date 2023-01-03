@@ -1,4 +1,5 @@
 import { View, H1 } from 'dripsy'
+import { EventList } from '../event/event-list'
 
 export function HomeScreen() {
 
@@ -7,12 +8,10 @@ export function HomeScreen() {
       sx={{ 
         backgroundColor: "$background", 
         flex: 1, 
-        justifyContent: 'center', 
         alignItems: 'center', 
        }}
     >
-      <H1 sx={{ color: "$text", fontWeight: '800' }}>Home.</H1>
-      <View sx={{ height: 32 }} />
+      <EventList/>
 
     </View>
   )

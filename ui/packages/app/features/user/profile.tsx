@@ -1,13 +1,10 @@
 import { View, Text, Image, H1 } from 'dripsy'
-import { useEffect } from 'react';
 
 import useAuth from 'app/provider/auth/useAuth';
-import { useNavigation } from '@react-navigation/native';
 
 
 export function ProfileScreen() {
   const { userInfo } = useAuth();
-  const navigation = useNavigation();
 
   if(!userInfo?.user) 
     return <View>
@@ -42,7 +39,6 @@ export function ProfileScreen() {
           marginTop: 20,
         }}
       >
-        <Text style={{margin: 10}}>sussy</Text>
       </View>
     </View>
   )
