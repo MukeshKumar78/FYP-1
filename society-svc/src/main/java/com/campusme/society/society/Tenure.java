@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * Represents a date range in which Societies operate
+ */
 @Entity
 public class Tenure {
   @Id

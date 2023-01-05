@@ -18,6 +18,13 @@ import com.campusme.society.member.Member;
 import com.campusme.society.post.Post;
 import com.campusme.society.society.Society;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Event {
   @Id
@@ -33,21 +40,14 @@ public class Event {
   @Column
   private String title;
 
-  // start-date and end-date for the event
   @Column
   private Date startDate;
+
   @Column
   private Date endDate;
 
-  // To distinguish between publish and unpublished event.
   @Column
   private boolean published;
-
-  @Column
-  private long ratingSum;
-
-  @Column
-  private long ratingCount;
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String text;
@@ -64,9 +64,88 @@ public class Event {
   @JoinColumn(name = "member_id", nullable = false)
   private Member createdBy;
 
-  // // Multiple comments for the event
-  // @OneToMany(mappedBy = "event")
-  // private Set<Comment> comments;
+  @OneToMany(mappedBy = "event")
+  private Set<Post> post;
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public Date getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
+
+  public Date getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
+
+  public boolean isPublished() {
+    return published;
+  }
+
+  public void setPublished(boolean published) {
+    this.published = published;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public String getRegistrationLink() {
+    return registrationLink;
+  }
+
+  public void setRegistrationLink(String registrationLink) {
+    this.registrationLink = registrationLink;
+  }
+
+  public Society getSociety() {
+    return society;
+  }
+
+  public void setSociety(Society society) {
+    this.society = society;
+  }
 
   public Member getCreatedBy() {
     return createdBy;
@@ -76,64 +155,11 @@ public class Event {
     this.createdBy = createdBy;
   }
 
-  // Multiple Posts for the event
-  @OneToMany(mappedBy = "event")
-  private Set<Post> post;
-
-  public long getId() {
-    return id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public Date getStartDate() {
-    return startDate;
-  }
-
-  public Date getEndDate() {
-    return endDate;
-  }
-
-  public boolean isPublished() {
-    return published;
-  }
-
-  public long getRatingSum() {
-    return ratingSum;
-  }
-
-  public long getRatingCount() {
-    return ratingCount;
-  }
-
-  public String getText() {
-    return text;
-  }
-
-  public String getRegistrationLink() {
-    return registrationLink;
-  }
-
-  public Society getSociety() {
-    return society;
-  }
-
   public Set<Post> getPost() {
     return post;
   }
 
-  // // Multiple file attachments for the event.
-  // @OneToMany(mappedBy = "event")
-  // private Set<EventAttachment> attachment;
-
+  public void setPost(Set<Post> post) {
+    this.post = post;
+  }
 }

@@ -1,4 +1,5 @@
 package com.campusme.society.user;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,6 +8,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+/**
+ * Custom UserDetails Service that provides a loadByPrincipal method
+ * <br>
+ * retrieves and update AppUsers from the database
+ */
 @Primary
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -27,17 +33,23 @@ public class AppUserDetailsService implements UserDetailsService {
     return user;
   }
 
+  /**
+   * 1. Retrieves user from database by email<br>
+   * 2. Creates user in database from JWT if it doesn't exist already
+   *
+   * @param jwt
+   * @return AppUser
+   */
   public UserDetails loadByPrincipal(Jwt jwt) {
     AppUser user = societyUserRepository.findByEmail(jwt.getClaimAsString("email"));
     if (user == null) {
       user = new AppUser(
-        jwt.getClaimAsString("name"),
-        jwt.getClaimAsString("email"),
-        jwt.getClaimAsString("photo")
-      );
+          jwt.getClaimAsString("name"),
+          jwt.getClaimAsString("email"),
+          jwt.getClaimAsString("photo"));
       societyUserRepository.save(user);
     }
     return user;
-    
+
   }
 }
