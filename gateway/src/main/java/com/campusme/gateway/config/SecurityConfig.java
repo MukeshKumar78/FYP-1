@@ -16,6 +16,9 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+/**
+ * Security configuration with 2 filter chains: external and internal
+ */
 @Configuration
 public class SecurityConfig {
 
@@ -25,7 +28,13 @@ public class SecurityConfig {
     this.key = jwtConfig.getSecretKey();
   }
 
-  // External JWT security for login routes
+  /**
+   * External JWT security for the {@code /token} route
+   * 
+   * @param http
+   * @return the SecurityWebFilterChain
+   * @throws Exception
+   */
   @Bean
   @Order(1)
   public SecurityWebFilterChain loginFilterChain(ServerHttpSecurity http) throws Exception {
@@ -39,7 +48,15 @@ public class SecurityConfig {
     return http.build();
   }
 
-  // Internal JWT security
+  /**
+   * Internal JWT security for {@code /me} and downstream services routed through
+   * the gateway.
+   * Uses {@link com.campusme.gateway.config.SecurityConfig#jwtEncoder()}
+   *
+   * @param http
+   * @return the SecurityWebFilterChain
+   * @throws Exception
+   */
   @Bean
   @Order(2)
   public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
@@ -55,6 +72,9 @@ public class SecurityConfig {
     return http.build();
   }
 
+  /**
+   * @return NimbusJwtEncoder using {@code jwt.secret-key} from application properties
+   */
   @Bean
   public JwtEncoder jwtEncoder() {
     JWKSource<SecurityContext> jwks = new ImmutableSecret<SecurityContext>(key);
