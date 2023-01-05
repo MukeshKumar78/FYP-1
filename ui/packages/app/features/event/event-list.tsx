@@ -1,11 +1,11 @@
-import { View, H1 } from 'dripsy'
-import { ScrollView } from 'react-native';
-import EventDetails from './details';
+import { H1 } from 'dripsy'
+import { ScrollView, View } from 'react-native'
+import EventDetails from './event-details'
 
-const events : SocietyEvent[] = [
+const events: SocietyEvent[] = [
   {
     id: 1,
-    title: "Annual Tour 2023",
+    title: 'Annual Tour 2023',
     text: `
 If you miss this, you will regret it.
 If you do this, you will never forget it.
@@ -30,31 +30,49 @@ Wahaj: 03132475602
 Fatima: 03333639820
 Looking forward to see you all!
 `,
-    image: "https://picsum.photos/1280/720",
+    image: 'https://picsum.photos/1280/720',
     startDate: new Date(),
     endDate: new Date(),
     society: {
       id: 1,
-      title: "DECS",
-      image: "https://picsum.photos/200",
+      title: 'DECS',
+      image: 'https://picsum.photos/200',
       tenure: {
-        title: '2022-2023' 
-      }
-    }
-  }
+        title: '2022-2023',
+      },
+    },
+  },
+  {
+    id: 2,
+    title: 'Sample Text',
+    text: `sample text`,
+    image: 'https://picsum.photos/1220/720',
+    startDate: new Date(),
+    endDate: new Date(),
+    society: {
+      id: 2,
+      title: 'ACM',
+      image: 'https://picsum.photos/210',
+      tenure: {
+        title: '2022-2023',
+      },
+    },
+  },
 ]
 
 export function EventList() {
-
   return (
     <ScrollView
-      style={{ 
+      style={{
         width: '100%',
-        backgroundColor: "$background", 
-        flex: 1, 
-       }}
+        backgroundColor: '$background',
+        flex: 1,
+      }}
     >
-      {events.map((ev, i) => <EventDetails data={ev} key={i}/>)}
+      {/* EVENT MAPPER */}
+      {events.map((ev, i) => (
+        <EventDetails data={ev} key={i} />
+      ))}
     </ScrollView>
   )
 }

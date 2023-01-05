@@ -3,7 +3,7 @@
     "@react-native-google-signin/google-signin": "^9.0.0",
     "@react-navigation/drawer": "^6.5.5",
     "app": "*",
-    "expo": "~46.0.17",
+    "expo": "~46.0.19",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
