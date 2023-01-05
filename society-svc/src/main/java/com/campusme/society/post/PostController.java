@@ -13,7 +13,13 @@ public class PostController {
   @Autowired
   private PostRepository postRepository;
 
-  @GetMapping(value = "/societies/{id}/posts")
+  /**
+   * Endpoint for posts of an event, publicly accessible
+   * 
+   * @param id
+   * @return {@code Collection} of {@code Post}s
+   */
+  @GetMapping(value = "/events/{id}/posts")
   public ResponseEntity<List<Post>> findByEventId(long id) {
     return ResponseEntity.ok(postRepository.findByEventId(id));
   }

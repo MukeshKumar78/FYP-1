@@ -5,14 +5,17 @@ import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+/**
+ * Custom authentication token to store a reference of AppUser as Principal
+ */
 public class AppUserAuthenticationToken extends AbstractAuthenticationToken {
 
-  private final AppUser societyUser;
+  private final AppUser appUser;
 
-  public AppUserAuthenticationToken(AppUser societyUser, Collection<? extends GrantedAuthority> authorities) {
+  public AppUserAuthenticationToken(AppUser appUser, Collection<? extends GrantedAuthority> authorities) {
     super(authorities);
     setAuthenticated(true);
-    this.societyUser = societyUser;
+    this.appUser = appUser;
   }
 
   @Override
@@ -22,6 +25,6 @@ public class AppUserAuthenticationToken extends AbstractAuthenticationToken {
 
   @Override
   public Object getPrincipal() {
-    return this.societyUser;
+    return this.appUser;
   }
 }

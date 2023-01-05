@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 
@@ -16,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.campusme.society.member.Member;
@@ -94,13 +92,7 @@ public class AppUser  implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    if (memberships.isEmpty())
       return Collections.emptyList();
-
-    return AuthorityUtils.createAuthorityList(
-        memberships.stream()
-            .map(m -> "ROLE_" + m.getSociety().getCode() + "_" + m.getRole().getCode())
-            .collect(Collectors.joining()));
   }
 
   @Override
@@ -132,5 +124,4 @@ public class AppUser  implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }

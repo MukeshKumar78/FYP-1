@@ -7,19 +7,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.campusme.society.security.role.Role;
 import com.campusme.society.society.Society;
 import com.campusme.society.user.AppUser;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * {@code Member} connects a user, society and role and represents a society
+ * membership
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Member {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @ManyToOne
-  @JoinColumn(name = "role_id")
-  private Role role;
+  private String role;
 
   @ManyToOne
   @JoinColumn(name = "society_id")
@@ -37,11 +45,11 @@ public class Member {
     this.id = id;
   }
 
-  public Role getRole() {
+  public String getRole() {
     return role;
   }
 
-  public void setRole(Role role) {
+  public void setRole(String role) {
     this.role = role;
   }
 
@@ -60,4 +68,5 @@ public class Member {
   public void setUser(AppUser user) {
     this.user = user;
   }
+
 }
