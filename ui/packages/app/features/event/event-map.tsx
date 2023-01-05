@@ -1,6 +1,6 @@
 import { H1 } from 'dripsy'
-import { ScrollView, View } from 'react-native'
-import EventDetails from './event-details'
+import { ScrollView, View, StyleSheet } from 'react-native'
+import EventDetails from './event-draw'
 
 const events: SocietyEvent[] = [
   {
@@ -60,15 +60,12 @@ Looking forward to see you all!
   },
 ]
 
-export function EventList() {
+{
+  /*MAPPER COMPONENT THAT MAPS ALL EVENT DATA*/
+}
+export function EventMap() {
   return (
-    <ScrollView
-      style={{
-        width: '100%',
-        backgroundColor: '$background',
-        flex: 1,
-      }}
-    >
+    <ScrollView style={styles.eventWrapper}>
       {/* EVENT MAPPER */}
       {events.map((ev, i) => (
         <EventDetails data={ev} key={i} />
@@ -76,3 +73,11 @@ export function EventList() {
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  eventWrapper: {
+    width: '100%',
+    backgroundColor: '$background',
+    flex: 1,
+  },
+})
