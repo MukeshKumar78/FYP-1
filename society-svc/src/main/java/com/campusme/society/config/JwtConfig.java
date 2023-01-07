@@ -3,12 +3,16 @@ package com.campusme.society.config;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Configuration class to read jwt secret key from application.yaml
+ */
 @ConfigurationProperties(prefix = "jwt")
 @ConfigurationPropertiesScan
 public class JwtConfig {
@@ -25,6 +29,10 @@ public class JwtConfig {
   }
 }
 
+/**
+ * Configuration class used to convert jwt key provided in application.yml
+ * to a javax.crypto.SecretKey object
+ */
 @Component
 @ConfigurationPropertiesBinding
 class SecretKeyConverter implements Converter<String, SecretKey> {

@@ -6,7 +6,4 @@ import org.springframework.data.repository.CrudRepository;
 
 @Transactional
 public interface SocietyRepository extends CrudRepository<Society, Long> {
-  // @Override
-  // @RestResource(exported = false)
-  // void deleteById(Long id);
 }

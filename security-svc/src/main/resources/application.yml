@@ -1,0 +1,35 @@
+server:
+  port: 8084
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/security
+    username: postgres
+    password: ${POSTGRES_PASSWORD:postgres}
+  application:
+    name: SECURITY
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+        hibernate:
+          format_sql: true
+          dialect: org.hibernate.dialect.PostgreSQL82Dialect
+        javax:
+          persistence:
+            schema-generation:
+              create-source: metadata
+              drop-source: metadata
+              scripts:
+                action: create
+                create-target: META-INF/sql/create.sql
+              database:
+                action: drop-and-create
+            sql-load-script-source: META-INF/sql/data.sql
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka}

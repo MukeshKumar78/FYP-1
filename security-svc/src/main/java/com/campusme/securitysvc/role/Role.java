@@ -1,21 +1,30 @@
-package com.campusme.society.security.role;
+package com.campusme.securitysvc.role;
 
 import java.util.Set;
 
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import com.campusme.society.member.Member;
-import com.campusme.society.security.Permission;
+import com.campusme.securitysvc.permission.Permission;
 
+/**
+ * Role Entity 
+ * <br>
+ * Example:
+ * {@code Role(id: 1, code: 'ADMIN', description: 'admin role', permissions: [Permission(...),...])}
+ */
+@Data
+@NoArgsConstructor
 @Entity
 public class Role {
   @Id
@@ -31,12 +40,13 @@ public class Role {
   @Column
   private String name;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
   private Set<Permission> permissions;
 
-  @OneToMany(mappedBy = "society")
-  private Set<Member> members;
+  public Role(String code) {
+    this.code = code;
+  }
 
   public long getId() {
     return id;
@@ -62,6 +72,14 @@ public class Role {
     this.description = description;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public Set<Permission> getPermissions() {
     return permissions;
   }
@@ -69,13 +87,4 @@ public class Role {
   public void setPermissions(Set<Permission> permissions) {
     this.permissions = permissions;
   }
-
-  public Set<Member> getMembers() {
-    return members;
-  }
-
-  public void setMembers(Set<Member> members) {
-    this.members = members;
-  }
-
 }

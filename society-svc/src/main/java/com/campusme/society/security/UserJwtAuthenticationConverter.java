@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+/**
+ * Custom Authentication converter to get an {@link com.campusme.society.user.AppUser} object in Spring Security Context
+ */
 @Component
 public class UserJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
   private final AppUserDetailsService userDetailsService;

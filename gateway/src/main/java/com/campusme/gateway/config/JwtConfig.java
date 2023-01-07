@@ -5,6 +5,9 @@ import javax.crypto.SecretKey;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
+/**
+ * Configuration class to read jwt secret key from application.yaml
+ */
 @ConfigurationProperties(prefix = "jwt")
 @ConfigurationPropertiesScan
 public class JwtConfig {
