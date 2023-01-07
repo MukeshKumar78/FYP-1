@@ -36,7 +36,8 @@ Looking forward to see you all!
     society: {
       id: 1,
       title: 'DECS',
-      image: 'https://picsum.photos/200',
+      image:
+        'https://cdn.discordapp.com/attachments/1059750891512664084/1059788242448293928/307386157_6012211498808266_6769890018935496899_n.png',
       tenure: {
         title: '2022-2023',
       },
