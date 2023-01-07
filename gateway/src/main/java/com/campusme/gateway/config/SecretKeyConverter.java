@@ -7,6 +7,11 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesBindin
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * Configuration class used to convert jwt key provided in application.yml
+ * to a javax.crypto.SecretKey object
+ */
 @Component
 @ConfigurationPropertiesBinding
 class SecretKeyConverter implements Converter<String, SecretKey> {

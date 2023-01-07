@@ -12,6 +12,9 @@ import javax.persistence.OneToOne;
 import com.campusme.society.event.Event;
 import com.campusme.society.member.Member;
 
+/**
+ * {@code Post} represents an update to a Society Event
+ */
 @Entity
 public class Post {
   @Id

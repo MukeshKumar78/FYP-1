@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.campusme.gateway.service.TokenService;
 
+/**
+ * REST controller for security related endpoints
+ */
 @RestController
 public class SecurityController {
 
@@ -19,11 +22,21 @@ public class SecurityController {
     this.tokenService = tokenService;
   }
 
+  /**
+   * @param authentication
+   * @return Authenticated user's data
+   */
   @GetMapping(path = "/me")
-  public Principal getUser(Principal principal) {
-    return principal;
+  public String getUser(Principal principal) {
+    // TODO: Batch data from downstream services
+    return principal.getName();
   }
 
+  /**
+   * Endpoint used to exchange external provider idtoken with internal JWT
+   * @param authentication
+   * @return jwt
+   */
   @PostMapping("/token")
   public String token(Authentication authentication) {
     Jwt jwt = tokenService.generateToken(authentication);
