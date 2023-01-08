@@ -1,5 +1,7 @@
 import { View, H1 } from 'dripsy'
 import { EventMap } from '../event/event-map'
+import { EventCreate } from '../event/event-create'
+import SocietyMap from '../society/society-map'
 
 export function HomeScreen() {
   return (
@@ -10,7 +12,8 @@ export function HomeScreen() {
         alignItems: 'center',
       }}
     >
-      <EventMap />
+      {/* changed current component call for testing */}
+      <SocietyMap />
     </View>
   )
 }
