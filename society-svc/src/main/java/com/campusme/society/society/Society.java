@@ -1,10 +1,13 @@
 package com.campusme.society.society;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,10 +15,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.campusme.society.event.Event;
 import com.campusme.society.member.Member;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Society {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,73 +44,28 @@ public class Society {
   @Column
   private String description;
 
+  @Column(columnDefinition="TEXT")
+  private String image;
+
   @Column(nullable = false)
   private String title;
+
+  @CreatedDate
+  @Column(updatable = false)
+  private Date createdAt;
+
+  @LastModifiedDate
+  @Column
+  private Date updatedAt;
 
   @ManyToOne
   @JoinColumn(name = "tenure_id", nullable = false)
   private Tenure tenure;
 
   @OneToMany(mappedBy = "society")
-  private Set<Event> events;
+  @Builder.Default
+  private Set<Event> events = new HashSet<Event>();
 
   @OneToMany(mappedBy = "society")
   private Set<Member> members;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Tenure getTenure() {
-    return tenure;
-  }
-
-  public void setTenure(Tenure tenure) {
-    this.tenure = tenure;
-  }
-
-  public Set<Event> getEvents() {
-    return events;
-  }
-
-  public void setEvents(Set<Event> events) {
-    this.events = events;
-  }
-
-  public Set<Member> getMembers() {
-    return members;
-  }
-
-  public void setMembers(Set<Member> members) {
-    this.members = members;
-  }
-
 }

@@ -1,6 +1,6 @@
 package com.campusme.society.event;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,9 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.campusme.society.event.mapping.EventCreateRequestDTO;
+import com.campusme.society.event.mapping.EventMapper;
+import com.campusme.society.event.mapping.EventResponseDTO;
+import com.campusme.society.member.Member;
+import com.campusme.society.member.MemberRepository;
+import com.campusme.society.society.Society;
+import com.campusme.society.society.SocietyRepository;
+import com.campusme.society.user.AppUser;
+import com.campusme.society.user.AppUserAuthenticationToken;
 
 /**
  * REST Controller for Society Events
@@ -21,6 +32,13 @@ public class EventController {
 
   @Autowired
   private EventRepository eventRepository;
+  @Autowired
+  private EventMapper mapper;
+
+  @Autowired
+  private SocietyRepository societyRepository;
+  @Autowired
+  private MemberRepository memberRepository;
 
   /**
    * Endpoint for events of a society, publicly accessible
@@ -29,8 +47,9 @@ public class EventController {
    * @return {@code Collection} of {@code Event}s
    */
   @GetMapping("/societies/{id}/events")
-  public Collection<Event> findBySocietyId(@PathVariable long id) {
-    return eventRepository.findBySocietyId(id);
+  public List<EventResponseDTO> findBySocietyId(@PathVariable long id) {
+    List<Event> events = eventRepository.findBySocietyId(id);
+    return mapper.entityListToDTO(events);
   }
 
   /**
@@ -39,18 +58,45 @@ public class EventController {
    * @param {@code Event} object in request body
    * @return Created {@code Event}
    */
-  @PreAuthorize("hasPermission(#id, 'event', 'create')")
+  // @PreAuthorize("hasPermission(#id, 'event', 'create')")
   @PostMapping("/societies/{id}/events")
   @ResponseStatus(code = HttpStatus.CREATED)
-  public void save(Event event) {
-    eventRepository.save(event);
+  public EventResponseDTO save(AppUserAuthenticationToken auth, @PathVariable Long id,
+      @RequestBody EventCreateRequestDTO eventDTO) {
+    System.out.println(eventDTO.title());
+
+    // Validation
+    Society society = societyRepository.getReferenceById(id);
+    if (society == null) {
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND, "Society not found");
+    }
+
+    Member member = memberRepository.findByUserIdAndSocietyId(
+        ((AppUser) auth.getPrincipal()).getId(),
+        id);
+    if (member == null) {
+      throw new ResponseStatusException(
+          HttpStatus.UNAUTHORIZED);
+    }
+
+    // Save data
+    Event event = mapper.dtoToEntity(eventDTO);
+    event.setSociety(society);
+    event.setCreatedBy(member);
+
+    event = eventRepository.save(event);
+
+    return mapper.entityToDTO(event);
   }
 
   /**
-   * sets an event's status to published
+   * Sets an event's status to published
+   *
    * @param eventId in path
    * @return Updated Event
-   * @throws ResponseStatusException: 404 (Event not found), 304 (Event already published)
+   * @throws ResponseStatusException: 404 (Event not found), 304 (Event already
+   *                                  published)
    */
   @PreAuthorize("hasPermission(#societyId, 'event', 'publish')")
   @PatchMapping("/societies/{societyId}/events/{eventId}")
@@ -58,10 +104,11 @@ public class EventController {
   public Event publish(@PathVariable Long eventId) {
     Event event = eventRepository.findById(eventId).orElseThrow(
         () -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND, "event not found"));
+            HttpStatus.NOT_FOUND, "Event not found"));
 
     if (event.isPublished()) {
-      throw new ResponseStatusException(HttpStatus.NOT_MODIFIED);
+      throw new ResponseStatusException(
+          HttpStatus.NOT_MODIFIED, "Event already published");
     }
 
     event.setPublished(true);

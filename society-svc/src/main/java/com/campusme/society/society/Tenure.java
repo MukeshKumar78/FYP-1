@@ -1,5 +1,6 @@
 package com.campusme.society.society;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -9,9 +10,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Represents a date range in which Societies operate
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Tenure {
   @Id
@@ -28,46 +38,6 @@ public class Tenure {
   private String duration;
 
   @OneToMany(mappedBy = "tenure")
-  private Set<Society> societies;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getDuration() {
-    return duration;
-  }
-
-  public void setDuration(String duration) {
-    this.duration = duration;
-  }
-
-  public Set<Society> getSocieties() {
-    return societies;
-  }
-
-  public void setSocieties(Set<Society> societies) {
-    this.societies = societies;
-  }
-
+  @Builder.Default
+  private Set<Society> societies = new HashSet<>();
 }

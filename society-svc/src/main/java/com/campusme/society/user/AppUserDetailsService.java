@@ -25,11 +25,10 @@ public class AppUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    AppUser user = societyUserRepository.findByEmail(username);
-    if (user == null) {
-      throw new UsernameNotFoundException(
-          "No user could be found for user name '" + username + "'");
-    }
+    AppUser user = societyUserRepository.findByEmail(username).orElseThrow(
+        () -> new UsernameNotFoundException(
+            "No user could be found for user name '" + username + "'"));
+
     return user;
   }
 
@@ -41,14 +40,17 @@ public class AppUserDetailsService implements UserDetailsService {
    * @return AppUser
    */
   public UserDetails loadByPrincipal(Jwt jwt) {
-    AppUser user = societyUserRepository.findByEmail(jwt.getClaimAsString("email"));
-    if (user == null) {
-      user = new AppUser(
-          jwt.getClaimAsString("name"),
-          jwt.getClaimAsString("email"),
-          jwt.getClaimAsString("photo"));
-      societyUserRepository.save(user);
-    }
+    AppUser user = societyUserRepository
+        .findByEmail(jwt.getSubject())
+        .orElseGet(
+            () -> societyUserRepository.save(
+                AppUser.builder()
+                    .email(jwt.getSubject())
+                    .firstName(jwt.getClaimAsString("given_name"))
+                    .lastName(jwt.getClaimAsString("family_name"))
+                    .photo(jwt.getClaimAsString("picture"))
+                    .build()));
+
     return user;
 
   }

@@ -11,6 +11,7 @@ import com.campusme.society.society.Society;
 import com.campusme.society.user.AppUser;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
  * membership
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -36,37 +38,4 @@ public class Member {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private AppUser user;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getRole() {
-    return role;
-  }
-
-  public void setRole(String role) {
-    this.role = role;
-  }
-
-  public Society getSociety() {
-    return society;
-  }
-
-  public void setSociety(Society society) {
-    this.society = society;
-  }
-
-  public AppUser getUser() {
-    return user;
-  }
-
-  public void setUser(AppUser user) {
-    this.user = user;
-  }
-
 }

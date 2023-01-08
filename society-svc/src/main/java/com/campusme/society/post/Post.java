@@ -12,9 +12,18 @@ import javax.persistence.OneToOne;
 import com.campusme.society.event.Event;
 import com.campusme.society.member.Member;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * {@code Post} represents an update to a Society Event
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Post {
   @Id
@@ -37,53 +46,4 @@ public class Post {
   @OneToOne
   @JoinColumn(name = "member_id", nullable = false)
   private Member createdBy;
-
-  public Member getCreatedBy() {
-    return createdBy;
-  }
-
-  public void setCreatedBy(Member createdBy) {
-    this.createdBy = createdBy;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getText() {
-    return text;
-  }
-
-  public void setText(String text) {
-    this.text = text;
-  }
-
-  public Event getEvent() {
-    return event;
-  }
-
-  public void setEvent(Event event) {
-    this.event = event;
-  }
-
 }

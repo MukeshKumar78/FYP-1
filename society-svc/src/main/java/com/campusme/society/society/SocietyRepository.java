@@ -1,9 +1,7 @@
 package com.campusme.society.society;
 
-import javax.transaction.Transactional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Transactional
-public interface SocietyRepository extends CrudRepository<Society, Long> {
+public interface SocietyRepository extends JpaRepository<Society, Long> {
 }

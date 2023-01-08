@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,18 +15,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.campusme.society.member.Member;
 import com.campusme.society.post.Post;
 import com.campusme.society.society.Society;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Event {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +48,17 @@ public class Event {
   @Column
   private String title;
 
+  @CreatedDate
+  @Column(updatable = false)
+  private Date createdAt;
+
+  @LastModifiedDate
+  @Column
+  private Date updatedAt;
+
+  @Column
+  private Date publishedAt;
+
   @Column
   private Date startDate;
 
@@ -47,7 +66,8 @@ public class Event {
   private Date endDate;
 
   @Column
-  private boolean published;
+  @Builder.Default
+  private boolean published = false;
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String text;
@@ -66,100 +86,4 @@ public class Event {
 
   @OneToMany(mappedBy = "event")
   private Set<Post> post;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Date getStartDate() {
-    return startDate;
-  }
-
-  public void setStartDate(Date startDate) {
-    this.startDate = startDate;
-  }
-
-  public Date getEndDate() {
-    return endDate;
-  }
-
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
-  }
-
-  public boolean isPublished() {
-    return published;
-  }
-
-  public void setPublished(boolean published) {
-    this.published = published;
-  }
-
-  public String getText() {
-    return text;
-  }
-
-  public void setText(String text) {
-    this.text = text;
-  }
-
-  public String getRegistrationLink() {
-    return registrationLink;
-  }
-
-  public void setRegistrationLink(String registrationLink) {
-    this.registrationLink = registrationLink;
-  }
-
-  public Society getSociety() {
-    return society;
-  }
-
-  public void setSociety(Society society) {
-    this.society = society;
-  }
-
-  public Member getCreatedBy() {
-    return createdBy;
-  }
-
-  public void setCreatedBy(Member createdBy) {
-    this.createdBy = createdBy;
-  }
-
-  public Set<Post> getPost() {
-    return post;
-  }
-
-  public void setPost(Set<Post> post) {
-    this.post = post;
-  }
 }
