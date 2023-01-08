@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import com.campusme.securitysvc.permission.Permission;
 
 /**
- * Role Entity 
+ * Role Entity
  * <br>
  * Example:
  * {@code Role(id: 1, code: 'ADMIN', description: 'admin role', permissions: [Permission(...),...])}
@@ -43,6 +43,14 @@ public class Role {
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
   private Set<Permission> permissions;
+
+  public Role(long id, String code, String description, String name, Set<Permission> permissions) {
+    this.id = id;
+    this.code = code;
+    this.description = description;
+    this.name = name;
+    this.permissions = permissions;
+  }
 
   public Role(String code) {
     this.code = code;
