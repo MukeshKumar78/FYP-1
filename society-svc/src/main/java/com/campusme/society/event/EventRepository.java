@@ -1,10 +1,10 @@
 package com.campusme.society.event;
 
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-  Collection<Event> findBySocietyId(long id);
+  List<Event> findBySocietyId(long id);
 }

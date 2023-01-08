@@ -66,7 +66,7 @@ class CustomMethodSecurityExpressionRoot
    */
   public boolean isMember(long societyId) {
     AppUser user = (AppUser) this.getPrincipal();
-    return user.getMemberships().stream().anyMatch(m -> m.getId() == societyId);
+    return user.getMemberships().stream().anyMatch(m -> m.getSociety().getId() == societyId);
   }
 
   /**

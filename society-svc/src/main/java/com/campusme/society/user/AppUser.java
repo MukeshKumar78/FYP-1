@@ -19,14 +19,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.campusme.society.member.Member;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @Entity
-public class AppUser  implements UserDetails {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AppUser implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   @Column(nullable = false)
-  private String name;
+  private String firstName;
+
+  @Column
+  private String lastName;
 
   @Column
   private String photo;
@@ -35,64 +47,12 @@ public class AppUser  implements UserDetails {
   private String email;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  @Builder.Default
   private List<Member> memberships = new ArrayList<>();
-
-
-  public AppUser() {
-  }
-
-  public AppUser(long id, String name, String email, String photo, List<String> roles) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.photo = photo;
-  }
-
-  public AppUser(String name, String email, String photo) {
-    this.name = name;
-    this.email = email;
-    this.photo = photo;
-  }
-
-  public long getId() {
-    return this.id;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public String setName(String name) {
-    return this.name = name;
-  }
-
-  public String getPhoto() {
-    return photo;
-  }
-
-  public void setPhoto(String photo) {
-    this.photo = photo;
-  }
-
-  public String getEmail() {
-    return this.email;
-  }
-
-  public String setEmail(String email) {
-    return this.email = email;
-  }
-
-  public List<Member> getMemberships() {
-    return memberships;
-  }
-
-  public void setMemberships(List<Member> memberships) {
-    this.memberships = memberships;
-  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-      return Collections.emptyList();
+    return Collections.emptyList();
   }
 
   @Override
