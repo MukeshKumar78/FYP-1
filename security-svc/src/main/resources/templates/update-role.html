@@ -1,0 +1,60 @@
+<head>
+  <meta charset="UTF-8">
+  <!-- <title></title> -->
+  <link th:href="@{/main.css}" rel="stylesheet" />
+</head>
+<h1 class="title">CampusMe Admin</h1> <hr class="mx-5"/>
+<div class="form-container">
+  <h1 class="text-center py-3">Edit Role</h1>
+  <a class="btn-sm-ico absolute top-3 left-2.5" href=../.. />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+    <path fill-rule="evenodd"
+      d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z"
+      clip-rule="evenodd" />
+  </svg>
+  </a>
+  <div class="px-6 py-6 lg:px-8">
+    <h1 class="mb-4 text-3xl font-medium text-gray-900"></h1>
+    <form class="space-y-6" th:action="@{/update/{id}(id=${form.id})}" th:object="${form}" method="post">
+      <div>
+        <label for="email"> Code </label>
+        <input type="text" th:field="*{code}" required>
+      </div>
+      <div>
+        <label for="description"> Description </label>
+        <input type="text" th:field="*{description}" required>
+      </div>
+      <div>
+        <label for="name"> Name </label>
+        <input type="text" th:field="*{name}" required>
+      </div>
+      <h2 class="text-center"> Permissions </h2>
+      <hr />
+      <div>
+        <ul>
+          <li th:each="permission, stat : *{permissionCodeList}">
+            <input type="checkbox" th:field="*{permissionCodeList[__${stat.index}__].selected}"/>
+            <input type="hidden" th:field="*{permissionCodeList[__${stat.index}__].code}" />
+            <label th:for="*{permissionCodeList[__${stat.index}__].selected}" th:text="${permission.code}"></label>
+          </li>
+        </ul>
+      </div>
+      <div class="text-center">
+        <button type="submit"
+          class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Submit </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+
+  var permissions = /*[[${permissions}]]*/ 'default';
+  console.log(permissions);
+
+  /*]]>*/
+
+</script>
