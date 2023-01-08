@@ -15,5 +15,8 @@
   "scripts": {
     "native": "cd apps/expo && expo start",
     "web": "cd apps/next && cross-env NODE_OPTIONS='--openssl-legacy-provider' yarn next"
+  },
+  "dependencies": {
+    "@react-native-community/datetimepicker": "^6.7.1"
   }
 }
