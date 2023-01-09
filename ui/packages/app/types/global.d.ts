@@ -19,4 +19,12 @@ declare global {
     endDate: Date,
     society: Society
   };
+
+  type SocietyPost = {
+    id: number,
+    title: string,
+    text: string,
+    image: string,
+    event: SocietyEvent
+  };
 }
