@@ -1,6 +1,6 @@
 import { ScaledImage } from 'app/components/ScaledImage'
 import { View as DView } from 'dripsy'
-import { Image, StyleSheet } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import { ButtonWithChildren } from '../../components/Button'
 import Text from '../../components/Text'
 import EventOptionsModal from './event-options-modal'
@@ -9,40 +9,35 @@ import Dater from 'app/components/DateRender'
 import { InteractiveBar } from 'app/components/Interactive-Bar'
 
 // RENDERER COMPONENT FOR ALL EVENT COMPONENT ELEMENTS
-export default function EventDetails(props: { data: SocietyEvent }) {
+export default function EventPageDraw(props: { data: SocietyEvent }) {
   const data = props.data
   //console.log(props.data)
 
   return (
     <DView style={styles.eventContainer}>
-      {/* TITLE BAR RENDER*/}
-      <DView style={styles.titleBarContainer}>
-        <Image
-          style={styles.societyImage}
-          source={{ uri: data.society.image }}
-        />
-
-        <DView style={styles.societyNameDateContainer}>
-          {/* SOCIETY NAME */}
-          <Text style={styles.societyName}>{data.society.title}</Text>
-
-          {/* DATE COMPONENT */}
-          <Text style={styles.eventDate}>
-            <Dater date={data.startDate} /> {`\t`}
-            <Dater date={data.endDate} />
-          </Text>
-        </DView>
-        <EventOptionsModal style={styles.eventOptionButton} />
-      </DView>
-
       {/* EVENT TITLE IMAGE CONTENT RENDER*/}
       <DView style={styles.contentContainer}>
-        <Text style={styles.eventTitle}>{data.title}</Text>
+        <View style={styles.entireTitleContainer}>
+          {/* EVENT TITLE AND BUTTON RENDER*/}
+          <View style={styles.titleAndButtonContainer}>
+            <Text style={styles.eventTitle}>{data.title}</Text>
+            <View style={styles.buttonContainer}>
+              <EventOptionsModal style={styles.eventOptionButton} />
+            </View>
+          </View>
+          {/* EVENT DATE RENDER */}
+          <Text style={styles.eventDate}>
+            <Dater date={data.startDate} /> {`  to  `}
+            <Dater date={data.endDate} />
+          </Text>
+        </View>
+
+        {/* EVENT IMAGE AND TEXT RENDER */}
         <ScaledImage uri={data.image} />
         <Text style={styles.eventText}>{data.text}</Text>
       </DView>
 
-      {/* EVENT INTERACTIVE BAR RENDER*/}
+      {/* EVENT INTERACTIVE BAR RENDER */}
       <InteractiveBar id={data.id} />
     </DView>
   )
@@ -58,11 +53,49 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
 
+  contentContainer: {
+    padding: 7,
+  },
+
   titleBarContainer: {
     backgroundColor: '#EFEFEF',
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+  },
+
+  entireTitleContainer: {
+    //borderWidth: 2,
+    padding: 10,
+  },
+
+  titleAndButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    //alignItems: 'center',
+    //borderWidth: 2,
+    borderColor: 'red',
+  },
+
+  eventTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    flex: 11,
+    //borderWidth: 1,
+  },
+
+  buttonContainer: {
+    //borderWidth: 2,
+    borderColor: 'blue',
+    flex: 1,
+    justifyContent: 'center',
+  },
+
+  eventOptionButton: {
+    //borderWidth: 2,
+    aspectRatio: 1,
+    alignSelf: 'center',
+    paddingTop: 5,
   },
 
   societyImage: {
@@ -82,21 +115,10 @@ const styles = StyleSheet.create({
   },
   eventDate: {
     color: 'gray',
-  },
-  eventOptionButton: {
-    right: 10,
-    position: 'absolute',
+    fontSize: 12,
   },
 
-  contentContainer: {
-    padding: 7,
-  },
-  eventTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    padding: 10,
-  },
   eventText: {
-    padding: 4,
+    //padding: 4,
   },
 })
