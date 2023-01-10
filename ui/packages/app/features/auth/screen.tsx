@@ -2,7 +2,7 @@ import { View, H1, useSx } from 'dripsy'
 import {
   GoogleSigninButton
 } from '@react-native-google-signin/google-signin';
-import useAuth from 'app/provider/auth/useAuth';
+import useAuth from './useAuth';
 import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 

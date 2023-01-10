@@ -1,50 +1,54 @@
 import { ScaledImage } from 'app/components/ScaledImage'
-import { View as DView } from 'dripsy'
-import { Image, StyleSheet } from 'react-native'
-import { ButtonWithChildren } from '../../components/Button'
+import { View, Image, StyleSheet } from 'react-native'
 import Text from '../../components/Text'
 import EventOptionsModal from './event-options-modal'
-import { Ionicons } from '@expo/vector-icons'
 import Dater from 'app/components/DateRender'
 import { InteractiveBar } from 'app/components/Interactive-Bar'
+import { Link } from 'solito/link'
 
-// RENDERER COMPONENT FOR ALL EVENT COMPONENT ELEMENTS
-export default function EventDetails(props: { data: SocietyEvent }) {
-  const data = props.data
-  //console.log(props.data)
+/**
+* Displays event with header, content and interactive bar sections
+*/
+export default function EventDetails({ event }: {
+  event: SocietyEvent
+}) {
 
   return (
-    <DView style={styles.eventContainer}>
+    <View style={styles.eventContainer}>
       {/* TITLE BAR RENDER*/}
-      <DView style={styles.titleBarContainer}>
-        <Image
-          style={styles.societyImage}
-          source={{ uri: data.society.image }}
-        />
+      <Link href={`/society/${event.society.id}`}>
+        <View style={styles.titleBarContainer}>
+          <Image
+            style={styles.societyImage}
+            source={{ uri: event.society.image }}
+          />
 
-        <DView style={styles.societyNameDateContainer}>
-          {/* SOCIETY NAME */}
-          <Text style={styles.societyName}>{data.society.title}</Text>
+          <View style={styles.societyNameDateContainer}>
+            {/* SOCIETY NAME */}
+            <Text style={styles.societyName}>{event.society.name}</Text>
 
-          {/* DATE COMPONENT */}
-          <Text style={styles.eventDate}>
-            <Dater date={data.startDate} /> {`\t`}
-            <Dater date={data.endDate} />
-          </Text>
-        </DView>
-        <EventOptionsModal style={styles.eventOptionButton} />
-      </DView>
+            {/* DATE COMPONENT */}
+            <Text style={styles.eventDate}>
+              <Dater date={event.startDate} /> {`\t`}
+              <Dater date={event.endDate} />
+            </Text>
+          </View>
+          <EventOptionsModal style={styles.eventOptionButton} />
+        </View>
+      </Link>
 
       {/* EVENT TITLE IMAGE CONTENT RENDER*/}
-      <DView style={styles.contentContainer}>
-        <Text style={styles.eventTitle}>{data.title}</Text>
-        <ScaledImage uri={data.image} />
-        <Text style={styles.eventText}>{data.text}</Text>
-      </DView>
+      <View style={styles.contentContainer}>
+        <Text style={styles.eventTitle}>{event.title}</Text>
+        <Link href={`/event/${event.id}`}>
+          <ScaledImage uri={event.image} />
+          <Text style={styles.eventText}>{event.text}</Text>
+        </Link>
+      </View>
 
       {/* EVENT INTERACTIVE BAR RENDER*/}
-      <InteractiveBar id={data.id} />
-    </DView>
+      <InteractiveBar id={event.id} />
+    </View>
   )
 }
 

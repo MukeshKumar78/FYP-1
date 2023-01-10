@@ -1,16 +1,17 @@
-import { AuthProvider } from './auth'
 import { Dripsy } from './dripsy'
 import { NavigationProvider } from './navigation'
+import store from 'app/api/store';
+import { Provider as ReduxProvider } from 'react-redux';
 
 export function Provider({ children }: { children: React.ReactNode }) {
 
   return (
-    <AuthProvider>
-      <NavigationProvider>
+    <NavigationProvider>
+      <ReduxProvider store={store}>
         <Dripsy>
           {children}
         </Dripsy>
-      </NavigationProvider>
-    </AuthProvider>
+      </ReduxProvider>
+    </NavigationProvider>
   )
 }

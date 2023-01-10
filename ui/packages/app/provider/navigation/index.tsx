@@ -21,6 +21,9 @@ export function NavigationProvider({
               home: '',
               login: 'login',
               'user-detail': 'user/:id',
+              event: 'event/:id',
+              "event-create": "event-create/:id",
+              society: 'society/:id',
               settings: 'settings'
             },
           },

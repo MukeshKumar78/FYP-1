@@ -1,88 +1,108 @@
-import { ScaledImage } from 'app/components/ScaledImage'
-import { H1, View as DView } from 'dripsy'
+import { useNavigation } from '@react-navigation/native';
+import { createParam } from 'solito';
+import { H1 } from 'dripsy'
+import { useEffect, useReducer } from 'react';
 import {
-  Image,
   StyleSheet,
   View,
+  Text,
   TextInput,
-  Button,
-  Platform,
 } from 'react-native'
-import Text from '../../components/Text'
 import { ScrollView } from 'react-native-gesture-handler'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import React, { useState } from 'react'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
+import { SocietyHeader } from './screen';
+import { useGetSocietyQuery } from '../society/society-api';
+import DateTimePicker from 'app/components/DateTimePicker';
+
+const { useParam } = createParam<{ id: string }>()
+
+type FormState = {
+  title: string
+  text: string
+  startDate: Date
+}
+
+type FormAction = {
+  key: string
+  value: string
+}
 
 export function EventCreate() {
-  const [eventTitle, setTitle] = useState('')
-  const [eventText, setText] = useState('')
+  const [societyId] = useParam('id');
+  const { data: society } = useGetSocietyQuery(Number(societyId));
+  const navigation = useNavigation();
 
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(new Date())
-  const [mode, setMode] = useState('date')
-  const [dateText, setDateText] = useState('Empty')
-  const [show, setShow] = useState(false)
+  const [state, dispatch] = useReducer(
+    (prevState: FormState, { key, value }: FormAction) => {
+      return {
+        ...prevState,
+        [key]: value
+      }
+    },
+    {
+      title: '',
+      text: '',
+      startDate: new Date()
+    }
+  )
 
-  const onChange = (selectedDate) => {}
+  useEffect(() => {
+    if (society)
+      navigation.setOptions({
+        headerTitle: () =>
+          <SocietyHeader
+            title={society.name}
+            image={society.image}
+          />
+      })
+  }, [])
 
-  const showDateMode = (currentDateMode) => {
-    setShow(true)
-    setMode(currentDateMode)
-  }
+  if (!society)
+    return <EventCreateError />
 
-  function titleInputHandler(titleinput) {
-    setTitle(titleinput)
-    console.log(eventTitle)
-  }
-
-  function textInputHandler(textinput) {
-    setText(textinput)
-    console.log(eventText)
-  }
-
-  {
-    /* */
-  }
   return (
     <ScrollView style={styles.mainContainer}>
-      {/* HEADING OF PAGE*/}
-      <H1 style={styles.heading}>Create an Event</H1>
 
-      {/* TAKING TITLE INPUT*/}
       <View style={styles.titleContainer}>
-        <TextInput
-          style={styles.inputTitle}
-          placeholder="Enter Event Title"
-          multiline={true}
-          onChangeText={textInputHandler}
-        />
+        <H1 style={styles.heading}>Create an Event</H1>
+
+        {/* Title Input */}
+        <View style={styles.textContainer}>
+          <Text style={styles.label}>Title</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(value) => dispatch({ key: 'title', value })}
+          />
+        </View>
+
+        {/* Text Input */}
+        <View style={styles.textContainer} >
+          <Text style={styles.label}>Text</Text>
+          <TextInput
+            style={styles.textInput}
+            multiline={true}
+            onChangeText={(value) => dispatch({ key: 'text', value })}
+          />
+        </View>
+
+        {/* Start Date Input */}
+        <View style={styles.textContainer} >
+          <DateTimePicker title="start"/>
+        </View>
       </View>
-
-      {/* TAKING TEXT INPUT*/}
-      <View style={styles.textContainer}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Enter Text Content"
-          multiline={true}
-          onChangeText={textInputHandler}
-        />
-      </View>
-
-      {/* TAKING IMAGE INPUT*/}
-      <View style={styles.imageContainer}></View>
-
-      {/* TAKING DATES INPUT*/}
-
-      {/* BUTTON TO CONFIRM ALL CHANGES*/}
     </ScrollView>
   )
 }
 
+function EventCreateError() {
+  return <View style={styles.mainContainer}>
+    <Text>
+      Failed to load screen
+    </Text>
+  </View>
+}
+
 const styles = StyleSheet.create({
   mainContainer: {
-    borderWidth: 3,
-    borderColor: 'green',
     width: '100%',
     flex: 1,
   },
@@ -90,21 +110,35 @@ const styles = StyleSheet.create({
     marginHorizontal: '3%',
   },
   titleContainer: {
-    backgroundColor: '#F5F5F5',
-    marginHorizontal: '3%',
+    backgroundColor: '#F8F8F8',
+    paddingVertical: 10,
+    marginHorizontal: 5,
     marginVertical: 4,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
     borderRadius: 10,
+    shadowColor: 'gray',
+    shadowOffset: {
+      width: 2,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 2,
   },
 
   inputTitle: {
     fontSize: 18,
   },
-  inputText: {},
-
+  label: {
+    color: 'gray'
+  },
+  textInput: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    color: 'black',
+  },
   textContainer: {
-    backgroundColor: '#F5F5F5',
     marginHorizontal: '3%',
     marginVertical: 4,
     paddingVertical: 5,

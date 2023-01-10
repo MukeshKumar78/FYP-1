@@ -1,15 +1,11 @@
-import { ScaledImage } from 'app/components/ScaledImage'
-import { View as DView } from 'dripsy'
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import Text from '../../components/Text'
 import { Ionicons } from '@expo/vector-icons'
-import Dater from 'app/components/DateRender'
-import EventOptionsModal from '../event/event-options-modal'
-import { InteractiveBar } from 'app/components/Interactive-Bar'
 import PostContent from './post-content-draw'
 
-export default function PostDraw(props: { data: SocietyPost }) {
-  const data = props.data
+export default function PostDraw({ data }: {
+  data: SocietyPost
+}) {
   return (
     <View style={styles.mainContainer}>
       {/* TITLE BAR RENDER*/}
@@ -19,13 +15,13 @@ export default function PostDraw(props: { data: SocietyPost }) {
           source={{ uri: data.event.society.image }}
         />
         {/* SOCIETY NAME */}
-        <Text style={styles.societyName}>{data.event.society.title}</Text>
+        <Text style={styles.societyName}>{data.event.society.name}</Text>
         <Text style={styles.postInfoText}> {` posted an update`}</Text>
       </View>
 
       {/* POST CONTENT RENDER */}
       <View style={styles.contentContainer}>
-        <PostContent title={data.title} image={data.image} text={data.text} />
+        <PostContent post={data} />
       </View>
 
       {/* POST INTERACTIVE BAR RENDER */}
@@ -33,7 +29,7 @@ export default function PostDraw(props: { data: SocietyPost }) {
         <Text style={styles.interactiveBarText}>{data.event.title}</Text>
         <TouchableOpacity style={styles.redirectButton}>
           <Ionicons
-            name="chevron-forward-circle-outline"
+            name="chevron-forward-sharp"
             {...interactiveButtonProps}
           />
         </TouchableOpacity>

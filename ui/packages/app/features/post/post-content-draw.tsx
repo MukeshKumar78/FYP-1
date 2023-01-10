@@ -1,12 +1,14 @@
 import { View, StyleSheet, Text } from 'react-native'
 import { ScaledImage } from 'app/components/ScaledImage'
 
-export default function PostContent(props) {
+export default function PostContent({ post } : {
+  post: SocietyPost
+}) {
   return (
     <View style={styles.mainContainer}>
-      <Text style={styles.postTitle}>{props.title}</Text>
-      <ScaledImage uri={props.image} />
-      <Text style={styles.eventText}>{props.text}</Text>
+      <Text style={styles.postTitle}>{post.title}</Text>
+      <ScaledImage uri={post.image} />
+      <Text style={styles.postText}>{post.text}</Text>
     </View>
   )
 }
@@ -18,7 +20,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 10,
   },
-  eventText: {
+  postText: {
     paddingHorizontal: 4,
     paddingVertical: 10,
   },

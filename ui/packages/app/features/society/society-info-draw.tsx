@@ -1,28 +1,17 @@
-import { ScaledImage } from 'app/components/ScaledImage'
-import { H1, View as DView } from 'dripsy'
 import {
   Image,
   StyleSheet,
   View,
-  TextInput,
-  Button,
-  Platform,
   TouchableOpacity,
   Pressable,
 } from 'react-native'
-import { ButtonWithChildren } from '../../components/Button'
 import Text from '../../components/Text'
-import { Ionicons } from '@expo/vector-icons'
-import { ScrollView } from 'react-native-gesture-handler'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import React, { useState } from 'react'
+import { Link } from 'solito/link';
+// import DateTimePicker from '@react-native-community/datetimepicker'
 
-export function SocietyInfoModule(props) {
-  function createEventHandler() {}
-
-  function editSocietyHandler() {
-    console.log('Pressed')
-  }
+export function SocietyInfo({ society } : {
+  society: Society
+}) {
 
   return (
     <View style={styles.moduleWrapper}>
@@ -34,14 +23,14 @@ export function SocietyInfoModule(props) {
           <View style={styles.imageContainer}>
             <Image
               style={styles.profilePicture}
-              source={{ uri: props.societyImage }}
+              source={{ uri: society.image }}
             />
           </View>
 
           {/*SOCIETY SHORTNAME + FULLNAME + BUTTON*/}
           <View style={styles.allNamesContainer}>
             <View style={styles.nameButtonContainer}>
-              <Text style={styles.societyNameShort}>{props.societyName}</Text>
+              <Text style={styles.societyNameShort}>{society.name}</Text>
               <TouchableOpacity style={styles.followButtonContainer}>
                 <Image
                   source={{
@@ -52,29 +41,24 @@ export function SocietyInfoModule(props) {
               </TouchableOpacity>
             </View>
 
-            {/*SOCIETY FULL NAME*/}
-            <Text adjustsFontSizeToFit={true} style={styles.societyfullName}>
-              {props.societyfullName}
+            <Text style={styles.societyfullName} adjustsFontSizeToFit={true} >
+              {society.fullName}
             </Text>
-
-            {/*NamesContainer Closed*/}
           </View>
-
-          {/*Profile Picture + Names Container Closed*/}
         </View>
 
         {/*SOCIETY DESCRIPTION + EDITSOCIETY + CREATEEVENT CONTAINER*/}
         <View style={styles.descNfuncsContainer}>
           <Text style={styles.societyDescription}>
-            {props.societyDescription}
+            {society.description}
           </Text>
           <View style={styles.buttonsContainer}>
-            <Pressable onPress={editSocietyHandler}>
+            <Pressable>
               <Text style={styles.functionalButton}>Edit Society</Text>
             </Pressable>
-            <Pressable onPress={createEventHandler}>
-              <Text style={styles.functionalButton}>Create Event</Text>
-            </Pressable>
+              <Link href={`/event-create/${society.id}`}>
+                <Text style={styles.functionalButton}>Create Event</Text>
+              </Link>
           </View>
         </View>
       </View>

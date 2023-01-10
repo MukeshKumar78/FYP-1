@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-native-community/datetimepicker": "^6.7.1",
     "@react-native-google-signin/google-signin": "^9.0.0",
     "@react-navigation/drawer": "^6.5.5",
     "app": "*",

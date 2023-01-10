@@ -1,5 +1,4 @@
-import { H1 } from 'dripsy'
-import { ScrollView, View, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import PostDraw from './post-draw'
 
 const posts: SocietyPost[] = [
@@ -18,26 +17,33 @@ const posts: SocietyPost[] = [
 
       society: {
         id: 1,
-        title: 'DECS',
+        name: 'DECS',
+        fullName: "yo",
         image:
           'https://cdn.discordapp.com/attachments/1059750891512664084/1059788242448293928/307386157_6012211498808266_6769890018935496899_n.png',
+        createdAt: new Date(),
         tenure: {
-          title: '2022-2023',
+          id: 1,
+          code: 'yoo',
+          description: 'bruh',
+          duration: '2022-2023',
         },
       },
     },
   },
 ]
 
-{
-  /*MAPPER COMPONENT THAT MAPS ALL EVENT DATA*/
-}
-export function PostMap() {
+/**
+* Component to fetch and display a scrollable list of posts given an event ID
+*/
+export function PostMap({ eventId } : {
+  eventId: number
+}) {
   return (
     <ScrollView style={styles.eventWrapper}>
-      {/* EVENT MAPPER */}
-      {posts.map((pv, i) => (
-        <PostDraw data={pv} key={i} />
+      {/* POST MAPPER */}
+      {posts.map((post, i) => (
+        <PostDraw data={post} key={i} />
       ))}
     </ScrollView>
   )
