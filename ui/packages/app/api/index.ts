@@ -1,7 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-
 export interface LoginResponse {
   user: User
   token: string
@@ -41,7 +40,7 @@ export const api = createApi({
     })
   }),
   reducerPath: 'api',
-  tagTypes: ['Event', 'Society'],
+  tagTypes: ['Event', 'Society', 'Post'],
 })
 
 export const { useLoginMutation, useUserQuery, useMeQuery, useLazyMeQuery } = api;

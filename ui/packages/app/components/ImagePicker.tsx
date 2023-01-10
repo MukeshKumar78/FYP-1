@@ -35,8 +35,9 @@ export default function ImagePicker({ onPick }: {
   // Display selected images and a selection button
   // TODO: increase upload limit while keeping display limit to 5. Add a "+x more" element to show there are more 
   return <View style={styles.touchableWrapper}>
-    {images.map(image =>
+    {images.map((image, key) =>
       <Image
+        key={key}
         style={styles.touchable}
         source={{
           uri: image.uri

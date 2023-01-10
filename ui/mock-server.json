@@ -13,7 +13,7 @@
           "society": {
             "id": 1,
             "name": "DECS",
-            "fullName": "Death England Custom Societyyyyyy",
+            "fullName": "Dramatics and Extra Curricular Society",
             "image": "https://picsum.photos/1220/720",
             "createdAt": "2023-01-01T18:25:43.511Z",
             "tenure": {
@@ -31,7 +31,7 @@
     {
       "id": 1,
       "name": "DECS",
-      "fullName": "Death England Custom Societyyyyyy",
+      "fullName": "Dramatics and Extra Curricular Society",
       "image": "https://picsum.photos/1220/720",
       "createdAt": "2023-01-01T18:25:43.511Z",
       "tenure": {
@@ -47,13 +47,15 @@
       "id": 1,
       "title": "Sample Text",
       "text": "sample text",
-      "image": "https://picsum.photos/1220/720",
+      "images": [
+        "https://picsum.photos/1220/720"
+      ],
       "startDate": "2023-01-01T18:25:43.511Z",
       "endDate": "2023-01-01T18:25:43.511Z",
       "society": {
         "id": 1,
         "name": "DECS",
-        "fullName": "Death England Custom Societyyyyyy",
+        "fullName": "Dramatics and Extra Curricular Society",
         "image": "https://picsum.photos/1220/720",
         "createdAt": "2023-01-01T18:25:43.511Z",
         "tenure": {
@@ -63,21 +65,60 @@
           "duration": "2022-2023"
         }
       }
+    },
+    {
+      "title": "test event",
+      "text": "test event",
+      "startDate": "2023-01-11T07:26:37.742Z",
+      "endDate": "2023-01-13T17:26:37.828Z",
+      "images": [
+        "file:///data/user/0/com.campusme.app/cache/rn_image_picker_lib_temp_e643c641-ec3b-4dd0-b7e8-7ef86b5a78ee.jpg"
+      ],
+      "society": {
+        "id": 1,
+        "name": "DECS",
+        "fullName": "Dramatics and Extra Curricular Society",
+        "image": "https://picsum.photos/1220/720",
+        "createdAt": "2023-01-01T18:25:43.511Z",
+        "tenure": {
+          "id": 1,
+          "code": "2022-2023",
+          "description": "2022-2023",
+          "duration": "2022-2023"
+        }
+      },
+      "societyId": "1",
+      "id": 2
     }
   ],
-  "posts": {
-    "id": 1,
-    "title": "Gari Kharab",
-    "text": "Sab ghar chalay jao, Jeep kharab hogai, bachiyan nigga hogaen, zindagi tabah hogai",
-    "image": "https://picsum.photos/1280/720",
-    "event": {
+  "posts": [
+    {
       "id": 1,
-      "title": "Sample Text",
-      "text": "sample text",
-      "image": "https://picsum.photos/1220/720",
-      "startDate": "2023-01-01T18:25:43.511Z",
-      "endDate": "2023-01-01T18:25:43.511Z",
-      "society": null
+      "title": "Sample Post",
+      "text": "Sample Post",
+      "image": "https://picsum.photos/1280/720",
+      "eventId": 1,
+      "event": {
+        "id": 1,
+        "title": "Sample Text",
+        "text": "sample text",
+        "image": "https://picsum.photos/1220/720",
+        "startDate": "2023-01-01T18:25:43.511Z",
+        "endDate": "2023-01-01T18:25:43.511Z",
+        "society": {
+          "id": 1,
+          "name": "DECS",
+          "fullName": "Dramatics and Extra Curricular Society",
+          "image": "https://picsum.photos/1220/720",
+          "createdAt": "2023-01-01T18:25:43.511Z",
+          "tenure": {
+            "id": 1,
+            "code": "2022-2023",
+            "description": "2022-2023",
+            "duration": "2022-2023"
+          }
+        }
+      }
     }
-  }
+  ]
 }
