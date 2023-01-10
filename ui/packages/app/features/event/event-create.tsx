@@ -12,6 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { SocietyHeader } from './screen';
 import { useGetSocietyQuery } from '../society/society-api';
 import DateTimePicker from 'app/components/DateTimePicker';
+import ImagePicker, { EventImage } from 'app/components/ImagePicker';
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -19,11 +20,13 @@ type FormState = {
   title: string
   text: string
   startDate: Date
+  endDate?: Date
+  images?: EventImage[]
 }
 
 type FormAction = {
   key: string
-  value: string
+  value: string|Date|EventImage[]
 }
 
 export function EventCreate() {
@@ -41,7 +44,9 @@ export function EventCreate() {
     {
       title: '',
       text: '',
-      startDate: new Date()
+      startDate: new Date(),
+      endDate: undefined 
+
     }
   )
 
@@ -67,7 +72,7 @@ export function EventCreate() {
 
         {/* Title Input */}
         <View style={styles.textContainer}>
-          <Text style={styles.label}>Title</Text>
+          <Text style={styles.label}>Title*</Text>
           <TextInput
             style={styles.textInput}
             onChangeText={(value) => dispatch({ key: 'title', value })}
@@ -76,7 +81,7 @@ export function EventCreate() {
 
         {/* Text Input */}
         <View style={styles.textContainer} >
-          <Text style={styles.label}>Text</Text>
+          <Text style={styles.label}>Text*</Text>
           <TextInput
             style={styles.textInput}
             multiline={true}
@@ -86,8 +91,26 @@ export function EventCreate() {
 
         {/* Start Date Input */}
         <View style={styles.textContainer} >
-          <DateTimePicker title="start"/>
+          <Text style={styles.label}>Start Date*</Text>
+          <DateTimePicker 
+            value={state.startDate}
+            onChangeDate={(value) => dispatch({key: 'startDate', value})}/>
         </View>
+
+        {/* End Date Input */}
+        <View style={styles.textContainer} >
+          <Text style={styles.label}>End Date</Text>
+          <DateTimePicker 
+            value={state.endDate}
+            onChangeDate={(value) => dispatch({key: 'endDate', value})}/>
+        </View>
+
+        {/* Media Input */}
+        <View style={styles.textContainer} >
+          <Text style={styles.label}>End Date</Text>
+          <ImagePicker onPick={(value) => dispatch({key: 'images', value})}/>
+        </View>
+         
       </View>
     </ScrollView>
   )

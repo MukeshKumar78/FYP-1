@@ -1,18 +1,26 @@
 import { useState } from "react";
-import { View, Button, Text, Platform } from "react-native";
-import RNDateTimePicker  from '@react-native-community/datetimepicker';
+import { View, StyleSheet, TouchableOpacity, Text, Platform } from "react-native";
+import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
-export default function DateTimePicker({ title }: {
-  title: string
+export default function DateTimePicker({ onChangeDate, value }: {
+  onChangeDate: (date: Date) => void
+  value?: Date
 }) {
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState<Date>(value || new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
-  const onChange = (_: any, selectedDate: Date) => {
+  function onChange(event: DateTimePickerEvent, selectedDate: Date) {
+    if(event.type !== 'set') {
+      return
+    }
+
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
+
+    // Execute callback 
+    onChangeDate(currentDate);
   };
 
   const showMode = (currentMode: string) => {
@@ -34,18 +42,44 @@ export default function DateTimePicker({ title }: {
 
   return (
     <View>
-      <Button onPress={showDatepicker} title={`${title} date`} />
-      <Button onPress={showTimepicker} title={`${title} time`} />
-      <Text>selected: {date.toLocaleString()}</Text>
-      {show && (
-        <RNDateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode as any}
-          is24Hour={true}
-          onChange={onChange}
-        />
-      )}
-    </View>
+      <View style={styles.touchableWrapper}>
+        <TouchableOpacity style={styles.touchable} onPress={showDatepicker}>
+          <Text>
+            {value ? date.toDateString() : 'N/A'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.touchable} onPress={showTimepicker}>
+          <Text>
+            {value ? date.toLocaleTimeString().slice(0,-3) : 'N/A'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      {
+        show && (
+          <RNDateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode as any}
+            is24Hour={true}
+            onChange={onChange}
+          />
+        )
+      }
+    </View >
   );
 };
+
+const styles = StyleSheet.create({
+  touchableWrapper: {
+    flexDirection: 'row',
+  },
+  touchable: {
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    borderWidth: 0.3,
+    borderRadius: 15,
+    padding: 7,
+    marginRight: 8,
+    elevate: 5
+  }
+})
