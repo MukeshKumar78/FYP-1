@@ -1,0 +1,83 @@
+{
+  "token": {},
+  "users": [
+    {
+      "id": 2,
+      "firstName": "Mohsin",
+      "lastName": "Shaikh",
+      "photo": "https://picsum.photos/201",
+      "email": "mohsinshk4026@gmail.com",
+      "memberships": [
+        {
+          "role": "HEAD",
+          "society": {
+            "id": 1,
+            "name": "DECS",
+            "fullName": "Death England Custom Societyyyyyy",
+            "image": "https://picsum.photos/1220/720",
+            "createdAt": "2023-01-01T18:25:43.511Z",
+            "tenure": {
+              "id": 1,
+              "code": "2022-2023",
+              "description": "2022-2023",
+              "duration": "2022-2023"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "societies": [
+    {
+      "id": 1,
+      "name": "DECS",
+      "fullName": "Death England Custom Societyyyyyy",
+      "image": "https://picsum.photos/1220/720",
+      "createdAt": "2023-01-01T18:25:43.511Z",
+      "tenure": {
+        "id": 1,
+        "code": "2022-2023",
+        "description": "2022-2023",
+        "duration": "2022-2023"
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Sample Text",
+      "text": "sample text",
+      "image": "https://picsum.photos/1220/720",
+      "startDate": "2023-01-01T18:25:43.511Z",
+      "endDate": "2023-01-01T18:25:43.511Z",
+      "society": {
+        "id": 1,
+        "name": "DECS",
+        "fullName": "Death England Custom Societyyyyyy",
+        "image": "https://picsum.photos/1220/720",
+        "createdAt": "2023-01-01T18:25:43.511Z",
+        "tenure": {
+          "id": 1,
+          "code": "2022-2023",
+          "description": "2022-2023",
+          "duration": "2022-2023"
+        }
+      }
+    }
+  ],
+  "posts": {
+    "id": 1,
+    "title": "Gari Kharab",
+    "text": "Sab ghar chalay jao, Jeep kharab hogai, bachiyan nigga hogaen, zindagi tabah hogai",
+    "image": "https://picsum.photos/1280/720",
+    "event": {
+      "id": 1,
+      "title": "Sample Text",
+      "text": "sample text",
+      "image": "https://picsum.photos/1220/720",
+      "startDate": "2023-01-01T18:25:43.511Z",
+      "endDate": "2023-01-01T18:25:43.511Z",
+      "society": null
+    }
+  }
+}

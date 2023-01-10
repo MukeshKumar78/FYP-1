@@ -16,7 +16,12 @@ const months = [
 ]
 
 // HH:MM(AM/PM), DAY MON
-export default function CustomDate({ date }) {
+export default function DateRender({ date }: {
+  date: string|Date
+}) {
+  if(typeof(date) == 'string') 
+    date = new Date(date) 
+
   const day = date.getDate()
   let mins = date.getMinutes()
   const month = months[date.getMonth()]?.slice(0, 3)
@@ -30,14 +35,5 @@ export default function CustomDate({ date }) {
     }
   }
 
-  if (mins < 10) {
-    mins = '0' + mins
-  }
-
-  //const final = hours + ':' + mins + ' ' + MD + ', ' + day + ' ' + month
-  //return <Text>{final}</Text>
-
-  //const final = `${hours}:${mins} ${MD}, ${day} ${month}`;
-  //console.log(month)
-  return <Text>{`${hours}:${mins} ${MD}, ${day} ${month}`}</Text>
+  return <Text>{`${hours}:${mins < 10 ? '0'+mins : mins} ${MD}, ${day} ${month}`}</Text>
 }
