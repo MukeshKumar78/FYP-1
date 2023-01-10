@@ -1,10 +1,7 @@
 import { ScaledImage } from 'app/components/ScaledImage'
-import { View as DView } from 'dripsy'
-import { Image, StyleSheet, View } from 'react-native'
-import { ButtonWithChildren } from '../../components/Button'
+import { StyleSheet, View } from 'react-native'
 import Text from '../../components/Text'
 import EventOptionsModal from './event-options-modal'
-import { Ionicons } from '@expo/vector-icons'
 import Dater from 'app/components/DateRender'
 import { InteractiveBar } from 'app/components/Interactive-Bar'
 
@@ -14,9 +11,9 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
   //console.log(props.data)
 
   return (
-    <DView style={styles.eventContainer}>
+    <View style={styles.eventContainer}>
       {/* EVENT TITLE IMAGE CONTENT RENDER*/}
-      <DView style={styles.contentContainer}>
+      <View style={styles.contentContainer}>
         <View style={styles.entireTitleContainer}>
           {/* EVENT TITLE AND BUTTON RENDER*/}
           <View style={styles.titleAndButtonContainer}>
@@ -28,18 +25,22 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
           {/* EVENT DATE RENDER */}
           <Text style={styles.eventDate}>
             <Dater date={data.startDate} /> {`  to  `}
-            <Dater date={data.endDate} />
+            { data.endDate && <Dater date={data.endDate} /> }
           </Text>
         </View>
 
-        {/* EVENT IMAGE AND TEXT RENDER */}
-        <ScaledImage uri={data.image} />
+        {/* TODO: make a slideshow component for images */}
+        <View>
+          {data.images.map((image, key) => 
+            <ScaledImage key={key} uri={image} />
+          )}
+        </View>
         <Text style={styles.eventText}>{data.text}</Text>
-      </DView>
+      </View>
 
       {/* EVENT INTERACTIVE BAR RENDER */}
       <InteractiveBar id={data.id} />
-    </DView>
+    </View>
   )
 }
 

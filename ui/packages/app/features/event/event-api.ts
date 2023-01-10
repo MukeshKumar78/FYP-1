@@ -4,6 +4,10 @@ import { api } from 'app/api';
 
 export const eventApi = api.injectEndpoints({
   endpoints: (build) => ({
+    getEvent: build.query<SocietyEvent, number>({
+      providesTags: ['Event'],
+      query: (id) => `/api/core/events/${id}`
+    }),
     listEvents: build.query<SocietyEvent[], void>({
       providesTags: (result) =>
         // is result available?
@@ -20,7 +24,7 @@ export const eventApi = api.injectEndpoints({
     addEvent: build.mutation<SocietyEvent, Partial<SocietyEvent>>({
       query(body) {
         return {
-          url: '/api/core/events',
+          url: `/api/core/societies/${body.society?.id || 1}/events`, // TODO: fix
           method: 'POST',
           body,
         }
@@ -33,4 +37,4 @@ export const eventApi = api.injectEndpoints({
   overrideExisting: false
 })
 
-export const { useListEventsQuery } = eventApi;
+export const { useGetEventQuery, useListEventsQuery, useAddEventMutation } = eventApi;

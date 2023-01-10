@@ -21,7 +21,7 @@ export default function PostDraw({ data }: {
 
       {/* POST CONTENT RENDER */}
       <View style={styles.contentContainer}>
-        <PostContent post={data} />
+        <PostContent data={data} />
       </View>
 
       {/* POST INTERACTIVE BAR RENDER */}

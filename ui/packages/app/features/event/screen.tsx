@@ -1,56 +1,41 @@
-import { H1 } from 'dripsy'
+import { createParam } from 'solito';
 import { ScrollView, View, StyleSheet } from 'react-native'
 import EventPageDraw from './event-page-draw'
-import PostContent from '../post/post-content-draw'
 import { useNavigation } from '@react-navigation/native'
 import { useEffect } from 'react'
 import { Image, Text } from 'react-native';
 import { PostMap } from '../post/post-map'
+import { useGetEventQuery } from './event-api';
 
 
-const event: SocietyEvent = {
-  id: 2,
-  title: 'Annual Tour',
-  text: `sample text`,
-  image: 'https://picsum.photos/1220/720',
-  startDate: new Date(),
-  endDate: new Date(),
-  society: {
-    id: 1,
-    name: 'DECS',
-    fullName: "Death England Custom Societyyyyyy",
-    image: 'https://picsum.photos/500',
-    createdAt: new Date(),
-    tenure: {
-      id: 1,
-      code: 'yoo',
-      description: 'bruh',
-      duration: '2022-2023',
-    },
-  },
-}
+const { useParam } = createParam<{ id: string }>()
 
-
-// MAPPER COMPONENT THAT MAPS ALL EVENT DATA
-export function EventPage({ id }: { id: string }) {
-
+/**
+* Displays event info and a list of posts from that event
+*/
+export function EventPage() {
+  const [id] = useParam('id');
   const navigation = useNavigation();
+  const { data } = useGetEventQuery(Number(id));
 
   useEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => 
-        <SocietyHeader 
-          title={event.society.name}
-          image={event.society.image}
-        />
-    })
-  }, [])
+    if(data)
+      navigation.setOptions({
+        headerTitle: () => 
+          <SocietyHeader 
+            title={data.society.name}
+            image={data.society.image}
+          />
+      })
+  }, [data])
+
+  if(!data)
+    return <EventScreenError/>
 
   return (
     <ScrollView style={styles.eventWrapper}>
-      <EventPageDraw data={event} />
-      {/* POSTS MAPPER */}
-      <PostMap eventId={event.id} />
+      <EventPageDraw data={data} />
+      <PostMap contentOnly eventId={data.id} />
     </ScrollView>
   )
 }
@@ -68,6 +53,15 @@ export function SocietyHeader({ image, title }: {
       <Text style={styles.eventHeaderTitle}>{title}</Text>
     </View>
   )
+}
+
+
+function EventScreenError() {
+  return <View style={styles.eventWrapper}>
+    <Text>
+      Failed to load screen
+    </Text>
+  </View>
 }
 
 const styles = StyleSheet.create({

@@ -30,7 +30,7 @@ export default function EventDetails({ event }: {
             {/* DATE COMPONENT */}
             <Text style={styles.eventDate}>
               <Dater date={event.startDate} /> {`\t`}
-              <Dater date={event.endDate} />
+              {event.endDate && <Dater date={event.endDate} />}
             </Text>
           </View>
           <EventOptionsModal style={styles.eventOptionButton} />
@@ -41,7 +41,9 @@ export default function EventDetails({ event }: {
       <View style={styles.contentContainer}>
         <Text style={styles.eventTitle}>{event.title}</Text>
         <Link href={`/event/${event.id}`}>
-          <ScaledImage uri={event.image} />
+          {event.images.map((image, key) => 
+            <ScaledImage uri={image} key={key} />
+          )}
           <Text style={styles.eventText}>{event.text}</Text>
         </Link>
       </View>
