@@ -18,23 +18,18 @@ export default function useAuth() {
   const [getUser] = useLazyMeQuery();
 
   async function login(idToken: string): Promise<User | null> {
-    try {
-      const { token } = await getToken(idToken).unwrap();
-      const { data, isError, error } = await getUser();
-      console.log({data, isError, error});
-      if (isError || !data) {
-        console.error(error);
-        throw new Error("Failed to fetch user data: ", { cause: error })
-      }
-
-      SecureStore.setItemAsync("jwt", token);
-      console.log("Updated user token");
-
-      return data;
-    } catch (err) {
-      console.error("Failed to authenticate with API", err);
+    const { token } = await getToken(idToken).unwrap();
+    await SecureStore.setItemAsync("jwt", token);
+    const { data, isError, error } = await getUser();
+    console.log({ data, isError, error });
+    if (isError || !data) {
+      console.error(error);
+      throw new Error("Failed to fetch user data: ", { cause: error })
     }
-    return null;
+
+    console.log("Updated user token");
+
+    return data;
   }
 
   useEffect(() => {
@@ -50,7 +45,8 @@ export default function useAuth() {
               dispatch(signIn({ user }))
           })
           .catch(err => {
-            console.error(err);
+            console.error(err, err.cause);
+            dispatch(signOut());
           })
       } else {
         // Sets loading to false

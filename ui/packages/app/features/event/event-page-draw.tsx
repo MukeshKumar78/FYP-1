@@ -31,7 +31,7 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
 
         {/* TODO: make a slideshow component for images */}
         <View>
-          {data.images.map((image, key) => 
+          {data.attachments.map((image, key) => 
             <ScaledImage key={key} uri={image} />
           )}
         </View>

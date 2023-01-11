@@ -41,7 +41,7 @@ export default function EventDetails({ event }: {
       <View style={styles.contentContainer}>
         <Text style={styles.eventTitle}>{event.title}</Text>
         <Link href={`/event/${event.id}`}>
-          {event.images.map((image, key) => 
+          {event.attachments.map((image, key) => 
             <ScaledImage uri={image} key={key} />
           )}
           <Text style={styles.eventText}>{event.text}</Text>

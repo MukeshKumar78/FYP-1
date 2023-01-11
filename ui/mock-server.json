@@ -1,5 +1,30 @@
 {
   "token": {},
+  "me": {
+    "id": 2,
+    "firstName": "Mohsin",
+    "lastName": "Shaikh",
+    "photo": "https://picsum.photos/201",
+    "email": "mohsinshk4026@gmail.com",
+    "memberships": [
+      {
+        "role": "HEAD",
+        "society": {
+          "id": 1,
+          "name": "DECS",
+          "fullName": "Dramatics and Extra Curricular Society",
+          "image": "https://picsum.photos/1220/720",
+          "createdAt": "2023-01-01T18:25:43.511Z",
+          "tenure": {
+            "id": 1,
+            "code": "2022-2023",
+            "description": "2022-2023",
+            "duration": "2022-2023"
+          }
+        }
+      }
+    ]
+  },
   "users": [
     {
       "id": 2,
@@ -47,7 +72,7 @@
       "id": 1,
       "title": "Sample Text",
       "text": "sample text",
-      "images": [
+      "attachments": [
         "https://picsum.photos/1220/720"
       ],
       "startDate": "2023-01-01T18:25:43.511Z",
@@ -67,13 +92,10 @@
       }
     },
     {
-      "title": "test event",
-      "text": "test event",
-      "startDate": "2023-01-11T07:26:37.742Z",
-      "endDate": "2023-01-13T17:26:37.828Z",
-      "images": [
-        "file:///data/user/0/com.campusme.app/cache/rn_image_picker_lib_temp_e643c641-ec3b-4dd0-b7e8-7ef86b5a78ee.jpg"
-      ],
+      "attachments": [],
+      "title": "jjrjjjxjx",
+      "startDate": "2023-01-12T06:42:50.162Z",
+      "text": "xkjxxjxjxixxijxjx",
       "society": {
         "id": 1,
         "name": "DECS",

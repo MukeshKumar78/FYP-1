@@ -8,11 +8,12 @@ import com.campusme.society.event.Event;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
+
   List<EventResponseDTO> entityListToDTO(Iterable<Event> events);
 
-  List<Event> dtoToEntity(Iterable<EventResponseDTO> events);
+  List<Event> dtoToEntity(Iterable<EventCreateRequestDTO> events);
 
-  EventResponseDTO entityToDTO(Event event);
+  EventResponseDTO entityToDTO(Event value);
 
   Event dtoToEntity(EventCreateRequestDTO event);
 }
