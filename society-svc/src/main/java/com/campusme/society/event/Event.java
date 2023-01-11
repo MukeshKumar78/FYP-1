@@ -1,7 +1,7 @@
 package com.campusme.society.event;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 
@@ -85,5 +85,12 @@ public class Event {
   private Member createdBy;
 
   @OneToMany(mappedBy = "event")
-  private Set<Post> post;
+  private List<Post> post;
+
+  @OneToMany(mappedBy = "event")
+  private List<EventAttachment> attachments;
+
+  public List<String> getAttachments() {
+    return attachments.stream().map(a -> a.getUri()).toList();
+  }
 }

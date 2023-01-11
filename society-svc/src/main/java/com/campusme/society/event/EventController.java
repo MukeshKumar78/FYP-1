@@ -40,6 +40,21 @@ public class EventController {
   @Autowired
   private MemberRepository memberRepository;
 
+  @GetMapping("/events")
+  public List<EventResponseDTO> findAll() {
+    List<Event> events = eventRepository.findAll();
+    return mapper.entityListToDTO(events);
+  }
+
+  @GetMapping("/events/{id}")
+  public EventResponseDTO findOne(@PathVariable Long id) {
+    Event event = eventRepository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "Event not found"));
+
+    return mapper.entityToDTO(event);
+  }
+
   /**
    * Endpoint for events of a society, publicly accessible
    * 
@@ -63,7 +78,7 @@ public class EventController {
   @ResponseStatus(code = HttpStatus.CREATED)
   public EventResponseDTO save(AppUserAuthenticationToken auth, @PathVariable Long id,
       @RequestBody EventCreateRequestDTO eventDTO) {
-    System.out.println(eventDTO.title());
+    System.out.println(eventDTO.getTitle());
 
     // Validation
     Society society = societyRepository.getReferenceById(id);

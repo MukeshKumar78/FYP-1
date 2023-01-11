@@ -34,7 +34,7 @@ declare global {
     id: number
     title: string
     text: string
-    images: string[]
+    attachments: string[]
     startDate: Date
     endDate: Date
     society: Society

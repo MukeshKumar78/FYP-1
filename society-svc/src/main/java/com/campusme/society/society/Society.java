@@ -47,8 +47,12 @@ public class Society {
   @Column(columnDefinition="TEXT")
   private String image;
 
+
   @Column(nullable = false)
-  private String title;
+  private String name;
+
+  @Column(nullable = false)
+  private String fullName;
 
   @CreatedDate
   @Column(updatable = false)

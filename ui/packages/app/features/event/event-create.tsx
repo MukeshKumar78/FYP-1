@@ -25,7 +25,7 @@ interface FormState extends Partial<Event> {
   text: string
   startDate: Date
   endDate?: Date
-  images?: string[]
+  attachments?: string[]
 }
 
 type FormAction = {
@@ -38,7 +38,7 @@ const eventSchema = z.object({
   text: z.string().min(10),
   startDate: z.date().min(new Date()),
   endDate: z.date().min(new Date()).optional(),
-  images: z.string().array()
+  attachments: z.string().array()
 })
 
 export function EventCreate() {
@@ -70,7 +70,7 @@ export function EventCreate() {
       text: '',
       startDate: new Date(),
       endDate: undefined,
-      images: []
+      attachments: []
     }
   )
 
@@ -145,13 +145,13 @@ export function EventCreate() {
           <Text style={styles.label}>End Date</Text>
           <ImagePicker
             onPick={(assets) => {
-              const images = assets
+              const attachments = assets
                 .map(a => a.uri)
                 .filter(a => a) as string[];
 
               dispatch({
-                key: 'images',
-                value: images
+                key: 'attachments',
+                value: attachments
               })
             }}
           />

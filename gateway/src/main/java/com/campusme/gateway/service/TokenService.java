@@ -30,7 +30,7 @@ public class TokenService {
         .issuer("http://localhost")
         .issuedAt(now)
         .expiresAt(now.plus(1, ChronoUnit.HOURS))
-        .subject(authentication.getName())
+        .subject(userClaims.getClaimAsString("email"))
         .claim("given_name", userClaims.getClaimAsString("given_name"))
         .claim("family_name", userClaims.getClaimAsString("family_name"))
         .claim("picture", userClaims.getClaimAsString("picture"))

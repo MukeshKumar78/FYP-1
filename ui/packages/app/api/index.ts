@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import Constants from 'expo-constants';
 
 export interface LoginResponse {
   user: User
@@ -8,7 +9,7 @@ export interface LoginResponse {
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://192.168.100.12:8080',
+    baseUrl: `http://${Constants.expoConfig?.extra?.apiRoot}:8080`,
     prepareHeaders: async (headers, api) => {
       const userToken = await SecureStore.getItemAsync('jwt');
 
