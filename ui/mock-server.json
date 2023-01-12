@@ -2,10 +2,10 @@
   "token": {},
   "me": {
     "id": 2,
-    "firstName": "Mohsin",
-    "lastName": "Shaikh",
-    "photo": "https://picsum.photos/201",
-    "email": "mohsinshk4026@gmail.com",
+    "firstName": "k191308",
+    "lastName": "Mohsin Shaikh",
+    "photo": "https://lh3.googleusercontent.com/a/AEdFTp7LUjuE26V7xi7ZqeTsUHCInWG-GSUCKDNkfCo-=s96-c-br100-rg-mo",
+    "email": "k191308@nu.edu.pk",
     "memberships": [
       {
         "role": "HEAD",
@@ -28,10 +28,10 @@
   "users": [
     {
       "id": 2,
-      "firstName": "Mohsin",
-      "lastName": "Shaikh",
-      "photo": "https://picsum.photos/201",
-      "email": "mohsinshk4026@gmail.com",
+      "firstName": "k191308",
+      "lastName": "Mohsin Shaikh",
+      "photo": "https://lh3.googleusercontent.com/a/AEdFTp7LUjuE26V7xi7ZqeTsUHCInWG-GSUCKDNkfCo-=s96-c-br100-rg-mo",
+      "email": "k191308@nu.edu.pk",
       "memberships": [
         {
           "role": "HEAD",
@@ -92,10 +92,12 @@
       }
     },
     {
-      "attachments": [],
-      "title": "jjrjjjxjx",
-      "startDate": "2023-01-12T06:42:50.162Z",
-      "text": "xkjxxjxjxixxijxjx",
+      "title": "test event",
+      "text": "test description",
+      "startDate": "2023-01-12T14:44:56.114Z",
+      "attachments": [
+        "file:///data/user/0/com.campusme.app/cache/rn_image_picker_lib_temp_bbb3b590-91f8-4a9a-aa47-3151a3aadcd4.jpg"
+      ],
       "society": {
         "id": 1,
         "name": "DECS",

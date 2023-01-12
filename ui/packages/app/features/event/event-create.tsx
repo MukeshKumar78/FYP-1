@@ -13,10 +13,11 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { SocietyHeader } from './screen';
 import { useGetSocietyQuery } from '../society/society-api';
 import DateTimePicker from 'app/components/DateTimePicker';
-import ImagePicker from 'app/components/ImagePicker';
+import ImagePicker, { ImagePickerAsset } from 'app/components/ImagePicker';
 import { useAddEventMutation } from './event-api';
 import { useRouter } from 'solito/router';
 import { z } from 'zod';
+import { toDateString } from 'app/api/util';
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -25,12 +26,12 @@ interface FormState extends Partial<Event> {
   text: string
   startDate: Date
   endDate?: Date
-  attachments?: string[]
+  attachments?: ImagePickerAsset[]
 }
 
 type FormAction = {
   key: string
-  value: string | Date | string[]
+  value: string | Date | ImagePickerAsset[]
 }
 
 const eventSchema = z.object({
@@ -38,7 +39,6 @@ const eventSchema = z.object({
   text: z.string().min(10),
   startDate: z.date().min(new Date()),
   endDate: z.date().min(new Date()).optional(),
-  attachments: z.string().array()
 })
 
 export function EventCreate() {
@@ -56,11 +56,10 @@ export function EventCreate() {
         [key]: value
       }
       const parsed = eventSchema.safeParse(data);
-      if(parsed.success) {
+      if (parsed.success) {
         setIsValid(true);
       }
       else {
-        console.log(parsed.error)
         setIsValid(false);
       }
       return data;
@@ -74,14 +73,22 @@ export function EventCreate() {
     }
   )
 
-  console.log(state);
-
   // TODO: change to use FormData for prod api
   async function handleSubmit() {
-    const result = await postEvent(state);
-    if (society)
+    const formData = new FormData();
+    formData.append('title', state.title)
+    formData.append('text', state.text)
+    formData.append('startDate', toDateString(state.startDate));
+    state.attachments?.forEach(a => {
+      if (a.type && a.fileName && a.uri)
+        formData.append('attachments', { type: a.type, name: a.fileName, uri: a.uri })
+    })
+
+    if (society) {
+      const result = await postEvent([society.id, formData]);
       router.replace(`/society/${society.id}`)
-    console.log(result);
+      console.log(result);
+    }
   }
 
   // Set Society image and title on AppBar 
@@ -107,7 +114,10 @@ export function EventCreate() {
 
         {/* Title Input */}
         <View style={styles.textContainer}>
-          <Text style={styles.label}>Title*</Text>
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>Title* </Text>
+            <Text style={styles.subLabel}>(min: 5 char)</Text>
+          </View>
           <TextInput
             style={[styles.textInput, !state.title ? styles.invalidInput : {}]}
             onChangeText={(value) => dispatch({ key: 'title', value })}
@@ -116,7 +126,10 @@ export function EventCreate() {
 
         {/* Text Input */}
         <View style={styles.textContainer} >
-          <Text style={styles.label}>Text*</Text>
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>Text* </Text>
+            <Text style={styles.subLabel}>(min: 10 char)</Text>
+          </View>
           <TextInput
             style={[styles.textInput, !state.text ? styles.invalidInput : {}]}
             multiline={true}
@@ -142,16 +155,19 @@ export function EventCreate() {
 
         {/* Media Input */}
         <View style={styles.textContainer} >
-          <Text style={styles.label}>End Date</Text>
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>Attachments</Text>
+            <Text style={styles.subLabel}>(max: 5MB)</Text>
+          </View>
           <ImagePicker
             onPick={(assets) => {
-              const attachments = assets
-                .map(a => a.uri)
-                .filter(a => a) as string[];
+              // const attachments = assets
+              //   .map(a => a.uri)
+              //   .filter(a => a) as string[];
 
               dispatch({
                 key: 'attachments',
-                value: attachments
+                value: assets
               })
             }}
           />
@@ -205,8 +221,17 @@ const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 18,
   },
+  labelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   label: {
-    color: 'gray'
+    color: 'gray',
+  },
+  subLabel: {
+    fontSize: 10,
+    color: 'B1B1B1',
+    textAlign: 'right',
   },
   textInput: {
     paddingVertical: 5,

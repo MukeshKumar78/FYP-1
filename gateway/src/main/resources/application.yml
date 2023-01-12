@@ -5,7 +5,6 @@ spring:
       enabled: true
   application:
     name: GATEWAY
-
   security:
     oauth2:
       resourceserver:
@@ -25,3 +24,6 @@ logging:
 
 jwt:
   secret-key: ${JWT_SECRET:9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@}
+
+static:
+  location: ${STATIC_FILES_LOCATION:/tmp/public/}

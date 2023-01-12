@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import { useState } from 'react';
 
 
-export type EventImage = Asset;
+export type ImagePickerAsset = Asset;
 
 /*
 * Handles opening gallery on mobile
@@ -11,10 +11,9 @@ export type EventImage = Asset;
 * Calls @param onPick with the images/videos when selected
 */
 export default function ImagePicker({ onPick }: {
-  onPick: (assets: EventImage[]) => void
+  onPick: (assets: ImagePickerAsset[]) => void
 }) {
   const [images, setImages] = useState<Asset[]>([]);
-  console.log(images);
 
   // Saves list of images/videos to state and sends using callback
   async function handleSelectImages() {

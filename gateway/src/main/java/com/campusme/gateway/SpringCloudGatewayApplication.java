@@ -7,7 +7,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.campusme.gateway.config.JwtConfig;
 
@@ -19,12 +24,16 @@ public class SpringCloudGatewayApplication {
   @Value("${spring.application.name}")
   private String appName;
 
+  @Value("${static.location}")
+  private String staticFilesPath;
+
   public static void main(String[] args) {
     SpringApplication.run(SpringCloudGatewayApplication.class, args);
   }
 
   /**
    * Router for downstream services
+   * 
    * @param builder
    * @return the RouteLocator
    */
@@ -37,5 +46,10 @@ public class SpringCloudGatewayApplication {
             .filters(f -> f.rewritePath("/api/core", "/"))
             .uri("lb://SOCIETY"))
         .build();
+  }
+
+  @Bean
+  RouterFunction<ServerResponse> staticResourceRouter() {
+    return RouterFunctions.resources("/public/**", new FileSystemResource(staticFilesPath));
   }
 }

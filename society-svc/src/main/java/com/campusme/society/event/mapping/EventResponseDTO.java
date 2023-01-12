@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class EventResponseDTO {
     Long id;
     String code;
-    String description;
     String title;
     Date createdAt;
     Date publishedAt;

@@ -70,7 +70,7 @@ export default function useAuth() {
         }
 
       } catch (error) {
-        console.error(error.message);
+        console.error(error);
       }
     },
     signOut: async () => {

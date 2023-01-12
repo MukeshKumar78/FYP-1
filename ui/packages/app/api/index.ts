@@ -2,6 +2,9 @@ import * as SecureStore from 'expo-secure-store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import Constants from 'expo-constants';
 
+const API_URL = Constants.expoConfig?.extra?.apiRoot;
+console.log("using API URL: ", API_URL);
+
 export interface LoginResponse {
   user: User
   token: string
@@ -9,15 +12,16 @@ export interface LoginResponse {
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://${Constants.expoConfig?.extra?.apiRoot}:8080`,
+    baseUrl: API_URL,
     prepareHeaders: async (headers, api) => {
       const userToken = await SecureStore.getItemAsync('jwt');
 
-      if (userToken && api.endpoint !== 'login') {
+      if (userToken && !headers.has('Authorization')) {
         headers.set('Authorization', `Bearer ${userToken}`)
       }
 
-      headers.set('Content-Type', 'application/json')
+      if(!headers.has('Content-Type'))
+        headers.set('Content-Type', 'application/json')
 
       return headers
     },
@@ -34,7 +38,7 @@ export const api = createApi({
       }),
     }),
     me: builder.query<User, void>({
-      query: () => 'api/core/users/2' // change to 'me'
+      query: () => 'api/core/me' // change to 'me'
     }),
     user: builder.query<User, number>({
       query: (id: number) => `api/core/users/${id}`

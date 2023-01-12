@@ -16,7 +16,7 @@ export function UserDetailScreen() {
 
   useEffect(() => {
     if (data)
-      navigation.setOptions({ title: data.firstName })
+      navigation.setOptions({ title: data.firstName + ' ' + data.lastName })
   }, [data])
 
   return <UserDetailsOrError user={data}/>
