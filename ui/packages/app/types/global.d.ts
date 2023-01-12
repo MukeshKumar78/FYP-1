@@ -1,6 +1,8 @@
 export { };
 
 declare global {
+
+
   type User = {
     id: number
     firstName: string
@@ -32,11 +34,15 @@ declare global {
 
   type SocietyEvent = {
     id: number
+    code: string
     title: string
     text: string
     attachments: string[]
     startDate: Date
     endDate: Date
+    createdAt: Date
+    publishedAt?: Date
+    published: boolean
     society: Society
   };
 
@@ -44,7 +50,7 @@ declare global {
     id: number,
     title: string,
     text: string,
-    image: string,
+    attachments: string[]
     event: SocietyEvent
   };
 }

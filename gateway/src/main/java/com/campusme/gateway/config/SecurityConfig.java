@@ -62,6 +62,7 @@ public class SecurityConfig {
   public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
     http
         .authorizeExchange((exchanges) -> exchanges
+            .pathMatchers("/public/**").permitAll()
             .anyExchange().authenticated())
         .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
         .oauth2ResourceServer(oauth2 -> oauth2

@@ -2,6 +2,7 @@ package com.campusme.society.event;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 
@@ -14,7 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -39,13 +42,13 @@ public class Event {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @Column(unique = true)
+  @Column(nullable = false)
   private String code;
 
   @Column
   private String description;
 
-  @Column
+  @Column(nullable = false)
   private String title;
 
   @CreatedDate
@@ -59,7 +62,7 @@ public class Event {
   @Column
   private Date publishedAt;
 
-  @Column
+  @Column(nullable = false)
   private Date startDate;
 
   @Column
@@ -88,9 +91,15 @@ public class Event {
   private List<Post> post;
 
   @OneToMany(mappedBy = "event")
-  private List<EventAttachment> attachments;
+  @Builder.Default
+  private List<EventAttachment> attachments = new ArrayList<>();
 
   public List<String> getAttachments() {
     return attachments.stream().map(a -> a.getUri()).toList();
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    setCode(java.util.UUID.randomUUID().toString());
   }
 }

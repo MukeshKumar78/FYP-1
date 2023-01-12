@@ -21,11 +21,12 @@ export const eventApi = api.injectEndpoints({
           [{ type: 'Event', id: 'LIST' }],
       query: () => '/api/core/events'
     }),
-    addEvent: build.mutation<SocietyEvent, Partial<SocietyEvent>>({
-      query(body) {
+    addEvent: build.mutation<SocietyEvent, [number, FormData]>({
+      query([id, body]) {
         return {
-          url: `/api/core/societies/${body.society?.id || 1}/events`, // TODO: fix
+          url: `/api/core/societies/1/events`,
           method: 'POST',
+          headers: {'Content-Type': 'multipart/form-data'},
           body,
         }
       },

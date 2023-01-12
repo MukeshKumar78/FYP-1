@@ -1,11 +1,14 @@
 package com.campusme.society.event;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.campusme.society.config.persistence.FileUploadUtil;
 import com.campusme.society.event.mapping.EventCreateRequestDTO;
 import com.campusme.society.event.mapping.EventMapper;
 import com.campusme.society.event.mapping.EventResponseDTO;
@@ -32,8 +36,15 @@ public class EventController {
 
   @Autowired
   private EventRepository eventRepository;
+
+  @Autowired
+  private EventAttachmentRepository eventAttachmentRepository;
+
   @Autowired
   private EventMapper mapper;
+
+  @Autowired
+  private FileUploadUtil fileUploadUtil;
 
   @Autowired
   private SocietyRepository societyRepository;
@@ -70,23 +81,26 @@ public class EventController {
   /**
    * Endpoint to create a new event
    * 
-   * @param {@code Event} object in request body
+   * @param id society ID
+   * @param eventDTO {@code EventCreateRequestDTO} object in request body
    * @return Created {@code Event}
    */
   // @PreAuthorize("hasPermission(#id, 'event', 'create')")
-  @PostMapping("/societies/{id}/events")
+  @PostMapping(path = "/societies/{id}/events", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @ResponseStatus(code = HttpStatus.CREATED)
   public EventResponseDTO save(AppUserAuthenticationToken auth, @PathVariable Long id,
-      @RequestBody EventCreateRequestDTO eventDTO) {
-    System.out.println(eventDTO.getTitle());
+      @ModelAttribute EventCreateRequestDTO eventDTO) {
+    Event event = mapper.dtoToEntity(eventDTO);
 
-    // Validation
+    // Set Society
     Society society = societyRepository.getReferenceById(id);
     if (society == null) {
       throw new ResponseStatusException(
           HttpStatus.NOT_FOUND, "Society not found");
     }
+    event.setSociety(society);
 
+    // Set Member
     Member member = memberRepository.findByUserIdAndSocietyId(
         ((AppUser) auth.getPrincipal()).getId(),
         id);
@@ -94,13 +108,31 @@ public class EventController {
       throw new ResponseStatusException(
           HttpStatus.UNAUTHORIZED);
     }
-
-    // Save data
-    Event event = mapper.dtoToEntity(eventDTO);
-    event.setSociety(society);
     event.setCreatedBy(member);
 
-    event = eventRepository.save(event);
+    // Save event
+    eventRepository.save(event);
+
+    // Upload and Set attachments
+    if (!eventDTO.getAttachments().isEmpty()) {
+      try {
+        List<String> files = fileUploadUtil.upload(eventDTO.getAttachments());
+
+        List<EventAttachment> attachments = files.stream().map(file -> {
+          EventAttachment attachment = new EventAttachment();
+          attachment.setUri(file);
+          attachment.setEvent(event);
+          return eventAttachmentRepository.save(attachment);
+        }).toList();
+
+        event.setAttachments(attachments);
+
+      } catch (IOException error) {
+        System.out.println(error.getMessage());
+        throw new ResponseStatusException(
+            HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save attachments");
+      }
+    }
 
     return mapper.entityToDTO(event);
   }

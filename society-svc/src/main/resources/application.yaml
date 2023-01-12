@@ -2,6 +2,13 @@ server:
   port: 8082
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB 
+      max-request-size: 5MB 
+  mvc:
+    format:
+      date-time: iso
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/society
     username: postgres
@@ -36,3 +43,6 @@ eureka:
 
 jwt:
   secret-key: ${JWT_SECRET:9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@}
+
+static:
+  location: ${STATIC_FILES_LOCATION:/tmp/public/}

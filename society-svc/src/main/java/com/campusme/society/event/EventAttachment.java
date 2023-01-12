@@ -14,15 +14,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class EventAttachment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
   
   @Column
   private String uri;

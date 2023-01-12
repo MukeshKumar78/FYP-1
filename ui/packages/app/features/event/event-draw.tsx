@@ -5,6 +5,7 @@ import EventOptionsModal from './event-options-modal'
 import Dater from 'app/components/DateRender'
 import { InteractiveBar } from 'app/components/Interactive-Bar'
 import { Link } from 'solito/link'
+import { getPublicUri } from 'app/api/util';
 
 /**
 * Displays event with header, content and interactive bar sections
@@ -42,7 +43,7 @@ export default function EventDetails({ event }: {
         <Text style={styles.eventTitle}>{event.title}</Text>
         <Link href={`/event/${event.id}`}>
           {event.attachments.map((image, key) => 
-            <ScaledImage uri={image} key={key} />
+            <ScaledImage uri={getPublicUri(image)} key={key} />
           )}
           <Text style={styles.eventText}>{event.text}</Text>
         </Link>

@@ -1,43 +1,43 @@
 package com.campusme.society.config.persistence;
 
-import java.io.Serializable;
-import java.util.Properties;
-import java.util.stream.Stream;
+import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.MappingException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.id.Configurable;
-import org.hibernate.id.IdentifierGenerator;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.type.Type;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-public class CodeGenerator 
-  implements IdentifierGenerator, Configurable {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    private String prefix;
+@Service
+public class CodeGenerator {
 
-    @Override
-    public Serializable generate(
-      SharedSessionContractImplementor session, Object obj) 
-      throws HibernateException {
+  @Autowired
+  private EntityManager em;
 
-        String query = String.format("select code from %s", 
-            obj.getClass().getSimpleName());
+  public String generate(Object obj, String source, String target) {
+    String code = source.replace(" ", "-").toLowerCase();
 
-        Stream<String> ids = session.createQuery(query).stream();
+    List<String> codes = em.createQuery(
+      String.format("SELECT code from %s WHERE code LIKE '%s%%'",
+        obj.getClass().getSimpleName(), code))
+    .getResultList();
 
-        Long max = ids.map(o -> o.replace(prefix + "-", ""))
-          .mapToLong(Long::parseLong)
-          .max()
-          .orElse(0L);
+    if(codes.isEmpty())
+      return code;
 
-        return prefix + "-" + (max + 1);
-    }
+    if(codes.size() == 1)
+      return String.format("%s-%d",code, 1);
 
-    @Override
-    public void configure(Type type, Properties properties, 
-      ServiceRegistry serviceRegistry) throws MappingException {
-        prefix = properties.getProperty("prefix");
-    }
+    long max = codes.stream()
+      .map(c -> {
+        if(c.contains(code + "-"))
+          return c.replace(code + "-", "");
+        return "0";
+      })
+      .mapToLong(Long::parseLong)
+      .max().getAsLong();
+
+    return String.format("%s-%d",code, max + 1);
+  }
+
 }
