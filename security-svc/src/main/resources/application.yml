@@ -1,8 +1,12 @@
 server:
   port: 8084
+  contextPath: /admin
+  servlet:
+    contextPath: /admin
+  tomcat:
+    use-relative-redirects: true
 
 spring:
-
   thymeleaf: # Thymeleaf
     cache: false
     mode: HTML

@@ -3,7 +3,6 @@ package com.campusme.gateway.security;
 import java.security.Principal;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,24 +39,23 @@ public class SecurityController {
   }
 
   /**
-   * @param authentication
+   * @param principal The Spring Security Principal object
    * @return Authenticated user's data
    */
   @GetMapping(path = "/me")
-  public Principal getUser(Principal principal) {
-    // TODO: Batch data from downstream services
+  public Object getUser(Principal principal) {
     return principal;
   }
 
   /**
    * Endpoint used to exchange external provider idtoken with internal JWT
    * 
-   * @param authentication
+   * @param authentication The Spring Security authentication object
    * @return jwt
    */
   @PostMapping("/token")
   public JwtResponse token(Authentication authentication) {
-    Jwt jwt = tokenService.generateToken(authentication);
+    Jwt jwt = tokenService.generateToken((Jwt) authentication.getPrincipal());
     return new JwtResponse(jwt.getTokenValue());
   }
 }

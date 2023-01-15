@@ -2,19 +2,21 @@ package com.campusme.gateway.config;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
+import com.campusme.gateway.security.AuthenticationSuccessHandler;
 
 /**
  * Security configuration with 2 filter chains: external and internal
@@ -22,10 +24,12 @@ import com.nimbusds.jose.proc.SecurityContext;
 @Configuration
 public class SecurityConfig {
 
-  private final SecretKey key;
+  private SecretKey key;
+  private AuthenticationSuccessHandler successHandler;
 
-  public SecurityConfig(JwtConfig jwtConfig) {
+  public SecurityConfig(JwtConfig jwtConfig, AuthenticationSuccessHandler successHandler) {
     this.key = jwtConfig.getSecretKey();
+    this.successHandler = successHandler;
   }
 
   /**
@@ -62,7 +66,14 @@ public class SecurityConfig {
   public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
     http
         .authorizeExchange((exchanges) -> exchanges
-            .pathMatchers("/public/**").permitAll()
+            .pathMatchers("/admin/**")
+            .hasRole("ADMIN")
+            .and()
+            .formLogin()
+            .authenticationSuccessHandler(successHandler))
+        .authorizeExchange((exchanges) -> exchanges
+            .pathMatchers("/public/**")
+            .permitAll()
             .anyExchange().authenticated())
         .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
         .oauth2ResourceServer(oauth2 -> oauth2
@@ -74,12 +85,23 @@ public class SecurityConfig {
   }
 
   /**
-   * @return NimbusJwtEncoder using {@code jwt.secret-key} from application properties
+   * Create a UserDetailsService bean with the default admin user
+   * 
+   * @return MapReactiveUserDetailsService with one admin user
    */
   @Bean
-  public JwtEncoder jwtEncoder() {
-    JWKSource<SecurityContext> jwks = new ImmutableSecret<SecurityContext>(key);
-    return new NimbusJwtEncoder(jwks);
+  public MapReactiveUserDetailsService userDetailsService() {
+    UserDetails admin = User.builder()
+        .username("admin")
+        .password(passwordEncoder().encode("admin"))
+        .roles("ADMIN")
+        .build();
+
+    return new MapReactiveUserDetailsService(admin);
   }
 
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }
