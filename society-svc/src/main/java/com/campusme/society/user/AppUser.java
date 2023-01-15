@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 
@@ -13,8 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.campusme.society.member.Member;
@@ -50,9 +53,15 @@ public class AppUser implements UserDetails {
   @Builder.Default
   private List<Member> memberships = new ArrayList<>();
 
+  @Transient
+  @Builder.Default
+  List<String> authorities = new ArrayList<>();
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.emptyList();
+    return authorities.stream()
+      .map( a -> new SimpleGrantedAuthority("ROLE_" + a))
+      .collect(Collectors.toList());
   }
 
   @Override

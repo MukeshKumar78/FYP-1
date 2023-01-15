@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -45,6 +44,8 @@ public class SpringCloudGatewayApplication {
         .route("society-api", r -> r.path("/api/core/**")
             .filters(f -> f.rewritePath("/api/core", "/"))
             .uri("lb://SOCIETY"))
+        .route("admin-panel", r -> r.path("/admin/**")
+            .uri("lb://SECURITY"))
         .build();
   }
 

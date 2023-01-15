@@ -41,9 +41,9 @@ public class AppUserController {
    * @param id
    * @return {@code AppUserResponseDTO}
    */
-  @GetMapping("/users/{id}")
-  public AppUserResponseDTO findById(@PathVariable Long id) {
-    AppUser user = userRepository.findById(id).orElseThrow(
+  @GetMapping("/users/{sub}")
+  public AppUserResponseDTO findBySub(@PathVariable String sub) {
+    AppUser user = userRepository.findByEmail(sub).orElseThrow(
       () -> new ResponseStatusException(
           HttpStatus.NOT_FOUND, "User not found"));
 

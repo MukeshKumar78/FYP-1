@@ -1,5 +1,7 @@
 package com.campusme.society.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,6 +53,7 @@ public class AppUserDetailsService implements UserDetailsService {
                     .photo(jwt.getClaimAsString("picture"))
                     .build()));
 
+    user.setAuthorities(jwt.getClaimAsStringList("roles"));
     return user;
 
   }
