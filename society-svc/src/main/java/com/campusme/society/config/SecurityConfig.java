@@ -36,6 +36,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeRequests(authorize -> authorize
+        .antMatchers("/actuator/**").permitAll()
         .antMatchers("/**").fullyAuthenticated())
         .oauth2ResourceServer(oauth2 -> oauth2
             .jwt(jwt -> jwt

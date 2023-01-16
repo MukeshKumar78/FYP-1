@@ -23,10 +23,10 @@ public class RoleViewController {
   @Autowired
   private PermissionRepository permissionRepository;
 
-  @GetMapping("/")
+  @GetMapping("/role")
   public String showRoleList(Model model) {
     model.addAttribute("roles", roleRepository.findAll());
-    return "index";
+    return "roles";
   }
 
   @PostMapping("role/add")

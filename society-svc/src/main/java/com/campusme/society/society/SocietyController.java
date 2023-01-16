@@ -1,5 +1,7 @@
 package com.campusme.society.society;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +24,16 @@ public class SocietyController {
   @Autowired
   private SocietyMapper mapper;
 
+  @GetMapping("/societies")
+  public List<SocietyResponseDTO> findAll() {
+    return mapper.societyListToDTO(
+      societyRepository.findAll()
+    );
+  }
 
-  @GetMapping("/societies/{id}")
-  public SocietyResponseDTO findOne(@PathVariable long id) {
-    Society value = societyRepository.findById(id).orElseThrow(
+  @GetMapping("/societies/{code}")
+  public SocietyResponseDTO findOne(@PathVariable String code) {
+    Society value = societyRepository.findByCode(code).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Society not found"));
 
