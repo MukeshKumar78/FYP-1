@@ -1,17 +1,12 @@
 package com.campusme.society.post;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
+import com.campusme.society.event.EventAttachment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -35,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(unique = true)
   private String code;
@@ -60,4 +55,12 @@ public class Post {
   @OneToOne
   @JoinColumn(name = "member_id", nullable = false)
   private Member createdBy;
+
+  @OneToMany(mappedBy = "post")
+  @Builder.Default
+  private List<PostAttachment> attachments = new ArrayList<>();
+
+  public List<String> getAttachments() {
+    return attachments.stream().map(a -> a.getUri()).toList();
+  }
 }

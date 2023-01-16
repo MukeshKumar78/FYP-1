@@ -6,4 +6,5 @@ INSERT INTO member (role, society_id, user_id) VALUES ('HEAD', 1, 1);
 INSERT INTO member (role, society_id, user_id) VALUES ('HEAD', 1, 2);
 INSERT INTO event (code, description, title, text, member_id, created_at, start_date, end_date, published, published_at, registration_link, society_id) VALUES ('test-event', 'test-event', 'Test Event', 'This is a test Event', 1,'2023-01-01 18:00:20-05', '2023-01-01 19:10:25-07', '2023-01-01 20:00:00-00', false, '2023-01-01 21:00:00-00', '/', 1);
 INSERT INTO event_attachment (uri, event_id) VALUES ('https://picsum.photos/1280/720', 1);
-
+INSERT INTO post (code, description, title, text, created_at, member_id, event_id) VALUES ('test-post', 'test-post', 'Test Post', 'This is a test Post', '2023-01-01 00:00:01-00', 1, 1);
+INSERT INTO post_attachment (uri, post_id) VALUES ('https://picsum.photos/1280/720', 1);
