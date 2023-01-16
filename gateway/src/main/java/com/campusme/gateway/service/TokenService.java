@@ -73,7 +73,7 @@ public class TokenService {
         claims
             .issuer("campusme")
             .issuedAt(now)
-            .expiresAt(now.plus(1, ChronoUnit.HOURS))
+            // .expiresAt(now.plus(1, ChronoUnit.HOURS))
             .build()));
   }
 }

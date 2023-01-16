@@ -42,19 +42,26 @@ public class AppUserDetailsService implements UserDetailsService {
    * @return AppUser
    */
   public UserDetails loadByPrincipal(Jwt jwt) {
-    AppUser user = societyUserRepository
-        .findByEmail(jwt.getSubject())
-        .orElseGet(
-            () -> societyUserRepository.save(
-                AppUser.builder()
-                    .email(jwt.getSubject())
-                    .firstName(jwt.getClaimAsString("given_name"))
-                    .lastName(jwt.getClaimAsString("family_name"))
-                    .photo(jwt.getClaimAsString("picture"))
-                    .build()));
-
-    user.setAuthorities(jwt.getClaimAsStringList("roles"));
-    return user;
-
+    List<String> roles = jwt.getClaimAsStringList("roles");
+    if(roles.contains("USER")) {
+      AppUser user = societyUserRepository
+          .findByEmail(jwt.getSubject())
+          .orElseGet(
+              () -> societyUserRepository.save(
+                  AppUser.builder()
+                      .email(jwt.getSubject())
+                      .firstName(jwt.getClaimAsString("given_name"))
+                      .lastName(jwt.getClaimAsString("family_name"))
+                      .photo(jwt.getClaimAsString("picture"))
+                      .build()));
+      user.setAuthorities(roles);
+      return user;
+    } else {
+      return AppUser.builder()
+        .email(jwt.getSubject())
+        .firstName(jwt.getSubject())
+        .authorities(roles)
+        .build();
+    }
   }
 }
