@@ -24,23 +24,23 @@ public class RoleViewController {
   private PermissionRepository permissionRepository;
 
   @GetMapping("/role")
-  public String showRoleList(Model model) {
+  public String display(Model model) {
     model.addAttribute("roles", roleRepository.findAll());
     return "roles";
   }
 
   @PostMapping("role/add")
-  public String addRole(@Validated Role role, BindingResult result, Model model) {
+  public String add(@Validated Role role, BindingResult result, Model model) {
     if (result.hasErrors()) {
       return "add-role";
     }
 
     roleRepository.save(role);
-    return "redirect:/index";
+    return "redirect:/role";
   }
 
   @GetMapping("role/edit/{id}")
-  public String showUpdateForm(@PathVariable("id") long id, Model model) {
+  public String updateForm(@PathVariable("id") long id, Model model) {
     Role role = roleRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Invalid role Id:" + id));
 
@@ -60,7 +60,7 @@ public class RoleViewController {
   }
 
   @PostMapping("/update/{id}")
-  public String updateUser(@PathVariable("id") long id, RoleCreateDTO roleDTO, BindingResult result, Model model) {
+  public String update(@PathVariable("id") long id, RoleCreateDTO roleDTO, BindingResult result, Model model) {
     Role role = new Role(
         id,
         roleDTO.getCode(),
@@ -73,14 +73,14 @@ public class RoleViewController {
 
     roleRepository.save(role);
 
-    return "redirect:/";
+    return "redirect:/role";
   }
 
   @GetMapping("/delete/{id}")
-  public String deleteRole(@PathVariable("id") long id, Model model) {
+  public String delete(@PathVariable("id") long id, Model model) {
     Role role = roleRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Invalid role Id:" + id));
     roleRepository.delete(role);
-    return "redirect:/";
+    return "redirect:/role";
   }
 }

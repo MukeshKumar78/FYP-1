@@ -7,6 +7,7 @@
     margin: 0;
     padding: 0;
     width: 100%;
+    font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
   }
   th {
     @apply px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50;
@@ -32,6 +33,10 @@
     @apply text-2xl font-bold;
   }
 
+  h4 {
+    @apply uppercase text-slate-700 text-sm;
+  }
+
   label {
     @apply mb-2 text-sm font-medium text-gray-900;
   }
@@ -48,5 +53,14 @@
 
   .btn-sm-ico {
     @apply  text-gray-900 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-100 cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .bg-accent {
+    @apply bg-[#242424];
+  }
+  .text-accent {
+    @apply text-[#242424];
   }
 }

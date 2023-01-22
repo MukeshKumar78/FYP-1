@@ -27,8 +27,7 @@ public class UserJwtAuthenticationConverter implements Converter<Jwt, AbstractAu
   public AbstractAuthenticationToken convert(Jwt jwt) {
     UserDetails userDetails = userDetailsService.loadByPrincipal(jwt);
 
-    if (userDetails instanceof AppUser) {
-      AppUser user = (AppUser) userDetails;
+    if (userDetails instanceof AppUser user) {
       return new AppUserAuthenticationToken(user,
           user.getAuthorities());
     } else {
