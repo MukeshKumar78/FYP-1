@@ -1,16 +1,28 @@
 <html>
+
 <head th:include="fragments/layout :: header"> </head>
 
 <body>
   <nav th:include="fragments/layout :: nav"></nav>
-  <h1 class="title"> Roles </h1><hr class="mx-5"/>
+  <div class="flex justify-center items-center flex-row">
+    <a class="absolute left-5" th:href="@{/entities}">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
+        <path fill-rule="evenodd"
+          d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z"
+          clip-rule="evenodd" />
+      </svg>
+    </a>
+    <h1 class="title"> Roles </h1>
+  </div>
+  <hr class="mx-5" />
   <div th:switch="${roles}">
     <h2 th:case="null">No Roles yet!</h2>
     <div th:case="*">
       <div class="container max-w-7xl mx-auto mt-8">
         <div class="mb-4">
           <div class="flex justify-end">
-            <a class="px-4 py-2 rounded-md bg-sky-500 text-sky-100 hover:bg-sky-600">Create New Role</a>
+            <a class="px-4 py-2 rounded-md bg-accent text-sky-100 hover:bg-slate-800 cursor-pointer">Create New Role</a>
           </div>
         </div>
         <div class="flex flex-col">
@@ -59,6 +71,7 @@
         </div>
       </div>
 </body>
+
 </html>
 
 <th:block th:include="fragments/layout :: scripts"></th:block>

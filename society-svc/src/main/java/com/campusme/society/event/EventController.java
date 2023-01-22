@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -82,7 +81,7 @@ public class EventController {
    * Endpoint to create a new event
    * 
    * @param id society ID
-   * @param eventDTO {@code EventCreateRequestDTO} object in request body
+   * @param eventDTO {@code EventCreateRequestDTO} object as multipart form data
    * @return Created {@code Event}
    */
   // @PreAuthorize("hasPermission(#id, 'event', 'create')")

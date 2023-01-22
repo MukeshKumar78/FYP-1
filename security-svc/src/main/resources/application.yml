@@ -1,10 +1,10 @@
 server:
   port: 8084
-  contextPath: /admin
-  servlet:
-    contextPath: /admin
-  tomcat:
-    use-relative-redirects: true
+  # contextPath: /admin
+  # servlet:
+    # contextPath: /admin
+  # tomcat:
+    # use-relative-redirects: true
 
 management:
   endpoint:
@@ -19,6 +19,22 @@ management:
         include: "*"
 
 spring:
+  boot:
+    admin:
+      ui:
+        brand: <img src="assets/img/icon-spring-boot-admin.svg"><span>CampusMe Dashboard</span>
+        title: "CampusMe Admin"
+        external-views:
+          - label: Entities
+            url: "/entities"
+            order: 1000
+        # public-url: http://localhost:8080
+        # cache:
+        #   no-cache: true
+        # cache-templates: false
+        # extension-resource-locations: file:src/main/ui/target/dist/
+        # extension-resource-locations: file:src/main/ui/target/dist/
+
   thymeleaf: # Thymeleaf
     cache: false
     mode: HTML
@@ -28,15 +44,20 @@ spring:
   web:
     resources: # Static resources
       static-locations: 
+        - file:${STATIC_FILES_LOCATION:/tmp/public/}
         - file:src/main/resources/static/
         - classpath:/static/
       cache:
         period: 0
 
+  mvc:
+    static-path-pattern: /public/**
+
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/security
     username: postgres
     password: ${POSTGRES_PASSWORD:postgres}
+
   application:
     name: SECURITY
 
@@ -64,3 +85,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka}
+
+static:
+  location: ${STATIC_FILES_LOCATION:/tmp/public/}

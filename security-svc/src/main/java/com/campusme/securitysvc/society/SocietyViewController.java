@@ -14,7 +14,7 @@ public class SocietyViewController {
   private SocietyService service;
 
   @GetMapping("/society")
-  public String showRoleList(HttpServletRequest req, Model model) {
+  public String display(HttpServletRequest req, Model model) {
     model.addAttribute("societies", service.findAll(req));
     return "society";
   }
