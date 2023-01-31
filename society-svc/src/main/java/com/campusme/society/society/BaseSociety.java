@@ -1,8 +1,8 @@
 package com.campusme.society.society;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 
@@ -11,16 +11,11 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.campusme.society.event.Event;
-import com.campusme.society.member.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,20 +28,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Society {
+public class BaseSociety {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @Column(nullable = false, unique=true)
+  @Column(unique = true)
   private String code;
 
   @Column
   private String description;
 
-  @Column(columnDefinition="TEXT")
+  @Column(columnDefinition = "TEXT")
   private String image;
-
 
   @Column(nullable = false)
   private String name;
@@ -62,18 +56,7 @@ public class Society {
   @Column
   private Date updatedAt;
 
-  @ManyToOne
-  @JoinColumn(name = "tenure_id", nullable = false)
-  private Tenure tenure;
-
-  @ManyToOne
-  @JoinColumn(nullable = false)
-  private BaseSociety base;
-
-  @OneToMany(mappedBy = "society")
+  @OneToMany(mappedBy = "base")
   @Builder.Default
-  private Set<Event> events = new HashSet<Event>();
-
-  @OneToMany(mappedBy = "society")
-  private Set<Member> members;
+  private List<Society> societies = new ArrayList<>();
 }

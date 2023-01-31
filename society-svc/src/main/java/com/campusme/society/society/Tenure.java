@@ -1,14 +1,20 @@
 package com.campusme.society.society;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Tenure {
   @Id
@@ -37,7 +44,19 @@ public class Tenure {
   @Column
   private String duration;
 
+  @CreatedDate
+  @Column(updatable = false)
+  private Date createdAt;
+
+  @LastModifiedDate
+  @Column
+  private Date updatedAt;
+
+  @Column
+  @Builder.Default
+  private Boolean archived = false;
+
   @OneToMany(mappedBy = "tenure")
   @Builder.Default
-  private Set<Society> societies = new HashSet<>();
+  private List<Society> societies = new ArrayList<>();
 }
