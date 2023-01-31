@@ -128,6 +128,7 @@ public class EventController {
 
       } catch (IOException error) {
         System.out.println(error.getMessage());
+        eventRepository.delete(event);
         throw new ResponseStatusException(
             HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save attachments");
       }

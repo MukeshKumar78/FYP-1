@@ -19,11 +19,15 @@ public class FileUploadUtil {
     List<String> fileNames = new ArrayList<>();
 
     for(MultipartFile file : files) {
-      File uploadedFile = new File(filePath + file.getOriginalFilename());
-      file.transferTo(uploadedFile);
-      fileNames.add(uploadedFile.getName());
+      fileNames.add(upload(file));
     }
 
     return fileNames;
+  }
+
+  public String upload(MultipartFile file) throws IOException {
+    File uploadedFile = new File(filePath + file.getOriginalFilename());
+    file.transferTo(uploadedFile);
+    return uploadedFile.getName();
   }
 }
