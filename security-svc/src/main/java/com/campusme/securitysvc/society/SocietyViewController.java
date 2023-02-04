@@ -1,11 +1,26 @@
 package com.campusme.securitysvc.society;
 
-import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import lombok.Data;
+
+@Data
+class SocietyCreateForm {
+  Long tenure;
+  SocietyCreateDTO society;
+}
 
 @Controller
 public class SocietyViewController {
@@ -13,41 +28,43 @@ public class SocietyViewController {
   @Autowired
   private SocietyService service;
 
+  @GetMapping("/tenure")
+  public String tenure(Model model) {
+    List<Tenure> tenures = service.findAllTenures();
+
+    model.addAttribute("tenures", tenures);
+    return "tenure";
+  }
+
   @GetMapping("/society")
-  public String display(HttpServletRequest req, Model model) {
-    model.addAttribute("societies", service.findAll(req));
+  public String society(Model model) {
+    List<Society> societies = service.findAllSocieties();
+
+    model.addAttribute("societies", societies);
     return "society";
   }
 
-  // @PostMapping("role/add")
-  // public String addRole(@Validated Role role, BindingResult result, Model model) {
-  //   if (result.hasErrors()) {
-  //     return "add-role";
-  //   }
+  @PostMapping(path = "/society/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+  public String addSociety(@Validated @ModelAttribute SocietyCreateForm form, BindingResult result, Model model) {
+    if (result.hasErrors()) {
+      System.out.println(result.toString());
+      model.addAttribute("form", form);
+      return "add-society";
+    }
 
-  //   roleRepository.save(role);
-  //   return "redirect:/index";
-  // }
+    service.save(form.tenure, form.society);
+    return "redirect:/society";
+  }
 
-  // @GetMapping("role/edit/{id}")
-  // public String showUpdateForm(@PathVariable("id") long id, Model model) {
-  //   Role role = roleRepository.findById(id)
-  //       .orElseThrow(() -> new IllegalArgumentException("Invalid role Id:" + id));
+  @GetMapping("tenure/add")
+  public String showAddForm(@RequestParam Long tenure, Model model) {
+    SocietyCreateForm societyForm = new SocietyCreateForm();
+    societyForm.setTenure(tenure);
 
-  //   RoleCreateDTO roleForm = new RoleCreateDTO(role.getId(), role.getCode(), role.getDescription(), role.getName(),
-  //       new ArrayList<>());
+    model.addAttribute("form", societyForm);
 
-  //   permissionRepository.findAll()
-  //       .stream()
-  //       .forEach(permission -> {
-  //         Boolean selected = role.getPermissions().stream().anyMatch(p -> p.getCode().equals(permission.getCode()));
-  //         roleForm.getPermissionCodeList().add(new PermissionWithSelection(selected, permission.getCode()));
-  //       });
-
-  //   model.addAttribute("form", roleForm);
-
-  //   return "update-role";
-  // }
+    return "add-society";
+  }
 
   // @PostMapping("/update/{id}")
   // public String updateUser(@PathVariable("id") long id, RoleCreateDTO roleDTO, BindingResult result, Model model) {

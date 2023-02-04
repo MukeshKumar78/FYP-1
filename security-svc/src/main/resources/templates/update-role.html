@@ -13,7 +13,7 @@
   </a>
   <div class="px-6 py-6 lg:px-8">
     <h1 class="mb-4 text-3xl font-medium text-gray-900"></h1>
-    <form class="space-y-6" th:action="@{/update/{id}(id=${form.id})}" th:object="${form}" method="post">
+    <form class="space-y-6" th:action="@{/role/update/{id}(id=${form.id})}" th:object="${form}" method="post">
       <div>
         <label for="email"> Code </label>
         <input type="text" th:field="*{code}" required>

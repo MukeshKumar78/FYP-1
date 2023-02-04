@@ -1,10 +1,10 @@
 server:
   port: 8084
-  # contextPath: /admin
-  # servlet:
-    # contextPath: /admin
-  # tomcat:
-    # use-relative-redirects: true
+  contextPath: /admin
+  servlet:
+    contextPath: /admin
+  tomcat:
+    use-relative-redirects: true
 
 management:
   endpoint:
@@ -26,14 +26,12 @@ spring:
         title: "CampusMe Admin"
         external-views:
           - label: Entities
-            url: "/entities"
+            url: "/admin/entities"
             order: 1000
-        # public-url: http://localhost:8080
-        # cache:
-        #   no-cache: true
-        # cache-templates: false
-        # extension-resource-locations: file:src/main/ui/target/dist/
-        # extension-resource-locations: file:src/main/ui/target/dist/
+        public-url: http://localhost:8080
+        cache:
+          no-cache: true
+        cache-templates: false
 
   thymeleaf: # Thymeleaf
     cache: false

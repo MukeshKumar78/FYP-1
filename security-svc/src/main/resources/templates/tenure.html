@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head th:include="fragments/layout :: header">
+</head>
+
+<body>
+  <nav th:include="fragments/layout :: nav"></nav>
+  <div class="flex justify-center items-center flex-row">
+    <a class="absolute left-5" th:href="@{/entities}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
+        <path fill-rule="evenodd"
+          d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z"
+          clip-rule="evenodd" />
+      </svg>
+    </a>
+    <h1 class="title"> Tenures </h1>
+  </div>
+  <div class="flex justify-center">
+  <a class="px-4 max-w-md py-2 m-1 rounded-md bg-accent text-sky-100 hover:bg-slate-800 cursor-pointer"
+     onclick="confirm('This will archive all societies in the current tenure')"
+    >
+    Start Tenure
+  </a>
+  </div>
+  <div th:switch="${tenures}">
+    <h2 th:case="null">No Tenures yet!</h2>
+    <div th:case="*">
+      <div class="p-6 flex text-center justify-center align-center">
+        <div th:each="tenure : ${tenures}" class="flex flex-col justify-start items-start text-left flex-1 p-2">
+          <div class="justify-between items-center flex border-b-2 border-gray-400 flex-1 w-full pb-2">
+            <div>
+              <h4 th:text="'Tenure #' + ${tenure.id}"></h4>
+              <span class="flex items-center">
+                <h2 th:text="${tenure.duration}"></h2>
+                <p class="text-xs tag">duration</p>
+              </span>
+              <span class="flex items-center">
+                <p class="text-xs" th:text="${tenure.code}"></p>
+                <p class="text-xs tag">code</p>
+                <p class="text-xs" th:text="' │ ' + ${tenure.description}"></p>
+                <p class="text-xs tag">description</p>
+              </span>
+            </div>
+            <div>
+              <a class="px-4 py-2 m-1 rounded-md bg-accent text-sky-100 hover:bg-slate-800 cursor-pointer">
+                Edit
+              </a>
+              <a class="px-4 py-2 m-1 rounded-md bg-accent text-sky-100 hover:bg-slate-800 cursor-pointer"
+                th:href="@{/society/add?tenure={id}(id=${tenure.id})}">
+                Add Society
+              </a>
+            </div>
+          </div>
+          <div class="flex flex-wrap w-full">
+            <div th:each="society: ${tenure.societies}">
+              <div
+                class="bg-gray-20  m-6 max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl my-6 p-3 text-left">
+                <div class="flex flex-row items-center justify-center content-center">
+                  <img th:src="'/public/' + ${society.image}" class="w-[80px] h-[80px] rounded-full m-2" />
+                </div>
+                <hr />
+                <div class="p-2">
+                  <div class="flex items-center">
+                    <h2 th:text="${society.fullName}"></h2>
+                    <p class="text-xs tag">fullName</p>
+                  </div>
+                  <div class="flex items-center">
+                    <h3 th:text="${society.name}"></h3>
+                    <p class="text-xs tag">name</p>
+                    <p class="text-xs" th:text="' | ' + ${society.code}"></p>
+                    <p class="text-xs tag">code</p>
+                  </div>
+                  <div class="flex items-center">
+                    <p class="text-sm" th:text="${society.description}"></p>
+                    <p class="text-xs tag">description</p>
+                  </div>
+                </div>
+                <hr />
+                <div class="flex p-2">
+                  <div class="flex-1 flex justify-center items-center text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
+                      <path
+                        d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+                      <path
+                        d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+                    </svg>
+                  </div>
+                  <div class="flex-1 flex justify-center items-center text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
+                      <path fill-rule="evenodd"
+                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+<th:block th:include="fragments/layout :: scripts"></th:block>

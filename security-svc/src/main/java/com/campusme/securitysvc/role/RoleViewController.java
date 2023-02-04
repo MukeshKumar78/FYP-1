@@ -11,10 +11,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.campusme.securitysvc.permission.PermissionRepository;
 
 @Controller
+@RequestMapping("/role")
 public class RoleViewController {
 
   @Autowired
@@ -23,13 +25,13 @@ public class RoleViewController {
   @Autowired
   private PermissionRepository permissionRepository;
 
-  @GetMapping("/role")
+  @GetMapping("")
   public String display(Model model) {
     model.addAttribute("roles", roleRepository.findAll());
     return "roles";
   }
 
-  @PostMapping("role/add")
+  @PostMapping("/add")
   public String add(@Validated Role role, BindingResult result, Model model) {
     if (result.hasErrors()) {
       return "add-role";
@@ -39,7 +41,7 @@ public class RoleViewController {
     return "redirect:/role";
   }
 
-  @GetMapping("role/edit/{id}")
+  @GetMapping("/edit/{id}")
   public String updateForm(@PathVariable("id") long id, Model model) {
     Role role = roleRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Invalid role Id:" + id));
