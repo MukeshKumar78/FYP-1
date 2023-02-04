@@ -1,5 +1,25 @@
 # FYP-1
 
+## Start Backend
+1. Install docker and docker-compose
+- [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+- Arch (using yay): `yay -S docker docker-compose`
+2. Clone Repo
+```
+git clone https://github.com/MukeshKumar78/FYP-1
+```
+3. Start all services
+```
+cd docker
+docker-compose up
+```
+
+* Admin Dashboard: [http://localhost:8080/admin](http://localhost:8080/admin)
+* API documentation: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+* Service Discovery Dashboard: [http://localhost:8761](http://localhost:8761)
+* Society API: [http://localhost:8080/api/core](http://localhost:8080/api/core)
+* Teams API: In development
+
 ## Development
 ### Start infra containers
 ```sh
@@ -24,8 +44,7 @@ cd security
 ./mvnw clean && ./mvnw spring-boot:run
 ```
 
-### Start Web/Android app
-refer to the [UI README](ui/README.md)
+### [Start Web/Android app](ui/README.md)
 
 ### Customize environment variables
 #### In Bash
