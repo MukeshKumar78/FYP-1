@@ -1,5 +1,6 @@
 package com.campusme.gateway.config;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,17 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SwaggerUIConfig {
-
-  @Autowired
-  private DiscoveryClient discoveryClient;
+  // @Autowired
+  // private DiscoveryClient discoveryClient;
 
   @GetMapping("/swagger-config.json")
   public Map<String, Object> swaggerConfig() {
     Map<String, Object> config = new LinkedHashMap<>();
-    List<SwaggerUrl> urls = new LinkedList<>();
-    discoveryClient.getServices()
-        .forEach(serviceName -> discoveryClient.getInstances(serviceName).forEach(serviceInstance -> urls
-            .add(new SwaggerUrl(serviceName, serviceInstance.getUri() + "/v3/api-docs", serviceName))));
+    List<SwaggerUrl> urls = Arrays.asList(
+      new SwaggerUrl("gateway", "/v3/api-docs", "gateway"),
+      new SwaggerUrl("society", "/api/core/v3/api-docs", "society"),
+      new SwaggerUrl("security", "/admin/v3/api-docs", "security")
+    );
+
+    // discoveryClient.getServices()
+    //     .forEach(serviceName -> discoveryClient.getInstances(serviceName).forEach(serviceInstance -> urls
+    //         .add(new SwaggerUrl(serviceName, serviceInstance.getUri() + "/v3/api-docs", serviceName))));
     config.put("urls", urls);
     return config;
   }
