@@ -28,16 +28,13 @@ spring:
           - label: Entities
             url: "/admin/entities"
             order: 1000
+          - label: Swagger
+            url: "/swagger-ui.html"
+            order: 1001
         public-url: http://localhost:8080
         cache:
           no-cache: true
         cache-templates: false
-
-  thymeleaf: # Thymeleaf
-    cache: false
-    mode: HTML
-    encoding: UTF-8
-    prefix: file:src/main/resources/templates/
 
   web:
     resources: # Static resources
