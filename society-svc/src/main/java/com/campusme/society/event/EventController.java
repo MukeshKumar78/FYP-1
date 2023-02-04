@@ -91,9 +91,9 @@ public class EventController {
    * @param eventDTO {@code EventCreateRequestDTO} object as multipart form data
    * @return Created {@code Event}
    */
-  // @PreAuthorize("hasPermission(#id, 'event', 'create')")
   @Operation(summary = "create event")
   @PostMapping(path = "/societies/{id}/events", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+  @PreAuthorize("hasPermission(#id, 'event', 'create')")
   @ResponseStatus(code = HttpStatus.CREATED)
   public EventResponseDTO save(AppUserAuthenticationToken auth, @PathVariable Long id,
       @ModelAttribute EventCreateRequestDTO eventDTO) {

@@ -13,6 +13,7 @@ import com.campusme.society.society.Society;
 import com.campusme.society.society.Tenure;
 
 @Mapper(componentModel = "spring")
+@Named("SocietyMapper")
 public interface SocietyMapper {
 
   // Ignore Tenure.societies when mapping a society collection
