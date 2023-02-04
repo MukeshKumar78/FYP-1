@@ -54,6 +54,10 @@
   .btn-sm-ico {
     @apply  text-gray-900 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-100 cursor-pointer;
   }
+
+  .tag {
+    @apply bg-cyan-500 text-white pb-0.5 px-1 mx-1 rounded-lg inline opacity-80;
+  }
 }
 
 @layer utilities {

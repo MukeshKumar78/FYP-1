@@ -1,24 +1,21 @@
 package com.campusme.securitysvc.society;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import com.campusme.securitysvc.home.metrics.RequestsMetric;
+import com.campusme.securitysvc.config.BearerAuthFeignConfig;
 
+import feign.Headers;
 import lombok.Data;
 
 @Data
@@ -39,24 +36,37 @@ class Tenure {
   String code;
   String description;
   String duration;
+  List<Society> societies;
 }
 
 /**
  * HTTP API client for the SOCIETY service
  */
-@FeignClient("SOCIETY")
+@FeignClient(
+  name="SOCIETY",
+  configuration=BearerAuthFeignConfig.class
+)
 interface FeignSocietyClient {
   @GetMapping("/societies")
   @CrossOrigin
-  List<Society> readAll(@RequestHeader Map<String, String> headers);
+  List<Society> readAllSocieties();
 
   @GetMapping("/societies/{code}")
   @CrossOrigin
-  Society readOne(@PathVariable String code);
+  Society readOneSociety(@PathVariable String code);
 
-  @GetMapping("/actuator/metrics/http.server.requests")
+  @GetMapping("/tenures/{id}/societies")
   @CrossOrigin
-  RequestsMetric readRequestsMetrics();
+  List<Society> readTenureSocieies(@PathVariable Long id);
+
+  @PostMapping(path = "/tenures/{id}/societies", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+  @CrossOrigin
+  @Headers("Content-Type: multipart/form-data")
+  Society create(@PathVariable Long id, @ModelAttribute SocietyCreateDTO society);
+
+  @GetMapping("/tenures")
+  @CrossOrigin
+  List<Tenure> readAllTenures();
 }
 
 /**
@@ -71,30 +81,15 @@ public class SocietyService {
     this.client = client;
   }
 
-  private Map<String, String> getHeaders(HttpServletRequest req) {
-    Map<String, String> headers = new HashMap<>();
-    String token = "";
-    for(var cookie : req.getCookies()) {
-      System.out.println("$" + cookie.getName() + "$");
-      if(cookie.getName().equals("_token")) {
-      System.out.println("YES");
-        token = cookie.getValue();
-      }
-    }
-    if(token.isEmpty())
-      throw new ResponseStatusException(
-          HttpStatus.UNAUTHORIZED);
-
-    headers.put("Authorization", String.format("Bearer %s", token));
-
-    return headers;
+  public List<Society> findAllSocieties() {
+    return client.readAllSocieties();
   }
 
-  public List<Society> findAll(HttpServletRequest req) {
-    return client.readAll(getHeaders(req));
+  public List<Tenure> findAllTenures() {
+    return client.readAllTenures();
   }
 
-  public RequestsMetric getSocietyRequestsMetrics() {
-    return client.readRequestsMetrics();
+  public Society save(Long tenureID, SocietyCreateDTO society) {
+    return client.create(tenureID, society);
   }
 }

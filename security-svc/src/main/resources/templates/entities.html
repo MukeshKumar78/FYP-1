@@ -8,8 +8,6 @@
 
 <body>
   <nav th:include="fragments/layout :: nav"></nav>
-  <h1 class="title"> Entities </h1>
-  <hr class="mx-5" />
   <div class="p-6 flex text-center justify-center align-center">
     <div class="flex-1">
       <h4>Databases</h4>
@@ -20,6 +18,9 @@
       <h2 class="upper">10+</h2>
     </div>
   </div>
+  <hr/>
+  <h1 class="title pt-6">Managed Entities</h1>
+  <hr/>
   <div class="p-6 flex text-center justify-center align-center">
     <a th:href="@{/society}" class="flex-1 flex justify-center">
     <div class="flex-1 max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg my-2 p-3 text-left">
@@ -28,7 +29,14 @@
       <p>4 objects</p>
     </div>
     </a>
-    <a href="/role" class="flex-1 flex justify-center">
+    <a th:href="@{/tenure}" class="flex-1 flex justify-center">
+    <div class="flex-1 max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg my-2 p-3 text-left">
+      <h2 class="uppercase text-slate-600">Tenure</h2>
+      <hr/>
+      <p>4 objects</p>
+    </div>
+    </a>
+    <a th:href="@{/role}" class="flex-1 flex justify-center">
     <div class="flex-1 max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg my-2 p-3 text-left">
       <h2 class="uppercase text-slate-600">Role</h2>
       <hr/>
