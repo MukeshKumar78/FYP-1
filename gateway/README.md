@@ -2,11 +2,6 @@
 
 ## Get Started
 ```
-# Load variables (TODO)
-export JWT_EXTERNAL_ONE_ISSUER=https://idp.example.org/issuerOne
-export JWT_EXTERNAL_ONE_JWK_SET=https://idp.example.org/certs
-export JWT_INTERNAL_SECRET=YOUR_JWT_SECRET
-
 # Run server
 ./mvnw spring-boot:run
 
@@ -19,6 +14,11 @@ export JWT_INTERNAL_SECRET=YOUR_JWT_SECRET
 # Docker build
 docker build .
 ```
+
+## API Reference
+This service consolidates all api docs from downstream services.
+
+Swagger UI is deployed on `<ip>:<port>/swagger-ui.html` (requires admin login)
 
 ## Authentication
 ### Requirements

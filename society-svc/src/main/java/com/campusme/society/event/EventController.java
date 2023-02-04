@@ -27,6 +27,10 @@ import com.campusme.society.society.SocietyRepository;
 import com.campusme.society.user.AppUser;
 import com.campusme.society.user.AppUserAuthenticationToken;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * REST Controller for Society Events
  */
@@ -50,12 +54,14 @@ public class EventController {
   @Autowired
   private MemberRepository memberRepository;
 
+  @Operation(summary = "get all events")
   @GetMapping("/events")
   public List<EventResponseDTO> findAll() {
     List<Event> events = eventRepository.findAll();
     return mapper.entityListToDTO(events);
   }
 
+  @Operation(summary = "get a single event")
   @GetMapping("/events/{id}")
   public EventResponseDTO findOne(@PathVariable Long id) {
     Event event = eventRepository.findById(id).orElseThrow(
@@ -71,6 +77,7 @@ public class EventController {
    * @param id
    * @return {@code Collection} of {@code Event}s
    */
+  @Operation(summary = "get events in society")
   @GetMapping("/societies/{id}/events")
   public List<EventResponseDTO> findBySocietyId(@PathVariable long id) {
     List<Event> events = eventRepository.findBySocietyId(id);
@@ -85,6 +92,7 @@ public class EventController {
    * @return Created {@code Event}
    */
   // @PreAuthorize("hasPermission(#id, 'event', 'create')")
+  @Operation(summary = "create event")
   @PostMapping(path = "/societies/{id}/events", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @ResponseStatus(code = HttpStatus.CREATED)
   public EventResponseDTO save(AppUserAuthenticationToken auth, @PathVariable Long id,
@@ -145,6 +153,7 @@ public class EventController {
    * @throws ResponseStatusException: 404 (Event not found), 304 (Event already
    *                                  published)
    */
+  @Operation(summary = "publish event", description = "Sets an event's status to published")
   @PreAuthorize("hasPermission(#societyId, 'event', 'publish')")
   @PatchMapping("/societies/{societyId}/events/{eventId}")
   @ResponseStatus(code = HttpStatus.OK)

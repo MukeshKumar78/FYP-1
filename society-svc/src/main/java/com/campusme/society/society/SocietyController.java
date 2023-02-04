@@ -19,6 +19,8 @@ import com.campusme.society.society.mapping.SocietyCreateRequestDTO;
 import com.campusme.society.society.mapping.SocietyMapper;
 import com.campusme.society.society.mapping.SocietyResponseDTO;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  * REST Controller for Societies
  */
@@ -40,12 +42,14 @@ public class SocietyController {
   @Autowired
   private SocietyMapper mapper;
 
+  @Operation(summary = "get all societies")
   @GetMapping("/societies")
   public List<SocietyResponseDTO> findAll() {
     return mapper.societyListToDTO(
         societyRepository.findAll());
   }
 
+  @Operation(summary = "get one society", description="finds an active society in a tenure given code for the base society")
   @GetMapping("/societies/{code}/current")
   public SocietyResponseDTO findOne(@PathVariable String code) {
     Society value = societyRepository.findCurrentByCode(code).orElseThrow(
@@ -64,6 +68,7 @@ public class SocietyController {
    * @return Created {@code Society}
    */
   // @PreAuthorize("hasRole(ADMIN)")
+  @Operation(summary = "create society")
   @PostMapping(path = "/societies", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @ResponseStatus(code = HttpStatus.CREATED)
   public SocietyResponseDTO save(@ModelAttribute SocietyCreateRequestDTO societyDTO) {
