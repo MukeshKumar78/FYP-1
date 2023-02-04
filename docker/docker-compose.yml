@@ -21,6 +21,9 @@ services:
       - 8080:8080
     environment:
       EUREKA_HOST: http://discovery:8761/eureka
+      STATIC_FILES_LOCATION: /public/
+    volumes:
+      - ./volumes/public/:/public/
     depends_on:
       - discovery
     restart: unless-stopped
@@ -34,19 +37,25 @@ services:
       EUREKA_HOST: http://discovery:8761/eureka
       POSTGRES_HOST:
       POSTGRES_PASSWORD:
+      STATIC_FILES_LOCATION: /public/
+    volumes:
+      - ./volumes/public/:/public/
     depends_on: 
       - db
       - discovery
 
-  teams-svc:
-    container_name: api-teams
+  security-svc:
+    container_name: security 
     build:
-      context: ../teams-svc
+      context: ../security-svc
     environment:
       JWT_SECRET:
       EUREKA_HOST: http://discovery:8761/eureka
       POSTGRES_HOST:
       POSTGRES_PASSWORD:
+      STATIC_FILES_LOCATION: /public/
+    volumes:
+      - ./volumes/public/:/public/
     depends_on: 
       - db
       - discovery
