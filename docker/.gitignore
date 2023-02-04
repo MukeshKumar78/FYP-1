@@ -1,0 +1,3 @@
+volumes/public/*
+
+!volumes/public/.gitkeep
