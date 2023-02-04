@@ -22,6 +22,10 @@ logging:
     org.springframework.cloud.gateway: DEBUG
     reactor.netty: DEBUG
 
+springdoc:
+  swagger-ui:
+    configUrl: /swagger-config.json
+
 jwt:
   secret-key: ${JWT_SECRET:9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@}
 

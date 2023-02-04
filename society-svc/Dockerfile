@@ -20,7 +20,6 @@ ADD ./META-INF /app/META-INF
 # copy jar from the first stage
 COPY --from=builder target/society-svc-0.0.1-SNAPSHOT.jar society-svc-0.0.1-SNAPSHOT.jar
 
-
-EXPOSE 8082
+EXPOSE 8084
 
 CMD ["java", "-jar", "society-svc-0.0.1-SNAPSHOT.jar"]

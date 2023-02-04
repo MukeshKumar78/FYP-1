@@ -15,6 +15,7 @@ import com.campusme.society.society.mapping.SocietyMapper;
 import com.campusme.society.society.mapping.SocietyResponseDTO;
 import com.campusme.society.society.mapping.TenureResponseDTO;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.Data;
 
 @Data
@@ -40,12 +41,14 @@ public class TenureController {
   @Autowired
   private SocietyMapper mapper;
 
-  @GetMapping("/tenures")
+  @Operation(summary = "get all tenures")
+  @GetMapping("/tenures") 
   public List<TenureResponseDTO> findAll() {
     return mapper.tenureListToDTO(
         tenureRepository.findAll());
   }
 
+  @Operation(summary = "get one tenure")
   @GetMapping("/tenures/{code}")
   public TenureResponseDTO findOne(@PathVariable String code) {
     Tenure value = tenureRepository.findByCode(code).orElseThrow(
@@ -55,6 +58,7 @@ public class TenureController {
     return mapper.tenureToDTO(value);
   }
 
+  @Operation(summary = "add society to tenure")
   @PostMapping("/tenures/{code}/societies")
   public SocietyResponseDTO addSociety(@PathVariable String code, @RequestBody AddSocietyRequest body) {
     BaseSociety baseSociety = baseSocietyRepository.findByCode(body.getCode()).orElseThrow(

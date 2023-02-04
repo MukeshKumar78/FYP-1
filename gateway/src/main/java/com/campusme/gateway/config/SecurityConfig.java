@@ -65,13 +65,15 @@ public class SecurityConfig {
   public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
     http
         .authorizeExchange((exchanges) -> exchanges
-            .pathMatchers("/admin/**")
+            .pathMatchers("/admin/**", "/v3/api-docs")
             .hasRole("ADMIN")
             .and()
             .formLogin()
             .authenticationSuccessHandler(successHandler))
+        .cors()
+        .and()
         .authorizeExchange((exchanges) -> exchanges
-            .pathMatchers("/public/**")
+            .pathMatchers("/public/**", "/swagger-config.json")
             .permitAll()
             .anyExchange().authenticated())
         .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
