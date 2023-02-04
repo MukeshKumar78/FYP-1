@@ -9,7 +9,7 @@ RUN mvn verify --fail-never
 ADD ./src src/
 
 # package jar
-RUN mvn package
+RUN mvn clean package
 
 # Second stage: minimal runtime environment
 FROM openjdk:17-slim

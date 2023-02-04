@@ -50,11 +50,11 @@ class Permission {
  */
 @FeignClient("SECURITY")
 interface FeignRoleClient {
-  @GetMapping("/roles")
+  @GetMapping("/admin/roles")
   @CrossOrigin
   List<Role> readRoles();
 
-  @GetMapping("/roles/{code}")
+  @GetMapping("/admin/roles/{code}")
   @CrossOrigin
   Role readRole(@PathVariable String code);
 }

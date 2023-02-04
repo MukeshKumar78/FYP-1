@@ -7,12 +7,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import com.campusme.society.event.Event;
+import com.campusme.society.society.mapping.SocietyMapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(uses = SocietyMapper.class ,componentModel = "spring")
 public interface EventMapper {
 
   List<EventResponseDTO> entityListToDTO(Iterable<Event> events);
 
+  @Mapping(target = "society", qualifiedByName = { "SocietyMapper", "societyToDTOWithoutTenure" })
   EventResponseDTO entityToDTO(Event value);
 
   List<Event> dtoToEntity(Iterable<EventCreateRequestDTO> events);

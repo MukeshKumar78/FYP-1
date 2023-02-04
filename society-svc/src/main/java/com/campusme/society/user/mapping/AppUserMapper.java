@@ -7,9 +7,13 @@ import org.mapstruct.Mappings;
 import com.campusme.society.member.mapping.MemberMapper;
 import com.campusme.society.user.AppUser;
 
-@Mapper(uses = MemberMapper.class ,componentModel = "spring")
+@Mapper(
+  uses = MemberMapper.class,
+  componentModel = "spring"
+)
 public interface AppUserMapper {
   @Mappings({
-      @Mapping(target = "memberships", qualifiedByName = { "MemberMapper", "toDtoWithoutUser" }) })
+      @Mapping(target = "memberships", qualifiedByName = { "MemberMapper", "toDtoWithoutUser" }),
+  })
   AppUserResponseDTO entityToDTO(AppUser user);
 }
