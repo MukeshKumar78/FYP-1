@@ -1,11 +1,15 @@
 package com.campusme.society.member;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.campusme.society.society.Society;
 import com.campusme.society.user.AppUser;
@@ -30,6 +34,10 @@ public class Member {
   private long id;
 
   private String role;
+
+  @Transient
+  @Builder.Default
+  private List<String> permissions = new ArrayList<String>();
 
   @ManyToOne
   @JoinColumn(name = "society_id")

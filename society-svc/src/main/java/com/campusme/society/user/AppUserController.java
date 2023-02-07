@@ -2,12 +2,12 @@ package com.campusme.society.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.campusme.society.security.RoleService;
 import com.campusme.society.user.mapping.AppUserMapper;
 import com.campusme.society.user.mapping.AppUserResponseDTO;
 
@@ -23,6 +23,8 @@ public class AppUserController {
   @Autowired
   private AppUserMapper mapper;
 
+  @Autowired
+  private RoleService roleService;
   /**
    * Endpoint for society related user details for current user
    * 
@@ -32,6 +34,9 @@ public class AppUserController {
   @GetMapping("/me")
   public AppUserResponseDTO me(AppUserAuthenticationToken auth) {
     AppUser user = ((AppUser) auth.getPrincipal());
+    user.getMemberships().stream().forEach(m -> {
+      m.setPermissions( roleService.getPermissions(m.getRole()) );
+    });
     return mapper.entityToDTO(user);
   }
 

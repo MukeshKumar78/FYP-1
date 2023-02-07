@@ -43,6 +43,7 @@ class Permission {
     return permission;
   }
 
+
 }
 
 /**
@@ -77,5 +78,10 @@ public class RoleService {
 
     return permissions.stream()
         .anyMatch(p -> p.getPermission().equals(permission) && p.getTarget().equals(target));
+  }
+
+  public List<String> getPermissions(String role) {
+    List<Permission> permissions = roleClient.readRole(role).getPermissions();
+    return permissions.stream().map(p -> p.getTarget() + "_" + p.getPermission()).toList();
   }
 }

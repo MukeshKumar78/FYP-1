@@ -1,10 +1,9 @@
-package com.campusme.society.post;
+package com.campusme.society.comment;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * {@code Post} represents an update to a Society Event
+ * {@code Comment} represents a comment to a Society Event
  */
 @Data
 @Builder
@@ -26,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Post {
+public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -34,13 +33,8 @@ public class Post {
   @Column(unique = true)
   private String code;
 
-  @Column
-  private String description;
-
-  @Column(nullable = false)
-  private String title;
-
   @Column(columnDefinition = "TEXT", nullable = false)
+  @Size(min=3, max=250)
   private String text;
 
   @ManyToOne
@@ -54,12 +48,4 @@ public class Post {
   @OneToOne
   @JoinColumn(name = "member_id", nullable = false)
   private Member createdBy;
-
-  @OneToMany(mappedBy = "post")
-  @Builder.Default
-  private List<PostAttachment> attachments = new ArrayList<>();
-
-  public List<String> getAttachments() {
-    return attachments.stream().map(a -> a.getUri()).toList();
-  }
 }

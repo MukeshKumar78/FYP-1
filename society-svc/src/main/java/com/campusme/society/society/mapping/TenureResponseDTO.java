@@ -1,5 +1,6 @@
 package com.campusme.society.society.mapping;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ public class TenureResponseDTO {
   String code;
   String description;
   String duration;
-  String createdAt;
+  Date createdAt;
   Boolean archived;
   List<SocietyResponseDTO> societies;
 }

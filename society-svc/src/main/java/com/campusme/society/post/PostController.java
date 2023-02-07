@@ -5,22 +5,17 @@ import java.util.List;
 
 import com.campusme.society.config.persistence.FileUploadUtil;
 import com.campusme.society.event.Event;
-import com.campusme.society.event.EventAttachment;
 import com.campusme.society.event.EventRepository;
-import com.campusme.society.event.mapping.EventCreateRequestDTO;
-import com.campusme.society.event.mapping.EventResponseDTO;
 import com.campusme.society.member.Member;
 import com.campusme.society.member.MemberRepository;
 import com.campusme.society.post.mapping.PostCreateRequestDTO;
 import com.campusme.society.post.mapping.PostMapper;
 import com.campusme.society.post.mapping.PostResponseDTO;
-import com.campusme.society.society.Society;
 import com.campusme.society.user.AppUser;
 import com.campusme.society.user.AppUserAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
