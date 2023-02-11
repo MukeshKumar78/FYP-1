@@ -3,7 +3,14 @@ package com.campusme.society.event;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,8 +36,6 @@ import com.campusme.society.user.AppUser;
 import com.campusme.society.user.AppUserAuthenticationToken;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * REST Controller for Society Events
@@ -38,17 +44,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class EventController {
 
   @Autowired
+  private EntityManager entityManager;
+  @Autowired
   private EventRepository eventRepository;
-
   @Autowired
   private EventAttachmentRepository eventAttachmentRepository;
-
   @Autowired
   private EventMapper mapper;
-
   @Autowired
   private FileUploadUtil fileUploadUtil;
-
   @Autowired
   private SocietyRepository societyRepository;
   @Autowired
@@ -56,8 +60,27 @@ public class EventController {
 
   @Operation(summary = "get all events")
   @GetMapping("/events")
-  public List<EventResponseDTO> findAll() {
-    List<Event> events = eventRepository.findAll();
+  public List<EventResponseDTO> findAll(
+      @RequestParam(defaultValue = "0") Integer pageNo,
+      @RequestParam(defaultValue = "10") Integer pageSize,
+      @RequestParam(defaultValue = "createdAt") String sortBy) {
+
+    Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+
+    List<Event> events = eventRepository.findAll(paging).getContent();
+
+    return mapper.entityListToDTO(events);
+  }
+
+  @Operation(summary = "search events", description="performs full-text search on title, text and posts.text fields")
+  @GetMapping("/events/search")
+  public List<EventResponseDTO> findAll(@RequestParam String query) {
+    SearchSession searchSession = Search.session(entityManager);
+    List<Event> events = searchSession
+        .search(Event.class)
+        .where(f -> f.match().fields("title", "text", "posts.text").matching(query))
+        .fetch(10).hits();
+
     return mapper.entityListToDTO(events);
   }
 
@@ -79,15 +102,20 @@ public class EventController {
    */
   @Operation(summary = "get events in society")
   @GetMapping("/societies/{id}/events")
-  public List<EventResponseDTO> findBySocietyId(@PathVariable long id) {
-    List<Event> events = eventRepository.findBySocietyId(id);
+  public List<EventResponseDTO> findBySocietyId(@PathVariable long id,
+      @RequestParam(defaultValue = "0") Integer pageNo,
+      @RequestParam(defaultValue = "10") Integer pageSize,
+      @RequestParam(defaultValue = "createdAt") String sortBy) {
+
+    Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+    List<Event> events = eventRepository.findBySocietyId(id, paging).getContent();
     return mapper.entityListToDTO(events);
   }
 
   /**
    * Endpoint to create a new event
    * 
-   * @param id society ID
+   * @param id       society ID
    * @param eventDTO {@code EventCreateRequestDTO} object as multipart form data
    * @return Created {@code Event}
    */
@@ -154,11 +182,11 @@ public class EventController {
    *                                  published)
    */
   @Operation(summary = "publish event", description = "Sets an event's status to published")
-  @PreAuthorize("hasPermission(#societyId, 'event', 'publish')")
-  @PatchMapping("/societies/{societyId}/events/{eventId}")
+  @PreAuthorize("hasPermission(fromEvent(#id), 'event', 'publish')")
+  @PatchMapping("/events/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public Event publish(@PathVariable Long eventId) {
-    Event event = eventRepository.findById(eventId).orElseThrow(
+  public Event publish(@PathVariable Long id) {
+    Event event = eventRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Event not found"));
 

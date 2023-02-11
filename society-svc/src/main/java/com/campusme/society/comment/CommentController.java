@@ -49,7 +49,9 @@ public class CommentController {
     Comment comment = commentMapper.dtoToEntity(commentDTO);
 
     // Set Event
-    Event event = eventRepository.getReferenceById(id);
+    Event event = eventRepository.findById(id).orElseThrow(
+      () -> new ResponseStatusException( HttpStatus.NOT_FOUND, "Event not found")
+    );
     if (event == null) {
       throw new ResponseStatusException(
               HttpStatus.NOT_FOUND, "Event not found");

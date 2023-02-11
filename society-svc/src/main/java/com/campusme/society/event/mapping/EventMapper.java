@@ -2,6 +2,7 @@ package com.campusme.society.event.mapping;
 
 import java.util.List;
 
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -13,6 +14,7 @@ import com.campusme.society.society.mapping.SocietyMapper;
 @Named("EventMapper")
 public interface EventMapper {
 
+  @IterableMapping(qualifiedByName = "eventToDTOWithoutSocietyTenure")
   List<EventResponseDTO> entityListToDTO(Iterable<Event> events);
 
   @Named("eventToDTOWithoutSocietyTenure")

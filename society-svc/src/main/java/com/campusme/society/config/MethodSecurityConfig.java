@@ -3,6 +3,8 @@ package com.campusme.society.config;
 import com.campusme.society.security.CustomMethodSecurityExpressionHandler;
 import com.campusme.society.security.RoleService;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
@@ -20,6 +22,8 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
   @Autowired
   private final RoleService roleService;
+  @Autowired
+  private EntityManager entityManager;
 
   public MethodSecurityConfig(RoleService roleService) {
     this.roleService = roleService;
@@ -27,7 +31,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
   @Override
   protected MethodSecurityExpressionHandler createExpressionHandler() {
-    final CustomMethodSecurityExpressionHandler expressionHandler = new CustomMethodSecurityExpressionHandler(roleService);
+    final CustomMethodSecurityExpressionHandler expressionHandler = new CustomMethodSecurityExpressionHandler(roleService, entityManager);
     return expressionHandler;
   }
 }

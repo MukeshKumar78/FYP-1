@@ -9,8 +9,11 @@ import org.springframework.security.core.Authentication;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.aopalliance.intercept.MethodInvocation;
 
+import com.campusme.society.event.Event;
 import com.campusme.society.member.Member;
 import com.campusme.society.user.AppUser;
 
@@ -23,16 +26,18 @@ import com.campusme.society.user.AppUser;
 public class CustomMethodSecurityExpressionHandler
     extends DefaultMethodSecurityExpressionHandler {
   private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
+  private EntityManager entityManager;
   private final RoleService roleService;
 
-  public CustomMethodSecurityExpressionHandler(RoleService roleService) {
+  public CustomMethodSecurityExpressionHandler(RoleService roleService, EntityManager entityManager) {
     this.roleService = roleService;
+    this.entityManager = entityManager;
   }
 
   @Override
   protected MethodSecurityExpressionOperations createSecurityExpressionRoot(
       Authentication authentication, MethodInvocation invocation) {
-    CustomMethodSecurityExpressionRoot root = new CustomMethodSecurityExpressionRoot(authentication, roleService);
+    CustomMethodSecurityExpressionRoot root = new CustomMethodSecurityExpressionRoot(authentication, roleService, entityManager);
     root.setPermissionEvaluator(getPermissionEvaluator());
     root.setTrustResolver(this.trustResolver);
     root.setRoleHierarchy(getRoleHierarchy());
@@ -50,12 +55,14 @@ class CustomMethodSecurityExpressionRoot
     extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
   private Object filterObject;
+  private EntityManager entityManager;
   private Object returnObject;
   private final RoleService roleService;
 
-  public CustomMethodSecurityExpressionRoot(Authentication authentication, RoleService roleService) {
+  public CustomMethodSecurityExpressionRoot(Authentication authentication, RoleService roleService, EntityManager entityManager) {
     super(authentication);
     this.roleService = roleService;
+    this.entityManager = entityManager;
   }
 
   /**
@@ -67,6 +74,13 @@ class CustomMethodSecurityExpressionRoot
   public boolean isMember(long societyId) {
     AppUser user = (AppUser) this.getPrincipal();
     return user.getMemberships().stream().anyMatch(m -> m.getSociety().getId() == societyId);
+  }
+
+  /**
+   * returns society ID ()
+   */
+  public Long fromEvent(Long eventID) {
+    return entityManager.find(Event.class, eventID).getSociety().getId();
   }
 
   /**

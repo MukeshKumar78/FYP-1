@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 /**
  * {@code Post} represents an update to a Society Event
  */
+@Indexed
 @Data
 @Builder
 @NoArgsConstructor
@@ -40,6 +43,7 @@ public class Post {
   @Column(nullable = false)
   private String title;
 
+  @FullTextField
   @Column(columnDefinition = "TEXT", nullable = false)
   private String text;
 

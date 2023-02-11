@@ -17,6 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -30,6 +33,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+@Indexed
 @Data
 @Builder
 @NoArgsConstructor
@@ -47,6 +52,7 @@ public class Event {
   @Column
   private String description;
 
+  @FullTextField
   @Column(nullable = false)
   private String title;
 
@@ -71,6 +77,7 @@ public class Event {
   @Builder.Default
   private boolean published = false;
 
+  @FullTextField
   @Column(columnDefinition = "TEXT", nullable = false)
   private String text;
 
@@ -87,7 +94,8 @@ public class Event {
   private Member createdBy;
 
   @OneToMany(mappedBy = "event")
-  private List<Post> post;
+  @IndexedEmbedded
+  private List<Post> posts;
 
   @OneToMany(mappedBy = "event")
   @Builder.Default

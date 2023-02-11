@@ -1,10 +1,10 @@
 package com.campusme.society.event;
 
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface EventRepository extends JpaRepository<Event, Long> {
-  List<Event> findBySocietyId(long id);
+public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
+  Page<Event> findBySocietyId(long id, Pageable paging);
 }

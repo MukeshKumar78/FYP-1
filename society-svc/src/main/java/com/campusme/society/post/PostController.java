@@ -2,6 +2,7 @@ package com.campusme.society.post;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import com.campusme.society.config.persistence.FileUploadUtil;
 import com.campusme.society.event.Event;
@@ -16,6 +17,7 @@ import com.campusme.society.user.AppUserAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -53,25 +55,23 @@ public class PostController {
   }
 
   @PostMapping(path = "/events/{id}/posts", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+  @PreAuthorize("hasPermission(fromEvent(#id), 'post', 'create')")
   @ResponseStatus(code = HttpStatus.CREATED)
   public PostResponseDTO save(AppUserAuthenticationToken auth, @PathVariable Long id,
                                @ModelAttribute PostCreateRequestDTO postDTO) {
-//    System.out.println(postDTO.getText());
     Post post = postMapper.dtoToEntity(postDTO);
     System.out.println("text = " + post.getText());
 
     // Set Event
-    Event event = eventRepository.getReferenceById(id);
-    if (event == null) {
-      throw new ResponseStatusException(
-              HttpStatus.NOT_FOUND, "Event not found");
-    }
+    Event event = eventRepository.findById(id).orElseThrow(
+      () -> new ResponseStatusException( HttpStatus.NOT_FOUND, "Event not found")
+    );
     post.setEvent(event);
 
     // Set Member
     Member member = memberRepository.findByUserIdAndSocietyId(
             ((AppUser) auth.getPrincipal()).getId(),
-            id);
+            event.getSociety().getId());
     if (member == null) {
       throw new ResponseStatusException(
               HttpStatus.UNAUTHORIZED);

@@ -20,12 +20,23 @@
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <lombok.version>1.18.24</lombok.version>
     <springfox.swagger.version>2.9.2</springfox.swagger.version>
+    <hibernate.search.version>6.1.8.Final</hibernate.search.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.search</groupId>
+      <artifactId>hibernate-search-mapper-orm</artifactId>
+      <version>${hibernate.search.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.search</groupId>
+      <artifactId>hibernate-search-backend-lucene</artifactId>
+      <version>${hibernate.search.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
