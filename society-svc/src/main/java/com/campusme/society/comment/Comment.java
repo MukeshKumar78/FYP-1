@@ -9,7 +9,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.campusme.society.event.Event;
-import com.campusme.society.member.Member;
+import com.campusme.society.user.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +41,7 @@ public class Comment {
 
   @ManyToOne
   @JoinColumn(name = "event_id", nullable = false)
+  @JsonIgnore
   private Event event;
 
   @CreatedDate
@@ -46,6 +49,7 @@ public class Comment {
   private Date createdAt;
 
   @OneToOne
-  @JoinColumn(name = "member_id", nullable = false)
-  private Member createdBy;
+  @JoinColumn(name = "user_id", nullable = false)
+  @JsonIgnoreProperties("memberships")
+  private AppUser createdBy;
 }

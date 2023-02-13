@@ -17,6 +17,10 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "My API", version = "v1"))
 public class SwaggerConfig {
+
+  /**
+   * Adds Role and Permission info to swagger
+   */
   @Bean
   public OperationCustomizer operationCustomizer() {
     return (operation, handlerMethod) -> {
@@ -34,6 +38,9 @@ public class SwaggerConfig {
     };
   }
 
+  /**
+   * Adds an Authorize button to swagger UI using Bearer Auth
+   */
   @Bean
   public OpenAPI customOpenAPI() {
     final String securitySchemeName = "bearerAuth";

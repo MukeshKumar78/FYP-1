@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -24,9 +25,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.campusme.society.member.Member;
 import com.campusme.society.post.Post;
 import com.campusme.society.society.Society;
+import com.campusme.society.user.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -90,11 +93,13 @@ public class Event {
   private Society society;
 
   @OneToOne
-  @JoinColumn(name = "member_id", nullable = false)
-  private Member createdBy;
+  @JoinColumn(name= "user_id", nullable = false)
+  @JsonIgnoreProperties("memberships")
+  private AppUser createdBy;
 
   @OneToMany(mappedBy = "event")
   @IndexedEmbedded
+  @JsonIgnore
   private List<Post> posts;
 
   @OneToMany(mappedBy = "event")
@@ -107,6 +112,6 @@ public class Event {
 
   @PrePersist
   protected void onCreate() {
-    setCode(java.util.UUID.randomUUID().toString());
+    setCode(title.toLowerCase().replace(" ", "-") + "-" + RandomStringUtils.random(10, true, true).toLowerCase());
   }
 }

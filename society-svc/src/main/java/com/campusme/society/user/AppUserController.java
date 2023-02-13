@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.campusme.society.security.RoleService;
-import com.campusme.society.user.mapping.AppUserMapper;
-import com.campusme.society.user.mapping.AppUserResponseDTO;
 
 /**
  * REST Controller for Users 
@@ -21,9 +19,6 @@ public class AppUserController {
   private AppUserRepository userRepository;
 
   @Autowired
-  private AppUserMapper mapper;
-
-  @Autowired
   private RoleService roleService;
   /**
    * Endpoint for society related user details for current user
@@ -32,12 +27,12 @@ public class AppUserController {
    * @return {@code AppUserResponseDTO}
    */
   @GetMapping("/me")
-  public AppUserResponseDTO me(AppUserAuthenticationToken auth) {
+  public AppUser me(AppUserAuthenticationToken auth) {
     AppUser user = ((AppUser) auth.getPrincipal());
     user.getMemberships().stream().forEach(m -> {
       m.setPermissions( roleService.getPermissions(m.getRole()) );
     });
-    return mapper.entityToDTO(user);
+    return user;
   }
 
   /**
@@ -46,12 +41,12 @@ public class AppUserController {
    * @param id
    * @return {@code AppUserResponseDTO}
    */
-  @GetMapping("/users/{sub}")
-  public AppUserResponseDTO findBySub(@PathVariable String sub) {
-    AppUser user = userRepository.findByEmail(sub).orElseThrow(
+  @GetMapping("/users/{code}")
+  public AppUser findByCode(@PathVariable String code) {
+    AppUser user = userRepository.findByCode(code).orElseThrow(
       () -> new ResponseStatusException(
           HttpStatus.NOT_FOUND, "User not found"));
 
-    return mapper.entityToDTO(user);
+    return user;
   }
 }

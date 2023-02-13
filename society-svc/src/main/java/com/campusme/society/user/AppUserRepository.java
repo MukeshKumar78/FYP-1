@@ -11,4 +11,5 @@ import org.springframework.data.rest.core.annotation.RestResource;
 public interface AppUserRepository extends CrudRepository<AppUser, Long> {
   @RestResource
   Optional<AppUser> findByEmail(String email);
+  Optional<AppUser> findByCode(String code);
 }

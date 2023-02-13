@@ -1,4 +1,4 @@
-package com.campusme.society.society.mapping;
+package com.campusme.society.society;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,4 +15,12 @@ public class SocietyCreateRequestDTO {
   String name;
   String fullName;
   MultipartFile image;
+
+  public BaseSociety toBaseSociety() {
+    return BaseSociety.builder()
+      .code(code)
+      .description(description)
+      .name(name)
+      .fullName(fullName).build();
+  }
 }

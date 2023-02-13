@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 public class EventAttachment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonIgnore
   private Long id;
   
   @Column
@@ -29,6 +32,7 @@ public class EventAttachment {
 
   @ManyToOne
   @JoinColumn(name = "event_id", nullable = false)
+  @JsonIgnore
   private Event event;
 
 }

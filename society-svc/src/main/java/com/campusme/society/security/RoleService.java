@@ -15,6 +15,7 @@ import lombok.Data;
 class Role {
   private String code;
   private List<Permission> permissions;
+  private Integer precedence;
 
   public String getCode() {
     return code;
@@ -78,6 +79,13 @@ public class RoleService {
 
     return permissions.stream()
         .anyMatch(p -> p.getPermission().equals(permission) && p.getTarget().equals(target));
+  }
+
+  public boolean isHigher(String first, String second) {
+    Role firstRole = roleClient.readRole(first);
+    Role secondRole = roleClient.readRole(second);
+
+    return firstRole.getPrecedence() > secondRole.getPrecedence();
   }
 
   public List<String> getPermissions(String role) {

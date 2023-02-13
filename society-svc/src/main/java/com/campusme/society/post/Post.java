@@ -11,8 +11,11 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.campusme.society.View;
 import com.campusme.society.event.Event;
-import com.campusme.society.member.Member;
+import com.campusme.society.user.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +35,7 @@ import lombok.NoArgsConstructor;
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonView(View.Summary.class)
   private Long id;
 
   @Column(unique = true)
@@ -41,10 +45,12 @@ public class Post {
   private String description;
 
   @Column(nullable = false)
+  @JsonView(View.Summary.class)
   private String title;
 
   @FullTextField
   @Column(columnDefinition = "TEXT", nullable = false)
+  @JsonView(View.Summary.class)
   private String text;
 
   @ManyToOne
@@ -53,14 +59,17 @@ public class Post {
 
   @CreatedDate
   @Column(updatable = false)
+  @JsonView(View.Summary.class)
   private Date createdAt;
 
   @OneToOne
-  @JoinColumn(name = "member_id", nullable = false)
-  private Member createdBy;
+  @JoinColumn(name = "user_id", nullable = false)
+  @JsonIgnoreProperties("memberships")
+  private AppUser createdBy;
 
   @OneToMany(mappedBy = "post")
   @Builder.Default
+  @JsonView(View.Summary.class)
   private List<PostAttachment> attachments = new ArrayList<>();
 
   public List<String> getAttachments() {

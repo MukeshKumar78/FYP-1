@@ -4,6 +4,7 @@ import javax.crypto.SecretKey;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
  * Security configuration with 1 filter chain for jwt authentication
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
   private final SecretKey key;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.validation.Valid;
 
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
@@ -24,12 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.campusme.society.config.persistence.FileUploadUtil;
-import com.campusme.society.event.mapping.EventCreateRequestDTO;
-import com.campusme.society.event.mapping.EventMapper;
-import com.campusme.society.event.mapping.EventResponseDTO;
-import com.campusme.society.member.Member;
-import com.campusme.society.member.MemberRepository;
+import com.campusme.society.FileUploadUtil;
 import com.campusme.society.society.Society;
 import com.campusme.society.society.SocietyRepository;
 import com.campusme.society.user.AppUser;
@@ -50,17 +46,20 @@ public class EventController {
   @Autowired
   private EventAttachmentRepository eventAttachmentRepository;
   @Autowired
-  private EventMapper mapper;
-  @Autowired
   private FileUploadUtil fileUploadUtil;
   @Autowired
   private SocietyRepository societyRepository;
-  @Autowired
-  private MemberRepository memberRepository;
 
+  /**
+   * Endpoint to get all events paginated and sorted based on query parameters
+   *
+   * @param pageNo Integer (default: 0)
+   * @param pageSize Integer (default: 10)
+   * @param sortBy Integer (default: createdAt) sorts by descending
+   */
   @Operation(summary = "get all events")
   @GetMapping("/events")
-  public List<EventResponseDTO> findAll(
+  public List<Event> findAll(
       @RequestParam(defaultValue = "0") Integer pageNo,
       @RequestParam(defaultValue = "10") Integer pageSize,
       @RequestParam(defaultValue = "createdAt") String sortBy) {
@@ -69,29 +68,39 @@ public class EventController {
 
     List<Event> events = eventRepository.findAll(paging).getContent();
 
-    return mapper.entityListToDTO(events);
+    return events;
   }
 
+  /**
+   * Endpoint to search all events based on a query 
+   *
+   * @param query String the search input
+   */
   @Operation(summary = "search events", description="performs full-text search on title, text and posts.text fields")
   @GetMapping("/events/search")
-  public List<EventResponseDTO> findAll(@RequestParam String query) {
+  public List<Event> findAll(@RequestParam String query) {
     SearchSession searchSession = Search.session(entityManager);
     List<Event> events = searchSession
         .search(Event.class)
         .where(f -> f.match().fields("title", "text", "posts.text").matching(query))
         .fetch(10).hits();
 
-    return mapper.entityListToDTO(events);
+    return events;
   }
 
+  /**
+   * Endpoint to get a single event 
+   *
+   * @param id Long the event ID
+   */
   @Operation(summary = "get a single event")
   @GetMapping("/events/{id}")
-  public EventResponseDTO findOne(@PathVariable Long id) {
+  public Event findOne(@PathVariable Long id) {
     Event event = eventRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Event not found"));
 
-    return mapper.entityToDTO(event);
+    return event;
   }
 
   /**
@@ -102,14 +111,14 @@ public class EventController {
    */
   @Operation(summary = "get events in society")
   @GetMapping("/societies/{id}/events")
-  public List<EventResponseDTO> findBySocietyId(@PathVariable long id,
+  public List<Event> findBySocietyId(@PathVariable long id,
       @RequestParam(defaultValue = "0") Integer pageNo,
       @RequestParam(defaultValue = "10") Integer pageSize,
       @RequestParam(defaultValue = "createdAt") String sortBy) {
 
     Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
     List<Event> events = eventRepository.findBySocietyId(id, paging).getContent();
-    return mapper.entityListToDTO(events);
+    return events;
   }
 
   /**
@@ -121,37 +130,28 @@ public class EventController {
    */
   @Operation(summary = "create event")
   @PostMapping(path = "/societies/{id}/events", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-  @PreAuthorize("hasPermission(#id, 'event', 'create')")
+  @PreAuthorize("@webSecurity.hasPermission(#auth.getPrincipal(), #id, 'event', 'create')")
   @ResponseStatus(code = HttpStatus.CREATED)
-  public EventResponseDTO save(AppUserAuthenticationToken auth, @PathVariable Long id,
-      @ModelAttribute EventCreateRequestDTO eventDTO) {
-    Event event = mapper.dtoToEntity(eventDTO);
+  public Event save(AppUserAuthenticationToken auth, @PathVariable Long id,
+      @Valid @ModelAttribute EventCreateRequestDTO dto) {
 
-    // Set Society
-    Society society = societyRepository.getReferenceById(id);
-    if (society == null) {
-      throw new ResponseStatusException(
-          HttpStatus.NOT_FOUND, "Society not found");
-    }
+    Event event = dto.toEvent();
+
+    // Find society
+    Society society = societyRepository.findById(id).orElseThrow(
+      () -> new ResponseStatusException(
+          HttpStatus.NOT_FOUND, "Society not found"));
+
     event.setSociety(society);
+    event.setCreatedBy(((AppUser) auth.getPrincipal()));
 
-    // Set Member
-    Member member = memberRepository.findByUserIdAndSocietyId(
-        ((AppUser) auth.getPrincipal()).getId(),
-        id);
-    if (member == null) {
-      throw new ResponseStatusException(
-          HttpStatus.UNAUTHORIZED);
-    }
-    event.setCreatedBy(member);
-
-    // Save event
+    // Save event with associated user and society
     eventRepository.save(event);
 
     // Upload and Set attachments
-    if (!eventDTO.getAttachments().isEmpty()) {
+    if (!dto.getAttachments().isEmpty()) {
       try {
-        List<String> files = fileUploadUtil.upload(eventDTO.getAttachments());
+        List<String> files = fileUploadUtil.upload(dto.getAttachments());
 
         List<EventAttachment> attachments = files.stream().map(file -> {
           EventAttachment attachment = new EventAttachment();
@@ -170,7 +170,7 @@ public class EventController {
       }
     }
 
-    return mapper.entityToDTO(event);
+    return event;
   }
 
   /**
@@ -182,10 +182,10 @@ public class EventController {
    *                                  published)
    */
   @Operation(summary = "publish event", description = "Sets an event's status to published")
-  @PreAuthorize("hasPermission(fromEvent(#id), 'event', 'publish')")
+  @PreAuthorize("@webSecurity.hasPermission(#auth.getPrincipal(), @webSecurity.fromEvent(#id), 'event', 'publish')")
   @PatchMapping("/events/{id}")
   @ResponseStatus(code = HttpStatus.OK)
-  public Event publish(@PathVariable Long id) {
+  public Event publish(AppUserAuthenticationToken auth, @PathVariable Long id) {
     Event event = eventRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Event not found"));

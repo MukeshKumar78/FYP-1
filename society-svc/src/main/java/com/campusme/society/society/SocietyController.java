@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.campusme.society.config.persistence.FileUploadUtil;
-import com.campusme.society.society.mapping.SocietyCreateRequestDTO;
-import com.campusme.society.society.mapping.SocietyMapper;
-import com.campusme.society.society.mapping.SocietyResponseDTO;
+import com.campusme.society.FileUploadUtil;
+import com.campusme.society.user.AppUserAuthenticationToken;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -32,31 +30,25 @@ public class SocietyController {
 
   @Autowired
   private BaseSocietyRepository baseSocietyRepository;
-  
-  @Autowired
-  private TenureRepository tenureRepository;
 
   @Autowired
   private FileUploadUtil fileUploadUtil;
 
-  @Autowired
-  private SocietyMapper mapper;
 
   @Operation(summary = "get all societies")
   @GetMapping("/societies")
-  public List<SocietyResponseDTO> findAll() {
-    return mapper.societyListToDTO(
-        societyRepository.findAll());
+  public List<BaseSociety> findAll() {
+    return baseSocietyRepository.findAll();
   }
 
   @Operation(summary = "get one society", description="finds an active society in a tenure given code for the base society")
   @GetMapping("/societies/{code}/current")
-  public SocietyResponseDTO findOne(@PathVariable String code) {
-    Society value = societyRepository.findCurrentByCode(code).orElseThrow(
+  public Society findOne(@PathVariable String code) {
+    Society society = societyRepository.findCurrentByCode(code).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Society not found"));
 
-    return mapper.societyToDTO(value);
+    return society;
   }
 
   /**
@@ -70,17 +62,18 @@ public class SocietyController {
   // @PreAuthorize("hasRole(ADMIN)")
   @Operation(summary = "create society")
   @PostMapping(path = "/societies", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+  // @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(code = HttpStatus.CREATED)
-  public SocietyResponseDTO save(@ModelAttribute SocietyCreateRequestDTO societyDTO) {
-    if(baseSocietyRepository.existsByCode(societyDTO.getCode())) {
+  public BaseSociety save(AppUserAuthenticationToken auth, @ModelAttribute SocietyCreateRequestDTO dto) {
+    if(baseSocietyRepository.existsByCode(dto.getCode())) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Society with code already exists");
     }
-    BaseSociety society = mapper.DTOtoSociety(societyDTO);
+    BaseSociety society = dto.toBaseSociety();
 
     // Save Image
     try {
-      String file = fileUploadUtil.upload(societyDTO.getImage());
+      String file = fileUploadUtil.upload(dto.getImage());
       society.setImage(file);
     } catch (IOException error) {
       System.out.println(error.getMessage());
@@ -88,9 +81,7 @@ public class SocietyController {
           HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save image");
     }
 
-    // Save Society
-    baseSocietyRepository.save(society);
-
-    return mapper.societyToDTO(society);
+    // Save and return Society
+    return baseSocietyRepository.save(society);
   }
 }

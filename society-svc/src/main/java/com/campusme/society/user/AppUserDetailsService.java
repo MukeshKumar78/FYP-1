@@ -18,16 +18,16 @@ import org.springframework.stereotype.Service;
 @Primary
 @Service
 public class AppUserDetailsService implements UserDetailsService {
-  private final AppUserRepository societyUserRepository;
+  private final AppUserRepository userRepository;
 
   @Autowired
-  public AppUserDetailsService(AppUserRepository societyUserRepository) {
-    this.societyUserRepository = societyUserRepository;
+  public AppUserDetailsService(AppUserRepository userRepository) {
+    this.userRepository = userRepository;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    AppUser user = societyUserRepository.findByEmail(username).orElseThrow(
+    AppUser user = userRepository.findByEmail(username).orElseThrow(
         () -> new UsernameNotFoundException(
             "No user could be found for user name '" + username + "'"));
 
@@ -44,11 +44,12 @@ public class AppUserDetailsService implements UserDetailsService {
   public UserDetails loadByPrincipal(Jwt jwt) {
     List<String> roles = jwt.getClaimAsStringList("roles");
     if(roles.contains("USER")) {
-      AppUser user = societyUserRepository
-          .findByEmail(jwt.getSubject())
+      AppUser user = userRepository
+          .findByCode(jwt.getSubject())
           .orElseGet(
-              () -> societyUserRepository.save(
+              () -> userRepository.save(
                   AppUser.builder()
+                      .code(jwt.getSubject())
                       .email(jwt.getSubject())
                       .firstName(jwt.getClaimAsString("given_name"))
                       .lastName(jwt.getClaimAsString("family_name"))
@@ -58,7 +59,7 @@ public class AppUserDetailsService implements UserDetailsService {
       return user;
     } else {
       return AppUser.builder()
-        .email(jwt.getSubject())
+        .code(jwt.getSubject())
         .firstName(jwt.getSubject())
         .authorities(roles)
         .build();

@@ -1,8 +1,8 @@
 package com.campusme.society.society;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 
@@ -19,8 +19,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.campusme.society.View;
 import com.campusme.society.event.Event;
 import com.campusme.society.member.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,23 +42,28 @@ public class Society {
   private long id;
 
   @Column(nullable = false, unique=true)
+  @JsonView(View.Summary.class)
   private String code;
 
   @Column
   private String description;
 
   @Column(columnDefinition="TEXT")
+  @JsonView(View.Summary.class)
   private String image;
 
 
   @Column(nullable = false)
+  @JsonView(View.Summary.class)
   private String name;
 
   @Column(nullable = false)
+  @JsonView(View.Summary.class)
   private String fullName;
 
   @CreatedDate
   @Column(updatable = false)
+  @JsonView(View.Summary.class)
   private Date createdAt;
 
   @LastModifiedDate
@@ -71,9 +79,11 @@ public class Society {
   private BaseSociety base;
 
   @OneToMany(mappedBy = "society")
-  @Builder.Default
-  private Set<Event> events = new HashSet<Event>();
+  @Builder.Default @JsonIgnore
+  private List<Event> events = new ArrayList<Event>();
 
   @OneToMany(mappedBy = "society")
-  private Set<Member> members;
+  @Builder.Default @JsonIgnore
+  private List<Member> members = new ArrayList<Member>();
+;
 }

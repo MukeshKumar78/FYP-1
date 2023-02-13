@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.campusme.society.society.mapping.SocietyMapper;
-import com.campusme.society.society.mapping.SocietyResponseDTO;
-import com.campusme.society.society.mapping.TenureResponseDTO;
+import com.campusme.society.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.Data;
@@ -38,29 +37,33 @@ public class TenureController {
   @Autowired
   private SocietyRepository societyRepository;
 
-  @Autowired
-  private SocietyMapper mapper;
-
   @Operation(summary = "get all tenures")
   @GetMapping("/tenures") 
-  public List<TenureResponseDTO> findAll() {
-    return mapper.tenureListToDTO(
-        tenureRepository.findAll());
+  public List<Tenure> findAll() {
+    return tenureRepository.findAll();
   }
 
   @Operation(summary = "get one tenure")
   @GetMapping("/tenures/{code}")
-  public TenureResponseDTO findOne(@PathVariable String code) {
+  public Tenure findOne(@PathVariable String code) {
     Tenure value = tenureRepository.findByCode(code).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Tenure not found"));
 
-    return mapper.tenureToDTO(value);
+    return value;
+  }
+
+  @Operation(summary = "get one tenure societies")
+  @GetMapping("/tenures/{code}/societies")
+  @JsonView(View.Summary.class)
+  public List<Society> findTenureSocieties(@PathVariable String code) {
+    List<Society> societies = societyRepository.findByTenureCode(code);
+    return societies;
   }
 
   @Operation(summary = "add society to tenure")
   @PostMapping("/tenures/{code}/societies")
-  public SocietyResponseDTO addSociety(@PathVariable String code, @RequestBody AddSocietyRequest body) {
+  public Society addSociety(@PathVariable String code, @RequestBody AddSocietyRequest body) {
     BaseSociety baseSociety = baseSocietyRepository.findByCode(body.getCode()).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Society not found"));
@@ -88,6 +91,6 @@ public class TenureController {
         .build()
     );
 
-    return mapper.societyToDTO(society);
+    return society;
   }
 }

@@ -2,7 +2,6 @@ package com.campusme.society.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +20,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.campusme.society.member.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,9 @@ public class AppUser implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true, nullable = false)
+  private String code;
+
   @Column(nullable = false)
   private String firstName;
 
@@ -51,45 +55,53 @@ public class AppUser implements UserDetails {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
   @Builder.Default
+  @JsonIgnoreProperties({ "user" })
   private List<Member> memberships = new ArrayList<>();
 
   @Transient
+  @JsonIgnore
   @Builder.Default
   List<String> authorities = new ArrayList<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities.stream()
-      .map( a -> new SimpleGrantedAuthority("ROLE_" + a))
-      .collect(Collectors.toList());
+        .map(a -> new SimpleGrantedAuthority("ROLE_" + a))
+        .collect(Collectors.toList());
   }
 
   @Override
+  @JsonIgnore
   public String getPassword() {
     return null;
   }
 
   @Override
+  @JsonIgnore
   public String getUsername() {
     return this.email;
   }
 
   @Override
+  @JsonIgnore
   public boolean isAccountNonExpired() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isAccountNonLocked() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
   @Override
+  @JsonIgnore
   public boolean isEnabled() {
     return true;
   }
