@@ -71,9 +71,9 @@ public class TokenService {
     return this.encoder.encode(JwtEncoderParameters.from(
         JwsHeader.with(() -> "HS256").build(),
         claims
-            .issuer("campusme")
+            .issuer("http://localhost")
             .issuedAt(now)
-            // .expiresAt(now.plus(1, ChronoUnit.HOURS))
+            .expiresAt(now.plus(1, ChronoUnit.HOURS))
             .build()));
   }
 }
