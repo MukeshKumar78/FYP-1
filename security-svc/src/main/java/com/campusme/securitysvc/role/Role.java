@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import com.campusme.securitysvc.permission.Permission;
 
@@ -25,11 +27,13 @@ import com.campusme.securitysvc.permission.Permission;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(unique = true)
   private String code;
@@ -37,62 +41,13 @@ public class Role {
   @Column
   private String description;
 
-  @Column
+  @Column(nullable=false)
   private String name;
+
+  @Column(nullable=false, unique=true)
+  private Integer precedence;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
   private Set<Permission> permissions;
-
-  public Role(long id, String code, String description, String name, Set<Permission> permissions) {
-    this.id = id;
-    this.code = code;
-    this.description = description;
-    this.name = name;
-    this.permissions = permissions;
-  }
-
-  public Role(String code) {
-    this.code = code;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public Set<Permission> getPermissions() {
-    return permissions;
-  }
-
-  public void setPermissions(Set<Permission> permissions) {
-    this.permissions = permissions;
-  }
 }

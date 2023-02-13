@@ -46,8 +46,13 @@ public class RoleViewController {
     Role role = roleRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Invalid role Id:" + id));
 
-    RoleCreateDTO roleForm = new RoleCreateDTO(role.getId(), role.getCode(), role.getDescription(), role.getName(),
-        new ArrayList<>());
+    RoleCreateDTO roleForm = RoleCreateDTO.builder()
+    .id(role.getId())
+    .code(role.getCode())
+    .description(role.getDescription())
+    .name(role.getName())
+    .precedence(role.getPrecedence())
+    .permissionCodeList( new ArrayList<>()).build();
 
     permissionRepository.findAll()
         .stream()
@@ -63,15 +68,18 @@ public class RoleViewController {
 
   @PostMapping("/update/{id}")
   public String update(@PathVariable("id") long id, RoleCreateDTO roleDTO, BindingResult result, Model model) {
-    Role role = new Role(
-        id,
-        roleDTO.getCode(),
-        roleDTO.getDescription(),
-        roleDTO.getName(),
+    Role role = Role.builder()
+      .id(id)
+      .code(roleDTO.getCode())
+      .description(roleDTO.getDescription())
+      .name(roleDTO.getName())
+      .permissions(
         roleDTO.getPermissionCodeList().stream()
             .filter(perm -> perm.selected)
             .map(perm -> permissionRepository.findByCode(perm.code))
-            .collect(Collectors.toSet()));
+            .collect(Collectors.toSet()))
+      .precedence(roleDTO.getPrecedence())
+      .build();
 
     roleRepository.save(role);
 
