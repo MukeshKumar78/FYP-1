@@ -8,8 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface SocietyRepository extends JpaRepository<Society, Long> {
-  List<Society> findByCode(String code);
+  Optional<Society> findByCode(String code);
   List<Society> findByTenureCode(String code);
+  List<Society> findByBaseCode(String code);
   Boolean existsByCode(String code);
 
   @Query("SELECT DISTINCT s FROM Society s JOIN s.tenure t JOIN s.base b WHERE t.archived = false AND b.code = ?1")

@@ -41,9 +41,9 @@ public class SocietyController {
     return baseSocietyRepository.findAll();
   }
 
-  @Operation(summary = "get one society", description="finds an active society in a tenure given code for the base society")
-  @GetMapping("/societies/{code}/current")
-  public Society findOne(@PathVariable String code) {
+  @Operation(summary = "get current society", description="finds an active society in a tenure given code for the base society")
+  @GetMapping("/societies/base/{code}/current")
+  public Society findCurrent(@PathVariable String code) {
     Society society = societyRepository.findCurrentByCode(code).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Society not found"));
@@ -51,6 +51,33 @@ public class SocietyController {
     return society;
   }
 
+  @Operation(summary = "get one base society")
+  @GetMapping("/societies/base/{code}")
+  public BaseSociety findOneBase(@PathVariable String code) {
+    BaseSociety society = baseSocietyRepository.findByCode(code).orElseThrow(
+        () -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "Society not found"));
+
+    return society;
+  }
+
+  @Operation(summary = "get all society tenures")
+  @GetMapping("/societies/base/{code}/all")
+  public List<Society> findByBase(@PathVariable String code) {
+    List<Society> societies = societyRepository.findByBaseCode(code);
+    return societies;
+  }
+
+
+  @Operation(summary = "get one society")
+  @GetMapping("/societies/{code}")
+  public Society findOne(@PathVariable String code) {
+    Society society = societyRepository.findByCode(code).orElseThrow(
+        () -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "Society not found"));
+
+    return society;
+  }
   /**
    * Endpoint to create a new society<br/>
    * only accessible to admins

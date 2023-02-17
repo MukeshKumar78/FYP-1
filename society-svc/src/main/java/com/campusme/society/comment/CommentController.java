@@ -8,6 +8,7 @@ import com.campusme.society.user.AppUser;
 import com.campusme.society.user.AppUserAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -53,5 +54,25 @@ public class CommentController {
 
     // Save and return comment with associated event
     return commentRepository.save(comment);
+  }
+
+  /**
+   * Endpoint for removing a comment
+   * 
+   * @param id Long
+   * @throws ResponseStatusException: 404 (Comment not found)
+   */
+  @DeleteMapping("/comments/{id}")
+  public void removeMember(AppUserAuthenticationToken auth, @PathVariable Long id) {
+    Comment comment = commentRepository.findById(id).orElseThrow(
+      () -> new ResponseStatusException( HttpStatus.NOT_FOUND, "Comment not found")
+    );
+
+    if(comment.getCreatedBy().getId() != ((AppUser) auth.getPrincipal()).getId())
+      throw new ResponseStatusException( HttpStatus.FORBIDDEN);
+
+    commentRepository.deleteById(id);
+
+    return;
   }
 }
