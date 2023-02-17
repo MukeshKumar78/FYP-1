@@ -20,10 +20,10 @@ export function NavigationProvider({
             screens: {
               home: '',
               login: 'login',
-              'user-detail': 'user/:id',
+              'user-detail': 'user/:code',
               event: 'event/:id',
-              "event-create": "event-create/:id",
-              society: 'society/:id',
+              "event-create": "event-create/:code",
+              society: 'society/:code',
               settings: 'settings'
             },
           },

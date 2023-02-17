@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'solito/link'
+import { getPublicUri } from 'app/api/util'
 
 function UserErrorPage() {
   return <View>
@@ -24,7 +25,7 @@ export default function UserDetailsOrError({ user }: {
       {user.photo &&
         <Image
           style={{ width: 100, height: 100, borderRadius: 50 }}
-          source={{ uri: user.photo }}
+          source={{ uri: getPublicUri(user.photo) }}
         />
       }
       <Text style={{ fontSize: 30 }}>{user.firstName} {user.lastName}</Text>
@@ -45,7 +46,7 @@ export default function UserDetailsOrError({ user }: {
       >
         <View style={{ width: '100%', }}>
           <View style={styles.headingContainer}>
-            <Text style={styles.heading}>Societies</Text>
+            <Text style={styles.heading}>Memberships</Text>
           </View>
           <View>
             {user.memberships && user.memberships.map((m, i) =>
@@ -62,17 +63,17 @@ function MembershipBox({ data }: {
   data: Membership
 }) {
   return <View>
-    <Link href={`/society/${data.society.id}`}>
+    <Link href={`/society/${data.society.code}`}>
       <View style={styles.membershipContainer}>
         <View style={styles.membershipCard}>
           <Image
             style={styles.societyImage}
-            source={{ uri: data.society.image }}
+            source={{ uri: getPublicUri(data.society.image) }}
           />
-          <Text style={styles.membershipTitle}>{data.society.name}</Text>
+          <Text style={styles.membershipTitle}>{data.society.fullName}</Text>
         </View>
         <View style={styles.membershipContent}>
-          <Text style={[styles.membershipSubtitle, {fontStyle: 'italic'}]}>Training and Mentorship</Text>
+          <Text style={[styles.membershipSubtitle, {fontStyle: 'italic'}]}>Example Team</Text>
           <Text style={styles.membershipSubtitle}>as {data.role}</Text>
         </View>
         <Ionicons name="arrow-forward" size={25} style={{color: '#696969', position: 'absolute', right: 5, bottom: 5}}/>

@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { Image, Text } from 'react-native';
 import { PostMap } from '../post/post-map'
 import { useGetEventQuery } from './event-api';
+import SocietyHeader from 'app/components/SocietyHeader';
 
 
 const { useParam } = createParam<{ id: string }>()
@@ -22,12 +23,9 @@ export function EventPage() {
     if(data)
       navigation.setOptions({
         headerTitle: () => 
-          <SocietyHeader 
-            title={data.society.name}
-            image={data.society.image}
-          />
+          <SocietyHeader society={data.society}/>
       })
-  }, [data])
+  }, [data, navigation])
 
   if(!data)
     return <EventScreenError/>
@@ -40,20 +38,6 @@ export function EventPage() {
   )
 }
 
-export function SocietyHeader({ image, title }: {
-  image: string
-  title: string
-}) {
-  return (
-    <View style={styles.eventHeaderWrapper}>
-      <Image
-        style={styles.eventHeaderImage}
-        source={{ uri: image }}
-      />
-      <Text style={styles.eventHeaderTitle}>{title}</Text>
-    </View>
-  )
-}
 
 
 function EventScreenError() {
@@ -65,20 +49,6 @@ function EventScreenError() {
 }
 
 const styles = StyleSheet.create({
-  eventHeaderWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  eventHeaderImage: {
-    margin: 10,
-    width: 40,
-    height: 40,
-    borderRadius: 50
-  },
-  eventHeaderTitle: {
-    fontWeight: 'bold',
-    fontSize: 20
-  },
   eventWrapper: {
     width: '100%',
     backgroundColor: '$background',

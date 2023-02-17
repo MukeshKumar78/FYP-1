@@ -6,25 +6,22 @@ import React, { useEffect } from 'react';
 import { EventMap } from '../event/event-map';
 import { SocietyInfo } from './society-info-draw';
 import { useGetSocietyQuery } from './society-api';
-import { SocietyHeader } from '../event/screen';
+import SocietyHeader from 'app/components/SocietyHeader';
 
-const { useParam } = createParam<{ id: string }>()
+const { useParam } = createParam<{ code: string }>()
 
 export function SocietyPage() {
-  const [societyId] = useParam('id');
+  const [societyCode] = useParam('code');
   const navigation = useNavigation();
-  const { data: society } = useGetSocietyQuery(Number(societyId));
+  const { data: society } = useGetSocietyQuery(societyCode||'');
 
   useEffect(() => {
     if(society)
       navigation.setOptions({
         headerTitle: () =>
-          <SocietyHeader
-            title={society.name}
-            image={society.image}
-          />
+          <SocietyHeader society={society}/>
       })
-  }, [])
+  }, [society, navigation])
 
   if(!society)
     return <SocietyScreenError/>    

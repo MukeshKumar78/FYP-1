@@ -22,16 +22,16 @@ import { EventCreate } from 'app/features/event/event-create';
 const Stack = createNativeStackNavigator<{
   home: undefined
   'user-detail': {
-    id: string
+    code: string
   }
   event: {
     id: string
   }
   society: {
-    id: string
+    code: string
   }
   "event-create": {
-    id: string
+    code: string
   }
   login: undefined
   loading: undefined
@@ -57,9 +57,9 @@ function LogoTitle() {
   );
 }
 
-function UserButton({ pictureUri, id }: { pictureUri: string | null, id: number | null }) {
+function UserButton({ pictureUri, code }: { pictureUri: string | null, code: string | null }) {
   return pictureUri ?
-    <Link href={`/user/${id}`}>
+    <Link href={`/user/${code}`}>
       <Image
         style={{ margin: 10, width: 40, height: 40, borderRadius: 50 }}
         source={{ uri: pictureUri }}
@@ -109,7 +109,7 @@ export function NativeNavigation() {
             headerLeft: () =>
               <UserButton
                 pictureUri={user?.photo || null}
-                id={user?.id || null}
+                code={user?.code || null}
               />,
           }}
         />

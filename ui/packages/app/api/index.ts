@@ -1,8 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import Constants from 'expo-constants';
+import { API_URL } from "@env";
 
-const API_URL = Constants.expoConfig?.extra?.apiRoot;
 console.log("using API URL: ", API_URL);
 
 export interface LoginResponse {
@@ -25,7 +24,7 @@ export const api = createApi({
 
       return headers
     },
-    timeout: 3000,
+    timeout: 10000,
   }),
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, string>({
@@ -40,8 +39,8 @@ export const api = createApi({
     me: builder.query<User, void>({
       query: () => 'api/core/me' // change to 'me'
     }),
-    user: builder.query<User, number>({
-      query: (id: number) => `api/core/users/${id}`
+    user: builder.query<User, string>({
+      query: (code: string) => `api/core/users/${code}`
     })
   }),
   reducerPath: 'api',

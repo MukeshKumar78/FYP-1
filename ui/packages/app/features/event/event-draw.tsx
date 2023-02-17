@@ -17,11 +17,11 @@ export default function EventDetails({ event }: {
   return (
     <View style={styles.eventContainer}>
       {/* TITLE BAR RENDER*/}
-      <Link href={`/society/${event.society.id}`}>
+      <Link href={`/society/${event.society.code}`}>
         <View style={styles.titleBarContainer}>
           <Image
             style={styles.societyImage}
-            source={{ uri: event.society.image }}
+            source={{ uri: getPublicUri(event.society.image) }}
           />
 
           <View style={styles.societyNameDateContainer}>

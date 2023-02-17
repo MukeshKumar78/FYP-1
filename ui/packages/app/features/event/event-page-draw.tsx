@@ -4,6 +4,7 @@ import Text from '../../components/Text'
 import EventOptionsModal from './event-options-modal'
 import Dater from 'app/components/DateRender'
 import { InteractiveBar } from 'app/components/Interactive-Bar'
+import { getPublicUri } from 'app/api/util'
 
 // RENDERER COMPONENT FOR ALL EVENT COMPONENT ELEMENTS
 export default function EventPageDraw(props: { data: SocietyEvent }) {
@@ -32,7 +33,7 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
         {/* TODO: make a slideshow component for images */}
         <View>
           {data.attachments.map((image, key) => 
-            <ScaledImage key={key} uri={image} />
+            <ScaledImage key={key} uri={getPublicUri(image)} />
           )}
         </View>
         <Text style={styles.eventText}>{data.text}</Text>

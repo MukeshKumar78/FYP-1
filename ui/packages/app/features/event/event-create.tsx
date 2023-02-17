@@ -10,7 +10,7 @@ import {
   Button
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import { SocietyHeader } from './screen';
+import SocietyHeader from 'app/components/SocietyHeader';
 import { useGetSocietyQuery } from '../society/society-api';
 import DateTimePicker from 'app/components/DateTimePicker';
 import ImagePicker, { ImagePickerAsset } from 'app/components/ImagePicker';
@@ -19,7 +19,7 @@ import { useRouter } from 'solito/router';
 import { z } from 'zod';
 import { toDateString } from 'app/api/util';
 
-const { useParam } = createParam<{ id: string }>()
+const { useParam } = createParam<{ code: string }>()
 
 interface FormState extends Partial<Event> {
   title: string
@@ -42,8 +42,8 @@ const eventSchema = z.object({
 })
 
 export function EventCreate() {
-  const [societyId] = useParam('id');
-  const { data: society } = useGetSocietyQuery(Number(societyId));
+  const [societyCode] = useParam('code');
+  const { data: society } = useGetSocietyQuery(societyCode || '');
   const [postEvent] = useAddEventMutation();
   const [isValid, setIsValid] = useState(false);
   const navigation = useNavigation();
@@ -73,7 +73,6 @@ export function EventCreate() {
     }
   )
 
-  // TODO: change to use FormData for prod api
   async function handleSubmit() {
     const formData = new FormData();
     formData.append('title', state.title)
@@ -93,15 +92,13 @@ export function EventCreate() {
 
   // Set Society image and title on AppBar 
   useEffect(() => {
+    console.log(societyCode, society);
     if (society)
       navigation.setOptions({
         headerTitle: () =>
-          <SocietyHeader
-            title={society.name}
-            image={society.image}
-          />
+          <SocietyHeader society={society}/>
       })
-  }, [])
+  }, [society, navigation])
 
   if (!society)
     return <EventCreateError />

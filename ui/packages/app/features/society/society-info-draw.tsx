@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import Text from '../../components/Text'
 import { Link } from 'solito/link';
-// import DateTimePicker from '@react-native-community/datetimepicker'
+import { getPublicUri } from 'app/api/util';
 
 export function SocietyInfo({ society } : {
   society: Society
@@ -23,7 +23,7 @@ export function SocietyInfo({ society } : {
           <View style={styles.imageContainer}>
             <Image
               style={styles.profilePicture}
-              source={{ uri: society.image }}
+              source={{ uri: getPublicUri(society.image) }}
             />
           </View>
 
@@ -56,7 +56,7 @@ export function SocietyInfo({ society } : {
             <Pressable>
               <Text style={styles.functionalButton}>Edit Society</Text>
             </Pressable>
-              <Link href={`/event-create/${society.id}`}>
+              <Link href={`/event-create/${society.code}`}>
                 <Text style={styles.functionalButton}>Create Event</Text>
               </Link>
           </View>

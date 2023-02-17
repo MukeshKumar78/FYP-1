@@ -6,4 +6,7 @@ module.exports = {
     apiRoot: process.env.API_URL,
   },
   scheme: "solito-blank",
+  android: {
+    package: "com.campusme.app"
+  }
 };

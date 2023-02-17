@@ -4,20 +4,20 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import UserDetailsOrError from './user-details';
 
-const { useParam } = createParam<{ id: string }>()
+const { useParam } = createParam<{ code: string }>()
 
 
 export function UserDetailScreen() {
-  const [id] = useParam('id');
+  const [code] = useParam('code');
 
-  const { data } = useUserQuery(Number(id));
+  const { data } = useUserQuery(code || '');
 
   const navigation = useNavigation();
 
   useEffect(() => {
     if (data)
       navigation.setOptions({ title: data.firstName + ' ' + data.lastName })
-  }, [data])
+  }, [data, navigation])
 
   return <UserDetailsOrError user={data}/>
 

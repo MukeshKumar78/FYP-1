@@ -5,6 +5,7 @@ declare global {
 
   type User = {
     id: number
+    code: string
     firstName: string
     lastName: string
     photo: string
@@ -19,17 +20,27 @@ declare global {
 
   type Society = {
     id: number
+    code: string
     name: string
     fullName: string
     description?: string
     image: string
     createdAt: Date
+    base: BaseSociety
     tenure: {
       id: number
       code: string
       description: string
       duration: string
     }
+  }
+  
+  type BaseSociety = {
+    id: number
+    code: string
+    name: string
+    fullName: string
+    image: string
   }
 
   type SocietyEvent = {
