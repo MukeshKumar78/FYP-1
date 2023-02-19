@@ -1,10 +1,10 @@
-import { View, H1 } from 'dripsy'
+import { View } from 'react-native'
 import { EventMap } from '../event/event-map'
 
 export function HomeScreen() {
   return (
     <View
-      sx={{
+      style={{
         backgroundColor: '$background',
         flex: 1,
         alignItems: 'center',

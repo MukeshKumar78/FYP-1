@@ -1,4 +1,3 @@
-import { View as DView, H1 } from 'dripsy'
 import { useState } from 'react'
 import { View, Text, Switch, StyleSheet } from 'react-native'
 
@@ -6,8 +5,8 @@ export function SettingsScreen() {
   const [darkMode, setDarkMode] = useState(false)
 
   return (
-    <DView style={styles.settingsWrapper}>
-      <H1 style={styles.Title}>Settings</H1>
+    <View style={styles.settingsWrapper}>
+      <Text style={styles.Title}>Settings</Text>
 
       <View style={styles.settingContainer}>
         <Text style={styles.settingName}> Setting 1 </Text>
@@ -18,7 +17,7 @@ export function SettingsScreen() {
         <Text style={styles.settingName}> Setting 2 </Text>
         <Switch value={darkMode} onChange={() => setDarkMode(!darkMode)} />
       </View>
-    </DView>
+    </View>
   )
 }
 

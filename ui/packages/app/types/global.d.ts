@@ -34,7 +34,7 @@ declare global {
       duration: string
     }
   }
-  
+
   type BaseSociety = {
     id: number
     code: string
@@ -64,4 +64,16 @@ declare global {
     attachments: string[]
     event: SocietyEvent
   };
+
+  enum Permissions {
+    EVENT_CREATE = 'EVENT_CREATE',
+    EVENT_READ = 'EVENT_READ',
+    EVENT_PUBLISH = 'EVENT_PUBLISH',
+    EVENT_DELETE = 'EVENT_DELETE',
+    POST_CREATE = 'POST_CREATE',
+    POST_DELETE = 'POST_DELETE',
+    MEMBER_ADD = 'MEMBER_ADD',
+    MEMBER_REMOVE = 'MEMBER_REMOVE',
+    MEMBER_UPDATE = 'MEMBER_UPDATE'
+  }
 }

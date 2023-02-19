@@ -1,11 +1,8 @@
 import { useState } from 'react'
-import { View as DView } from 'dripsy'
 import {
   View,
-  Text,
   Modal,
   StyleProp,
-  TextStyle,
   ViewStyle,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -20,7 +17,7 @@ export default function EventOptionsModal(props: {
 
   // EVENT OPTIONS BUTTON  HANDLER WHICH IS IN EVENT TITLE BAR
   return (
-    <DView {...props}>
+    <View {...props}>
       <Entypo
         onPress={() => setIsVisible(true)}
         size={20}
@@ -43,7 +40,7 @@ export default function EventOptionsModal(props: {
           onPressOut={() => setIsVisible(false)}
         >
           <TouchableWithoutFeedback>
-            <DView variant="layout.card" sx={{ width: '80%', maxWidth: 600 }}>
+            <View style={{ width: '80%', maxWidth: 600 }}>
               <Button
                 style={{ flex: undefined, margin: 3 }}
                 onPress={() => setIsVisible(false)}
@@ -54,10 +51,10 @@ export default function EventOptionsModal(props: {
                 onPress={() => setIsVisible(false)}
                 title="Mute"
               />
-            </DView>
+            </View>
           </TouchableWithoutFeedback>
         </TouchableOpacity>
       </Modal>
-    </DView>
+    </View>
   )
 }

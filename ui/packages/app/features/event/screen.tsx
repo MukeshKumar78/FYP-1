@@ -7,6 +7,7 @@ import { Image, Text } from 'react-native';
 import { PostMap } from '../post/post-map'
 import { useGetEventQuery } from './event-api';
 import SocietyHeader from 'app/components/SocietyHeader';
+import { useSocietyHeader } from 'app/hooks/headers';
 
 
 const { useParam } = createParam<{ id: string }>()
@@ -16,16 +17,11 @@ const { useParam } = createParam<{ id: string }>()
 */
 export function EventPage() {
   const [id] = useParam('id');
-  const navigation = useNavigation();
   const { data } = useGetEventQuery(Number(id));
+  const { createHeader } = useSocietyHeader(data?.society);
 
-  useEffect(() => {
-    if(data)
-      navigation.setOptions({
-        headerTitle: () => 
-          <SocietyHeader society={data.society}/>
-      })
-  }, [data, navigation])
+  useEffect(createHeader);
+
 
   if(!data)
     return <EventScreenError/>

@@ -1,5 +1,4 @@
 import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native'
-import { useDripsyTheme } from 'dripsy'
 import * as Linking from 'expo-linking'
 import { useMemo } from 'react'
 
@@ -22,8 +21,9 @@ export function NavigationProvider({
               login: 'login',
               'user-detail': 'user/:code',
               event: 'event/:id',
-              "event-create": "event-create/:code",
+              "event-create": "society/:code/new-event",
               society: 'society/:code',
+              "edit-society": 'society/:code/edit',
               settings: 'settings'
             },
           },

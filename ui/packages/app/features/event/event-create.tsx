@@ -1,6 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
 import { createParam } from 'solito';
-import { H1 } from 'dripsy'
 import { useEffect, useReducer, useState } from 'react';
 import {
   StyleSheet,
@@ -10,28 +8,30 @@ import {
   Button
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import SocietyHeader from 'app/components/SocietyHeader';
 import { useGetSocietyQuery } from '../society/society-api';
 import DateTimePicker from 'app/components/DateTimePicker';
 import ImagePicker, { ImagePickerAsset } from 'app/components/ImagePicker';
 import { useAddEventMutation } from './event-api';
 import { useRouter } from 'solito/router';
-import { z } from 'zod';
+import { TypeOf, z } from 'zod';
 import { toDateString } from 'app/api/util';
+import { useSocietyHeader } from 'app/hooks/headers';
 
 const { useParam } = createParam<{ code: string }>()
 
-interface FormState extends Partial<Event> {
+interface LocalFormState {
   title: string
   text: string
   startDate: Date
   endDate?: Date
-  attachments?: ImagePickerAsset[]
+  attachments: (File | ImagePickerAsset)[]
 }
+
+interface FormState extends LocalFormState, Partial<Event> {}
 
 type FormAction = {
   key: string
-  value: string | Date | ImagePickerAsset[]
+  value: LocalFormState[keyof LocalFormState]
 }
 
 const eventSchema = z.object({
@@ -46,7 +46,7 @@ export function EventCreate() {
   const { data: society } = useGetSocietyQuery(societyCode || '');
   const [postEvent] = useAddEventMutation();
   const [isValid, setIsValid] = useState(false);
-  const navigation = useNavigation();
+  const { createHeader } = useSocietyHeader(society);
   const router = useRouter();
 
   const [state, dispatch] = useReducer(
@@ -78,27 +78,19 @@ export function EventCreate() {
     formData.append('title', state.title)
     formData.append('text', state.text)
     formData.append('startDate', toDateString(state.startDate));
-    state.attachments?.forEach(a => {
-      if (a.type && a.fileName && a.uri)
-        formData.append('attachments', { type: a.type, name: a.fileName, uri: a.uri })
+    state.attachments.forEach(file => {
+      formData.append('attachments', file)
     })
 
     if (society) {
       const result = await postEvent([society.id, formData]);
-      router.replace(`/society/${society.id}`)
-      console.log(result);
+      router.replace(`/society/${society.code}`)
+      console.log('new event', result);
     }
   }
 
-  // Set Society image and title on AppBar 
-  useEffect(() => {
-    console.log(societyCode, society);
-    if (society)
-      navigation.setOptions({
-        headerTitle: () =>
-          <SocietyHeader society={society}/>
-      })
-  }, [society, navigation])
+  // Set Society image and title on App Bar 
+  useEffect(createHeader)
 
   if (!society)
     return <EventCreateError />
@@ -107,7 +99,7 @@ export function EventCreate() {
     <ScrollView style={styles.mainContainer}>
 
       <View style={styles.titleContainer}>
-        <H1 style={styles.heading}>Create an Event</H1>
+        <Text style={styles.heading}>Create an Event</Text>
 
         {/* Title Input */}
         <View style={styles.textContainer}>
@@ -158,10 +150,6 @@ export function EventCreate() {
           </View>
           <ImagePicker
             onPick={(assets) => {
-              // const attachments = assets
-              //   .map(a => a.uri)
-              //   .filter(a => a) as string[];
-
               dispatch({
                 key: 'attachments',
                 value: assets

@@ -1,8 +1,8 @@
-import * as SecureStore from 'expo-secure-store';
+import { getItem } from './storage';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { API_URL } from "@env";
+import { apiUrl } from "./config";
 
-console.log("using API URL: ", API_URL);
+console.log("using API URL: ", apiUrl);
 
 export interface LoginResponse {
   user: User
@@ -11,16 +11,16 @@ export interface LoginResponse {
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: API_URL,
-    prepareHeaders: async (headers, api) => {
-      const userToken = await SecureStore.getItemAsync('jwt');
+    baseUrl: apiUrl,
+    prepareHeaders: async (headers) => {
+      const userToken = await getItem('jwt');
 
       if (userToken && !headers.has('Authorization')) {
         headers.set('Authorization', `Bearer ${userToken}`)
       }
 
-      if(!headers.has('Content-Type'))
-        headers.set('Content-Type', 'application/json')
+      // if(!headers.has('Content-Type'))
+      //   headers.set('Content-Type', 'application/json')
 
       return headers
     },
@@ -33,7 +33,7 @@ export const api = createApi({
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}` // override app token with google idtoken
-        }
+        },
       }),
     }),
     me: builder.query<User, void>({

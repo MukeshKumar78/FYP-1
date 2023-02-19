@@ -53,10 +53,10 @@ export function SocietyInfo({ society } : {
             {society.description}
           </Text>
           <View style={styles.buttonsContainer}>
-            <Pressable>
+            <Link href={`/society/${society.code}/edit`}>
               <Text style={styles.functionalButton}>Edit Society</Text>
-            </Pressable>
-              <Link href={`/event-create/${society.code}`}>
+            </Link>
+              <Link href={`/society/${society.code}/new-event`}>
                 <Text style={styles.functionalButton}>Create Event</Text>
               </Link>
           </View>

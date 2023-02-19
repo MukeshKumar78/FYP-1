@@ -12,12 +12,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'solito/link'
 
 import useAuth from 'app/features/auth/useAuth';
-import { useSx } from 'dripsy';
 import { LoadingScreen } from 'app/features/loading/screen';
 import { ProfileScreen } from 'app/features/user/profile-screen';
 import { EventPage } from 'app/features/event/screen';
 import { SocietyPage } from 'app/features/society/screen';
 import { EventCreate } from 'app/features/event/event-create';
+import { SocietyEditPage } from 'app/features/society/edit-screen';
 
 const Stack = createNativeStackNavigator<{
   home: undefined
@@ -28,6 +28,9 @@ const Stack = createNativeStackNavigator<{
     id: string
   }
   society: {
+    code: string
+  }
+  "edit-society": {
     code: string
   }
   "event-create": {
@@ -70,15 +73,13 @@ function UserButton({ pictureUri, code }: { pictureUri: string | null, code: str
 
 function SidebarButton() {
   const navigation = useNavigation();
-  const sx = useSx();
-
   function openSidebar() {
     navigation.dispatch(DrawerActions.openDrawer());
   }
 
   return (
     <Ionicons name="md-menu" size={32} color="black"
-      style={sx({ margin: 10, color: '$text' })}
+      style={{ margin: 10 }}
       onPress={openSidebar}
     />
   )
@@ -173,6 +174,13 @@ export function NativeNavigation() {
       <Stack.Screen
         name="society"
         component={SocietyPage}
+        options={{
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="edit-society"
+        component={SocietyEditPage}
         options={{
           headerTitleAlign: "center",
         }}

@@ -2,6 +2,19 @@ import {
   GoogleSignin,
 } from '@react-native-google-signin/google-signin';
 
+import { GoogleSigninButton as _GoogleSigninButton } from '@react-native-google-signin/google-signin'
+
+export function GoogleSigninButton({ handleIdToken }) {
+  return <_GoogleSigninButton
+    onPress={() => {
+      signIn()
+      .then(user => {
+        handleIdToken(user.idToken || undefined)
+      })
+    }}
+  />
+}
+
 export async function signIn() {
   try {
     await GoogleSignin.hasPlayServices();

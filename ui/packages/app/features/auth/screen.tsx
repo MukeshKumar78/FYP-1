@@ -1,14 +1,9 @@
-import { View, H1, useSx } from 'dripsy'
 import {
   GoogleSigninButton
-} from '@react-native-google-signin/google-signin';
+} from './google';
 import useAuth from './useAuth';
 import { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-
-StyleSheet.create({
-  view: { flex: 1, justifyContent: 'center', alignItems: 'center', p: 16, backgroundColor: '$background' },
-})
+import { View, Text } from 'react-native';
 
 export function LoginScreen() {
   const { signIn, signOut } = useAuth();
@@ -19,15 +14,14 @@ export function LoginScreen() {
 
   return (
     <View
-      sx={{
-        flex: 1, justifyContent: 'center', alignItems: 'center', p: 16, backgroundColor: '$background'
+      style={{
+        flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 
       }}
     >
-      <H1 sx={{ fontWeight: '800' }}>Welcome to CampusMe.</H1>
-      <View sx={{ height: 32 }} />
+      <Text style={{ fontWeight: '800', fontSize: 25 }}>Welcome to CampusMe.</Text>
+      <View style={{ height: 32 }} />
 
-      <GoogleSigninButton
-        onPress={signIn} />
+      <GoogleSigninButton handleIdToken={signIn}/>
     </View>
   )
 }

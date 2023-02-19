@@ -2,12 +2,6 @@ import { api } from 'app/api';
 
 // revalidation example: https://redux-toolkit.js.org/rtk-query/usage/mutations#revalidation-example
 
-type PostResponse = Pick<SocietyPost, 'id'|'title'|'image'> & {
-  society: Pick<Society, 'id'|'name'|'image'>
-  event: Pick<SocietyEvent, 'id'|'title'>
-} 
-{ }
-
 export const postApi = api.injectEndpoints({
   endpoints: (build) => ({
     getPost: build.query<SocietyPost, number>({

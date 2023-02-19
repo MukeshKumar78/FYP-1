@@ -30,20 +30,9 @@ export default function UserDetailsOrError({ user }: {
       }
       <Text style={{ fontSize: 30 }}>{user.firstName} {user.lastName}</Text>
       <Text
-        style={{ color: '$muted', textAlign: 'center', marginBottom: 16, fontWeight: 'bold' }}
+        style={{ color: 'gray', textAlign: 'center', marginBottom: 16, fontWeight: 'bold' }}
       >{user.email}</Text>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          borderRadius: 15,
-          paddingTop: 30,
-          paddingBottom: 30,
-          alignSelf: 'stretch',
-          backgroundColor: 'white',
-          marginTop: 20,
-        }}
-      >
+      <View style={styles.userInfo}>
         <View style={{ width: '100%', }}>
           <View style={styles.headingContainer}>
             <Text style={styles.heading}>Memberships</Text>
@@ -73,16 +62,26 @@ function MembershipBox({ data }: {
           <Text style={styles.membershipTitle}>{data.society.fullName}</Text>
         </View>
         <View style={styles.membershipContent}>
-          <Text style={[styles.membershipSubtitle, {fontStyle: 'italic'}]}>Example Team</Text>
+          <Text style={[styles.membershipSubtitle, { fontStyle: 'italic' }]}>Example Team</Text>
           <Text style={styles.membershipSubtitle}>as {data.role}</Text>
         </View>
-        <Ionicons name="arrow-forward" size={25} style={{color: '#696969', position: 'absolute', right: 5, bottom: 5}}/>
+        <Ionicons name="arrow-forward" size={25} style={{ color: '#696969', position: 'absolute', right: 5, bottom: 5 }} />
       </View>
     </Link>
   </View>
 }
 
 const styles = StyleSheet.create({
+  userInfo: {
+    flex: 1,
+    alignItems: 'center',
+    borderRadius: 15,
+    paddingTop: 30,
+    paddingBottom: 30,
+    alignSelf: 'stretch',
+    backgroundColor: 'white',
+    marginTop: 20,
+  },
   heading: {
     fontSize: 28,
     paddingBottom: 2,
@@ -91,10 +90,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   headingContainer: {
-    borderColor: 'gray',
-    borderBottomWidth: 0.5,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20,
+    borderColor: 'gainsboro',
+    borderBottomWidth: StyleSheet.hairlineWidth,
     width: '100%',
   },
   societyImage: {

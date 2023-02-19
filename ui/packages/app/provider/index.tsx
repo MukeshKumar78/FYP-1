@@ -1,17 +1,17 @@
-import { Dripsy } from './dripsy'
 import { NavigationProvider } from './navigation'
 import store from 'app/api/store';
 import { Provider as ReduxProvider } from 'react-redux';
+import { GoogleProvider } from './google';
 
 export function Provider({ children }: { children: React.ReactNode }) {
 
   return (
     <NavigationProvider>
-      <ReduxProvider store={store}>
-        <Dripsy>
+      <GoogleProvider>
+        <ReduxProvider store={store}>
           {children}
-        </Dripsy>
-      </ReduxProvider>
+        </ReduxProvider>
+      </GoogleProvider>
     </NavigationProvider>
   )
 }

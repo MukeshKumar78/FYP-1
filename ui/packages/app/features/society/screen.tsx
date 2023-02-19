@@ -1,34 +1,26 @@
-import { View } from 'dripsy'
 import { createParam } from 'solito';
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import React, { useEffect } from 'react';
 import { EventMap } from '../event/event-map';
 import { SocietyInfo } from './society-info-draw';
 import { useGetSocietyQuery } from './society-api';
-import SocietyHeader from 'app/components/SocietyHeader';
+import { useSocietyHeader } from '../../hooks/headers'
 
 const { useParam } = createParam<{ code: string }>()
 
 export function SocietyPage() {
   const [societyCode] = useParam('code');
-  const navigation = useNavigation();
-  const { data: society } = useGetSocietyQuery(societyCode||'');
+  const { data: society } = useGetSocietyQuery(societyCode || '');
+  const { createHeader } = useSocietyHeader(society)
 
-  useEffect(() => {
-    if(society)
-      navigation.setOptions({
-        headerTitle: () =>
-          <SocietyHeader society={society}/>
-      })
-  }, [society, navigation])
+  useEffect(createHeader);
 
-  if(!society)
-    return <SocietyScreenError/>    
+  if (!society)
+    return <SocietyScreenError />
 
   return (
     <View
-      sx={{
+      style={{
         backgroundColor: '$background',
         flex: 1,
         alignItems: 'center',
@@ -42,7 +34,7 @@ export function SocietyPage() {
   )
 }
 
-function SocietyScreenError() {
+export function SocietyScreenError() {
   return <View style={styles.mainContainer}>
     <Text>
       Failed to load screen

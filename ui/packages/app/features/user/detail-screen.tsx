@@ -3,6 +3,7 @@ import { useUserQuery } from 'app/api';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import UserDetailsOrError from './user-details';
+import { useUserHeader } from 'app/hooks/headers';
 
 const { useParam } = createParam<{ code: string }>()
 
@@ -12,12 +13,9 @@ export function UserDetailScreen() {
 
   const { data } = useUserQuery(code || '');
 
-  const navigation = useNavigation();
+  const { createHeader } = useUserHeader(data);
 
-  useEffect(() => {
-    if (data)
-      navigation.setOptions({ title: data.firstName + ' ' + data.lastName })
-  }, [data, navigation])
+  useEffect(createHeader);
 
   return <UserDetailsOrError user={data}/>
 

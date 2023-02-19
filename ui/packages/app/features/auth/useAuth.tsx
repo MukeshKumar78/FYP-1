@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as SecureStore from 'expo-secure-store';
+import { setItem } from 'app/api/storage';
 
-import { authState, init, signIn, signOut } from "./auth-reducer";
+import { authState, signIn, signOut } from "./auth-reducer";
 import {
   signIn as googleSignIn,
   signOut as googleSignOut,
@@ -18,8 +18,9 @@ export default function useAuth() {
   const [getUser] = useLazyMeQuery();
 
   async function login(idToken: string): Promise<User | null> {
+    console.log('login', 'idtoken', idToken)
     const { token } = await getToken(idToken).unwrap();
-    await SecureStore.setItemAsync("jwt", token);
+    await setItem("jwt", token);
     const { data, isError, error } = await getUser();
     console.log({ data, isError, error });
     if (isError || !data) {
@@ -49,8 +50,13 @@ export default function useAuth() {
             dispatch(signOut());
           })
       } else {
-        // Sets loading to false
-        dispatch(signOut());
+        getUser()
+        .then(({data, isError}) => {
+            if(isError || !data)
+              dispatch(signOut()); // Sets loading to false
+            else
+              dispatch(signIn({ user: data }))
+        })
       }
     })
   }, [])
@@ -59,12 +65,10 @@ export default function useAuth() {
     user: useMemo(() => user, [user]),
     loading: useMemo(() => loading, [loading]),
     isSignedIn: useMemo(() => isSignedIn, [isSignedIn]),
-    signIn: async () => {
+    signIn: async (idToken: string | undefined) => {
       try {
-        const googleUserInfo = await googleSignIn();
-
-        if (googleUserInfo && googleUserInfo.idToken) {
-          const user = await login(googleUserInfo.idToken)
+        if (idToken) {
+          const user = await login(idToken)
           if (user)
             dispatch(signIn({ user }))
         }

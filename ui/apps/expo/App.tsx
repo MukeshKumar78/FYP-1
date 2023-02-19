@@ -1,12 +1,12 @@
 import { NativeNavigation } from 'app/navigation/native'
 import { Provider } from 'app/provider'
 import { useEffect } from 'react';
-import { StatusBar, StyleSheet, useColorScheme} from 'react-native'
+import { StatusBar, StyleSheet } from 'react-native'
 
 
 
 export default function App() {
-  const isDark = useColorScheme() == 'dark';
+  // const isDark = useColorScheme() == 'dark';
 
   useEffect(() => {
     StatusBar.setBarStyle('dark-content', false)
@@ -16,8 +16,8 @@ export default function App() {
   return (
     <>
       <StatusBar 
-        barStyle={isDark ? 'dark-content' : 'light-content'}
-        backgroundColor={isDark ? 'black': 'white'}
+        barStyle={'dark-content'}
+        backgroundColor={'black'}
       />
     <Provider>
       <NativeNavigation />

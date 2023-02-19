@@ -1,9 +1,9 @@
-import { API_URL } from "@env";
+import { apiUrl } from "./config";
 
 export function getPublicUri(name: string) : string {
   const uri = name.startsWith('http')
   ? name
-  : API_URL + '/public/' + name
+  : apiUrl + '/public/' + name
   return uri;
 }
 

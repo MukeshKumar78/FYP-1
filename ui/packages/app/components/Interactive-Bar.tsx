@@ -1,5 +1,4 @@
-import { View as DView } from 'dripsy'
-import { StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { ButtonWithChildren } from './Button'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -11,7 +10,7 @@ export function InteractiveBar(props) {
   function shareHandler() {}
 
   return (
-    <DView style={styles.interactiveBarContainer}>
+    <View style={styles.interactiveBarContainer}>
       <ButtonWithChildren
         style={styles.buttons}
         onPress={() => {
@@ -33,7 +32,7 @@ export function InteractiveBar(props) {
       >
         <Ionicons name="share" {...interactiveButtonProps} />
       </ButtonWithChildren>
-    </DView>
+    </View>
   )
 }
 

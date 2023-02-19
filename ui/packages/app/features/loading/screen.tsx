@@ -1,10 +1,10 @@
-import { View, Image } from 'dripsy'
+import { View, Image } from 'react-native'
 
 export function LoadingScreen() {
   return (
     <View
-      sx={{
-        flex: 1, justifyContent: 'center', alignItems: 'center', p: 16, backgroundColor: '$background'
+      style={{
+        flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16
       }}
     >
     <Image
