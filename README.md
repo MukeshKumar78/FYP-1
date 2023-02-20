@@ -5,13 +5,17 @@
 - [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 - Arch (using yay): `yay -S docker docker-compose`
 2. Clone Repo
-```
+```sh
 git clone https://github.com/MukeshKumar78/FYP-1
+cd FYP-1
 ```
-3. Start all services
+3. Configure default docker env
+```sh
+cp docker/example.env docker/.env
 ```
-cd docker
-docker-compose up
+4. Start all services
+```sh
+docker-compose -f docker/docker-compose.yml up
 ```
 
 * Admin Dashboard: [http://localhost:8080/admin](http://localhost:8080/admin)
@@ -20,35 +24,26 @@ docker-compose up
 * Society API: [http://localhost:8080/api/core](http://localhost:8080/api/core)
 * Teams API: In development
 
+## [Start Web/Android app](./ui/README.md)
+
 ## Development
 ### Start infra containers
 ```sh
-cd docker && docker-compose up db discovery -d
+docker-compose -f docker/docker-compose.yml up db discovery -d
 ```
 
-### Start gateway service in development mode
-```
-cd gateway
-./mvnw clean && ./mvnw spring-boot:run
-```
+### Start services
+```sh
+# multiple at once using tmux
+./dev.sh --tmux gateway society security
 
-### Start society service in development mode
+# one at a time
+./dev.sh gateway
 ```
-cd society
-./mvnw clean && ./mvnw spring-boot:run
-```
-
-### Start security service in development mode
-```
-cd security
-./mvnw clean && ./mvnw spring-boot:run
-```
-
-### [Start Web/Android app](ui/README.md)
 
 ### Customize environment variables
 #### In Bash
-```
+```sh
 export EUREKA_HOST=http://localhost:8761/eureka
 export JWT_SECRET=9y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@
 export STATIC_FILES_LOCATION=/tmp/public/
