@@ -24,7 +24,7 @@ docker-compose -f docker/docker-compose.yml up
 * Society API: [http://localhost:8080/api/core](http://localhost:8080/api/core)
 * Teams API: In development
 
-## [Start Web/Android app](./ui/README.md)
+## [Start Web/Android app](./ui/readme.md)
 
 ## Development
 ### Start infra containers
