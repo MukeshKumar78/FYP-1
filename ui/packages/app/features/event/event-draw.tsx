@@ -3,54 +3,57 @@ import { View, Image, StyleSheet } from 'react-native'
 import Text from '../../components/Text'
 import EventOptionsModal from './event-options-modal'
 import Dater from 'app/components/DateRender'
-import { InteractiveBar } from 'app/components/Interactive-Bar'
+import { InteractiveBar } from 'app/components/InteractiveBar'
 import { Link } from 'solito/link'
 import { getPublicUri } from 'app/api/util';
+import { AnimatedLink } from 'app/components/Button'
 
 /**
 * Displays event with header, content and interactive bar sections
 */
-export default function EventDetails({ event }: {
+export default function EventDraw({ event }: {
   event: SocietyEvent
 }) {
 
   return (
-    <View style={styles.eventContainer}>
-      {/* TITLE BAR RENDER*/}
-      <Link href={`/society/${event.society.code}`}>
-        <View style={styles.titleBarContainer}>
-          <Image
-            style={styles.societyImage}
-            source={{ uri: getPublicUri(event.society.image) }}
-          />
+    <View style={{ elevation: 2 }}>
+      <View style={styles.eventContainer}>
+        {/* TITLE BAR RENDER*/}
+        <AnimatedLink href={`/society/${event.society.code}`}>
+          <View style={styles.titleBarContainer}>
+            <Image
+              style={styles.societyImage}
+              source={{ uri: getPublicUri(event.society.image) }}
+            />
 
-          <View style={styles.societyNameDateContainer}>
-            {/* SOCIETY NAME */}
-            <Text style={styles.societyName}>{event.society.name}</Text>
+            <View style={styles.societyNameDateContainer}>
+              {/* SOCIETY NAME */}
+              <Text style={styles.societyName}>{event.society.name}</Text>
 
-            {/* DATE COMPONENT */}
-            <Text style={styles.eventDate}>
-              <Dater date={event.startDate} /> {`\t`}
-              {event.endDate && <Dater date={event.endDate} />}
-            </Text>
+              {/* DATE COMPONENT */}
+              <Text style={styles.eventDate}>
+                <Dater date={event.startDate} /> {`\t`}
+                {event.endDate && <Dater date={event.endDate} />}
+              </Text>
+            </View>
+            <EventOptionsModal style={styles.eventOptionButton} />
           </View>
-          <EventOptionsModal style={styles.eventOptionButton} />
+        </AnimatedLink>
+
+        {/* EVENT TITLE IMAGE CONTENT RENDER*/}
+        <View style={{}}>
+          <Text style={styles.eventTitle}>{event.title}</Text>
+          <AnimatedLink href={`/event/${event.id}`}>
+            {event.attachments.map((image, key) =>
+              <ScaledImage uri={getPublicUri(image)} key={key} />
+            )}
+            <Text style={styles.eventText}>{event.text}</Text>
+          </AnimatedLink>
         </View>
-      </Link>
 
-      {/* EVENT TITLE IMAGE CONTENT RENDER*/}
-      <View style={styles.contentContainer}>
-        <Text style={styles.eventTitle}>{event.title}</Text>
-        <Link href={`/event/${event.id}`}>
-          {event.attachments.map((image, key) => 
-            <ScaledImage uri={getPublicUri(image)} key={key} />
-          )}
-          <Text style={styles.eventText}>{event.text}</Text>
-        </Link>
+        {/* EVENT INTERACTIVE BAR RENDER*/}
+        <InteractiveBar id={event.id} />
       </View>
-
-      {/* EVENT INTERACTIVE BAR RENDER*/}
-      <InteractiveBar id={event.id} />
     </View>
   )
 }
@@ -58,10 +61,7 @@ export default function EventDetails({ event }: {
 const styles = StyleSheet.create({
   eventContainer: {
     width: '100%',
-    borderWidth: 0.5,
-    borderRadius: 10,
-    borderColor: 'gainsboro',
-    backgroundColor: '$background',
+    paddingHorizontal: 3,
     marginVertical: 4,
   },
 
@@ -95,9 +95,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
 
-  contentContainer: {
-    padding: 7,
-  },
   eventTitle: {
     fontSize: 24,
     fontWeight: 'bold',

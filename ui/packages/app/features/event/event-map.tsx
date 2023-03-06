@@ -1,8 +1,8 @@
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
-import EventDetails from './event-draw'
+import { View, RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import EventDraw from './event-draw'
 import { useListEventsQuery } from './event-api';
 import { useCallback, useState } from 'react';
-import Button from 'app/components/Button';
+import { Button } from 'app/components/Button';
 
 /*
 * Component to fetch and display a scrollable list of events
@@ -29,9 +29,11 @@ export function EventMap() {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
       {data?.events.map((event, i) => (
-        <EventDetails event={event} key={i} />
+        <EventDraw event={event} key={i} />
       ))}
-      <Button title="Load more" onPress={loadMore} />
+      <View style={{ marginVertical: 10, alignItems: 'center'}}>
+        <Button type="outlined" text="Load more" onPress={loadMore} />
+      </View>
     </ScrollView>
   </>
 }

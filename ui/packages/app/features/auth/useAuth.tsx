@@ -39,7 +39,9 @@ export default function useAuth() {
 
     // else try signing in silently and refresh token
     googleSilentSignIn().then(user => {
+    console.log(1);
       if (user && user.idToken) {
+    console.log(2);
         login(user.idToken)
           .then((user) => {
             if (user)
@@ -50,6 +52,7 @@ export default function useAuth() {
             dispatch(signOut());
           })
       } else {
+    console.log(3);
         getUser()
         .then(({data, isError}) => {
             if(isError || !data)
@@ -58,6 +61,10 @@ export default function useAuth() {
               dispatch(signIn({ user: data }))
         })
       }
+    })
+    .catch(err => {
+        console.error(err);
+        dispatch(signOut());
     })
   }, [])
 

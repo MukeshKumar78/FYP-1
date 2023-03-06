@@ -34,16 +34,14 @@ export const eventApi = api.injectEndpoints({
         return currentArg !== previousArg
       },
     }),
-    addEvent: build.mutation<SocietyEvent, [number, FormData]>({
-      query([id, body]) {
+    addEvent: build.mutation<SocietyEvent, FormData>({
+      query(body) {
         return {
-          url: `/api/core/societies/${id}/events`,
+          url: `/api/core/events`,
           method: 'POST',
           body,
         }
       },
-      // Invalidates all Event-type queries providing the `LIST` id - after all, depending of the sort order,
-      // that newly created event could show up in any lists.
       invalidatesTags: [{ type: 'Event', id: 'PAGE' }],
     }),
   }),

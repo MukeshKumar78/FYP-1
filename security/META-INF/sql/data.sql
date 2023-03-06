@@ -1,0 +1,18 @@
+INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_CREATE', 'permission to create event', 'EVENT', 'CREATE');
+INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_READ', 'permission to read society events', 'EVENT', 'READ');
+INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_PUBLISH', 'permission to publish society events', 'EVENT', 'PUBLISH');
+INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_DELETE', 'permission to delete society events', 'EVENT', 'DELETE');
+INSERT INTO permission (code, description, target, permission) VALUES ('POST_CREATE', 'permission to create posts', 'POST', 'CREATE');
+INSERT INTO permission (code, description, target, permission) VALUES ('POST_DELETE', 'permission to delete posts', 'POST', 'DELETE');
+INSERT INTO permission (code, description, target, permission) VALUES ('MEMBER_ADD', 'permission to add members', 'MEMBER', 'ADD');
+INSERT INTO permission (code, description, target, permission) VALUES ('MEMBER_REMOVE', 'permission to remove members', 'MEMBER', 'REMOVE');
+INSERT INTO permission (code, description, target, permission) VALUES ('MEMBER_UPDATE', 'permission to update members', 'MEMBER', 'UPDATE');
+INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_CREATE', 'permission to create teams', 'TEAM', 'CREATE');
+INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_UPDATE', 'permission to update teams', 'TEAM', 'UPDATE');
+INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_DELETE', 'permission to delete teams', 'TEAM', 'DELETE');
+INSERT INTO role (code, description, name, precedence) VALUES ('HEAD', 'highest role', 'head', 1000);
+INSERT INTO role (code, description, name, precedence) VALUES ('ADMIN', 'not the highest role', 'head', 999);
+INSERT INTO roles_permissions (permission_id, role_id) VALUES (1, 1);
+INSERT INTO roles_permissions (permission_id, role_id) VALUES (2, 1);
+INSERT INTO roles_permissions (permission_id, role_id) VALUES (10, 1);
+INSERT INTO roles_permissions (permission_id, role_id) VALUES (5, 2);

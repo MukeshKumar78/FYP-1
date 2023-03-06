@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
-import Button from '../../components/Button'
+import { Button } from '../../components/Button'
 
 export default function EventOptionsModal(props: {
   style: StyleProp<ViewStyle>
@@ -42,14 +42,12 @@ export default function EventOptionsModal(props: {
           <TouchableWithoutFeedback>
             <View style={{ width: '80%', maxWidth: 600 }}>
               <Button
-                style={{ flex: undefined, margin: 3 }}
                 onPress={() => setIsVisible(false)}
-                title="Register"
+                text="Register"
               />
               <Button
-                style={{ flex: undefined, margin: 3 }}
                 onPress={() => setIsVisible(false)}
-                title="Mute"
+                text="Mute"
               />
             </View>
           </TouchableWithoutFeedback>

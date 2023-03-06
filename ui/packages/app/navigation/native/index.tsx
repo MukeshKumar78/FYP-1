@@ -14,10 +14,12 @@ import { Link } from 'solito/link'
 import useAuth from 'app/features/auth/useAuth';
 import { LoadingScreen } from 'app/features/loading/screen';
 import { ProfileScreen } from 'app/features/user/profile-screen';
-import { EventPage } from 'app/features/event/screen';
+import { EventScreen } from 'app/features/event/screen';
 import { SocietyPage } from 'app/features/society/screen';
-import { EventCreate } from 'app/features/event/event-create';
+import { EventCreateScreen } from 'app/features/event/event-create';
 import { SocietyEditPage } from 'app/features/society/edit-screen';
+import { CommentScreen } from 'app/features/comment/screen';
+import { PostCreateScreen } from 'app/features/post/post-create';
 
 const Stack = createNativeStackNavigator<{
   home: undefined
@@ -27,6 +29,9 @@ const Stack = createNativeStackNavigator<{
   event: {
     id: string
   }
+  comments: {
+    eventId: string
+  }
   society: {
     code: string
   }
@@ -35,6 +40,9 @@ const Stack = createNativeStackNavigator<{
   }
   "event-create": {
     code: string
+  }
+  "post-create": {
+    eventId: string
   }
   login: undefined
   loading: undefined
@@ -158,16 +166,31 @@ export function NativeNavigation() {
       />
       <Stack.Screen
         name="event"
-        component={EventPage}
+        component={EventScreen}
+        options={{
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="comments"
+        component={CommentScreen}
         options={{
           headerTitleAlign: "center",
         }}
       />
       <Stack.Screen
         name="event-create"
-        component={EventCreate}
+        component={EventCreateScreen}
         options={{
           title: "Create an Event",
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="post-create"
+        component={PostCreateScreen}
+        options={{
+          title: "Create a Post",
           headerTitleAlign: "center",
         }}
       />

@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import type { CommentModalOption } from './comment-draw';
 
-const DropdownModal = (props) => {
-  const { options, onSelectOption } = props;
+const DropdownModal = ({ options, onSelectOption }: {
+  options: Readonly<CommentModalOption[]>,
+  onSelectOption: (option: CommentModalOption) => void
+}) => {
   const [visible, setVisible] = useState(false);
-
-  const handleSelectOption = (option) => {
-    onSelectOption(option);
-    setVisible(false);
-  };
 
   return (
     <View style={styles.container}>
@@ -27,7 +25,10 @@ const DropdownModal = (props) => {
             {options.map((option, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => handleSelectOption(option)}
+                onPress={() => {
+                  onSelectOption(option);
+                  setVisible(false);
+                }}
               >
                 <Text style={styles.option}>{option}</Text>
               </TouchableOpacity>

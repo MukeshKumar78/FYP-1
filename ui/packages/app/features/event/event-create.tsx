@@ -41,12 +41,24 @@ const eventSchema = z.object({
   endDate: z.date().min(new Date()).optional(),
 })
 
-export function EventCreate() {
+export function EventCreateScreen() {
   const [societyCode] = useParam('code');
   const { data: society } = useGetSocietyQuery(societyCode || '');
+  const { createHeader } = useSocietyHeader(society);
+
+  // Set Society image and title on App Bar 
+  useEffect(createHeader)
+  if (!society)
+    return <EventCreateError />
+
+  return <EventCreateDraw society={society.code} />
+}
+
+export function EventCreateDraw({ society }: {
+  society: string
+}) {
   const [postEvent] = useAddEventMutation();
   const [isValid, setIsValid] = useState(false);
-  const { createHeader } = useSocietyHeader(society);
   const router = useRouter();
 
   const [state, dispatch] = useReducer(
@@ -81,19 +93,13 @@ export function EventCreate() {
     state.attachments.forEach(file => {
       formData.append('attachments', file)
     })
+    formData.append('society', society)
 
-    if (society) {
-      const result = await postEvent([society.id, formData]);
-      router.replace(`/society/${society.code}`)
-      console.log('new event', result);
-    }
+    const result = await postEvent(formData);
+    router.replace(`/society/${society}`)
+    console.log('new event', result);
   }
 
-  // Set Society image and title on App Bar 
-  useEffect(createHeader)
-
-  if (!society)
-    return <EventCreateError />
 
   return (
     <ScrollView style={styles.mainContainer}>

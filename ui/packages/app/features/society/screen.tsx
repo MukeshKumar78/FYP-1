@@ -5,15 +5,19 @@ import { EventMap } from '../event/event-map';
 import { SocietyInfo } from './society-info-draw';
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
+import { LoadingScreen } from '../loading/screen';
 
 const { useParam } = createParam<{ code: string }>()
 
 export function SocietyPage() {
   const [societyCode] = useParam('code');
-  const { data: society } = useGetSocietyQuery(societyCode || '');
+  const { data: society, isLoading } = useGetSocietyQuery(societyCode || '');
   const { createHeader } = useSocietyHeader(society)
 
   useEffect(createHeader);
+
+  if(isLoading)
+    return <></>
 
   if (!society)
     return <SocietyScreenError />

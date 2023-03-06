@@ -1,22 +1,35 @@
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import Text from '../../components/Text'
 import { Ionicons } from '@expo/vector-icons'
 import PostContent from './post-content-draw'
+import { getPublicUri } from 'app/api/util';
+import { TextLink, Link } from 'solito/link';
+import { AnimatedLink } from 'app/components/Button'
 
-export default function PostDraw({ data }: {
-  data: SocietyPost
+export default function PostDraw({ data, contentOnly = false }: {
+  data: SocietyPost,
+  contentOnly?: boolean
 }) {
   return (
     <View style={styles.mainContainer}>
       {/* TITLE BAR RENDER*/}
       <View style={styles.titleBarContainer}>
-        <Image
-          style={styles.societyImage}
-          source={{ uri: data.event.society.image }}
-        />
-        {/* SOCIETY NAME */}
-        <Text style={styles.societyName}>{data.event.society.name}</Text>
-        <Text style={styles.postInfoText}> {` posted an update`}</Text>
+        <AnimatedLink href={`/user/${data.createdBy.code}`}>
+          <Image
+            style={styles.societyImage}
+            source={{ uri: getPublicUri(data.event.society.image) }}
+          />
+        </AnimatedLink>
+        {/* User NAME */}
+        <View>
+          <Text style={styles.societyName}>{data.createdBy.firstName} {data.createdBy.lastName}</Text>
+          <Text style={styles.postInfoText}>
+            posted in <TextLink href={`/society/${data.event.society.code}`} >
+              <Text style={{ color: '#6677cc', fontWeight: 'bold' }}>{data.event.society.fullName}
+              </Text>
+            </TextLink>
+          </Text>
+        </View>
       </View>
 
       {/* POST CONTENT RENDER */}
@@ -24,16 +37,18 @@ export default function PostDraw({ data }: {
         <PostContent data={data} />
       </View>
 
+      {!contentOnly &&
+        <View style={styles.interactiveBarContainer}>
+          <Text style={styles.interactiveBarText}>{data.event.title}</Text>
+          <TouchableOpacity style={styles.redirectButton}>
+            <Ionicons
+              name="chevron-forward-sharp"
+              {...interactiveButtonProps}
+            />
+          </TouchableOpacity>
+        </View>
+      }
       {/* POST INTERACTIVE BAR RENDER */}
-      <View style={styles.interactiveBarContainer}>
-        <Text style={styles.interactiveBarText}>{data.event.title}</Text>
-        <TouchableOpacity style={styles.redirectButton}>
-          <Ionicons
-            name="chevron-forward-sharp"
-            {...interactiveButtonProps}
-          />
-        </TouchableOpacity>
-      </View>
     </View>
   )
 }
@@ -44,7 +59,13 @@ const interactiveButtonProps = {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {},
+  mainContainer: {
+    marginVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    overflow: 'hidden',
+    borderColor: 'gainsboro',
+  },
 
   titleBarContainer: {
     backgroundColor: '#EFEFEF',
@@ -54,7 +75,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: '1.5%',
   },
 
-  contentContainer: {},
+  contentContainer: {
+    padding: 3
+  },
 
   societyImage: {
     margin: 5,

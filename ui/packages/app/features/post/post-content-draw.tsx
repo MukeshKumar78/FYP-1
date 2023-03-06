@@ -2,7 +2,7 @@ import { View, StyleSheet, Text } from 'react-native'
 import { ScaledImage } from 'app/components/ScaledImage'
 import { getPublicUri } from 'app/api/util'
 
-export default function PostContent({ data } : {
+export default function PostContentDraw({ data } : {
   data: SocietyPost
 }) {
   return (
@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
   postTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    padding: 10,
+    paddingVertical: 10,
   },
   postText: {
-    paddingHorizontal: 4,
     paddingVertical: 10,
   },
 })

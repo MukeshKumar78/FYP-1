@@ -1,20 +1,29 @@
 import { View, Image, StyleSheet, Text } from 'react-native'
 import DateRender from 'app/components/DateRender'
 import DropdownModal from './comment-option'
-import React, { useState } from 'react'
+import { useRemoveCommentMutation } from './comment-api'
 
-const options = ['Delete', 'Report']
+const options = ['Delete', 'Report'] as const
 
-export default function CommentRender(data) {
-  const [selectedOption, setSelectedOption] = useState(null)
+export type CommentModalOption = typeof options[number];
 
-  const handleSelectOption = (option) => {
-    setSelectedOption(option)
+export default function CommentDraw({ comment }: {
+  comment: EventComment
+}) {
+
+  const [remove] = useRemoveCommentMutation();
+
+  async function handleSelectOption(option: CommentModalOption) {
+    if(option === 'Delete') {
+      const res = await remove(comment.id);
+      console.log(res);
+    }
   }
+
   return (
     <View style={styles.featureContainer}>
       {/* IMAGE RENDER*/}
-      <Image style={styles.userImage} source={{ uri: data.user_pfp }} />
+      <Image style={styles.userImage} source={{ uri: comment.createdBy.photo }} />
 
       {/* USER NAME AND TEXT CONTAINER*/}
       <View style={styles.nameCommentContainer}>
@@ -22,9 +31,9 @@ export default function CommentRender(data) {
         <View style={styles.nameDateOptionContainer}>
           {/* USER NAME / DATE  CONTAINER*/}
           <View style={styles.nameDateContainer}>
-            <Text style={styles.userName}>{data.username}</Text>
+            <Text style={styles.userName}>{comment.createdBy.firstName + ' ' + comment.createdBy.lastName}</Text>
             <Text style={styles.commentDate}>
-              <DateRender date={data.cdate} />
+              <DateRender date={comment.createdAt} />
             </Text>
           </View>
           <DropdownModal
@@ -35,7 +44,7 @@ export default function CommentRender(data) {
 
         {/* COMMENT TEXT */}
         <View style={styles.textContainer}>
-          <Text style={styles.commentText}>{data.text}</Text>
+          <Text style={styles.commentText}>{comment.text}</Text>
         </View>
       </View>
     </View>
@@ -69,7 +78,6 @@ const styles = StyleSheet.create({
   },
   nameDateContainer: {
     flexDirection: 'row',
-    // borderWidth: 1,
   },
 
   nameDateOptionContainer: {
@@ -80,8 +88,7 @@ const styles = StyleSheet.create({
     paddingRight: '17%',
   },
   userName: {
-    // borderWidth: 2,
-    fontWeight: 800,
+    fontWeight: '800',
     fontSize: 15,
     marginRight: '5%',
   },
@@ -100,7 +107,6 @@ const styles = StyleSheet.create({
 
   textContainer: {
     width: '83%',
-    //borderWidth: 2,
     borderColor: 'blue',
   },
 

@@ -58,12 +58,22 @@ declare global {
   };
 
   type SocietyPost = {
-    id: number,
-    title: string,
-    text: string,
+    id: number
+    title: string
+    text: string
     attachments: string[]
     event: SocietyEvent
+    createdAt: Date
+    createdBy: User
   };
+
+  type EventComment = {
+    id: number
+    code: string
+    text: string
+    createdBy: User
+    createdAt: Date
+  }
 
   enum Permissions {
     EVENT_CREATE = 'EVENT_CREATE',

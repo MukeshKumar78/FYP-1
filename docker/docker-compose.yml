@@ -28,10 +28,10 @@ services:
       - discovery
     restart: unless-stopped
 
-  society-svc:
-    container_name: api-core
+  society:
+    container_name: society 
     build:
-      context: ../society-svc
+      context: ../society
     environment:
       JWT_SECRET:
       EUREKA_HOST: http://discovery:8761/eureka
@@ -44,10 +44,10 @@ services:
       - db
       - discovery
 
-  security-svc:
+  security:
     container_name: security 
     build:
-      context: ../security-svc
+      context: ../security
     environment:
       JWT_SECRET:
       EUREKA_HOST: http://discovery:8761/eureka

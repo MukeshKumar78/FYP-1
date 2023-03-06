@@ -68,7 +68,6 @@ export function SocietyInfo({ society } : {
 
 const styles = StyleSheet.create({
   moduleWrapper: {
-    //borderWidth: 3,
     borderColor: 'red',
     borderRadius: 30,
     marginVertical: 10,
@@ -78,7 +77,6 @@ const styles = StyleSheet.create({
     margin: '3.5%',
   },
   infoContainer: {
-    //borderWidth: 3,
     borderColor: 'blue',
     marginBottom: '5%',
     flexDirection: 'row',
@@ -87,7 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: 'auto',
-    // borderWidth: 2,
     borderColor: 'pink',
   },
   profilePicture: {
@@ -97,7 +94,6 @@ const styles = StyleSheet.create({
   },
   allNamesContainer: {
     flex: 2,
-    // borderWidth: 2,
     borderColor: 'green',
     justifyContent: 'space-between',
   },
@@ -105,7 +101,6 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     marginLeft: '8.5%',
     flex: 1,
-    //borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -115,7 +110,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   followButtonContainer: {
-    //borderWidth: 2,
     borderColor: 'red',
     justifyContent: 'center',
   },
@@ -132,7 +126,6 @@ const styles = StyleSheet.create({
   },
 
   descNfuncsContainer: {
-    //borderWidth: 3,
     paddingTop: '2.5%',
     borderTopWidth: 1,
     borderTopEndRadius: 40,
@@ -146,7 +139,6 @@ const styles = StyleSheet.create({
     marginBottom: '3.5%',
   },
   buttonsContainer: {
-    //borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
@@ -157,6 +149,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#696969',
     paddingHorizontal: '10%',
-    paddingVertical: '2%',
+    lineHeight: 30,
   },
 })

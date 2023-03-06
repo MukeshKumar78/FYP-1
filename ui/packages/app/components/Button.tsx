@@ -1,48 +1,86 @@
-import { Pressable, PressableProps, Text, StyleSheet, ViewStyle, StyleProp, GestureResponderEvent, View } from 'react-native';
+import { ReactNode } from 'react';
+import { TouchableOpacity, Dimensions, Text, StyleSheet, View } from 'react-native';
+import { MotiLink } from 'solito/moti'
 
-export default function Button(props: {
-  onPress: (event: GestureResponderEvent) => void,
-  title: string,
-  style?: StyleProp<ViewStyle>
+const width = Dimensions.get('window').width
+
+export function Button({ text = '', onPress, href, type = 'filled', bordered = false, size = 'large', disabled = false}: {
+  text: string,
+  onPress?: () => any
+  href?: string,
+  type?: 'filled' | 'transparent' | 'outlined'
+  bordered?: boolean,
+  size?: 'large' | 'small' | 'full',
+  disabled?: boolean
 }) {
-  const { onPress, title = 'Save', style = {} } = props;
+  const large = width / 1.3
+  const small = width / 2
+  const btnSize = size === 'large' ? large : size == 'full' ? width - 5 : small
+  const btnBgColor = disabled ? 'grey' : type === 'filled' ? '#6677cc' : 'transparent'
+  const btnTextColor = type === 'filled' ? '#ffffff' : '#6371c2'
+  const btnBorderRadius = bordered ? 30 : 5
+
+  const border = type === 'outlined' ? { borderColor: '#e7e7e7', borderWidth: 2 } : {}
+
+  const button = 
+      <View style={[styles.btnContainerStyle, {
+        ...border,
+        backgroundColor: btnBgColor,
+        width: btnSize,
+        borderRadius: btnBorderRadius,
+      }]}>
+        <Text style={[styles.btnTextStyle, { color: btnTextColor }]}> {text} </Text>
+      </View>
+
+  if(disabled)
+    return button;
+
   return (
-    <Pressable style={[styles.button, style]} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
-    </Pressable>
-  );
+    <>
+      { href
+      ? <AnimatedLink href={href}>{button}</AnimatedLink>
+      : <TouchableOpacity onPress={onPress} activeOpacity={0.7}>{button}</TouchableOpacity>
+      }
+    </>
+  )
 }
 
-export function ButtonWithChildren(props: PressableProps ) {
-  return (
-    <Pressable {...props} style={[styles.button, props.style as StyleProp<ViewStyle>]}>
-      {props.children}
-    </Pressable>
-  );
+export function AnimatedLink({ href, children }: {
+  href: string,
+  children: ReactNode
+}) {
+  return <MotiLink
+    href={href}
+    animate={({ hovered, pressed }) => {
+      'worklet'
+
+      return {
+        scale: pressed ? 0.95 : hovered ? 1.1 : 1,
+        rotateZ: pressed ? '0deg' : hovered ? '-3deg' : '0deg',
+      }
+    }}
+    from={{
+      scale: 0,
+      rotateZ: '0deg',
+    }}
+    transition={{
+      type: 'timing',
+      duration: 50,
+    }}
+  >
+    {children}
+  </MotiLink>
 }
+
+
 
 const styles = StyleSheet.create({
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 0,
-    elevation: 3,
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
+  btnContainerStyle: {
+    paddingVertical: 8,
+    alignItems: 'center'
   },
-  text: {
-    fontSize: 15,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'black',
-  },
+  btnTextStyle: {
+    fontSize: 16,
+    fontFamily: 'Quicksand-Medium'
+  }
 });

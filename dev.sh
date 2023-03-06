@@ -5,16 +5,12 @@ prefixwith() {
 }
 
 gateway="mvn -f ./gateway clean spring-boot:run"
-
-society="mvn -f ./society-svc clean spring-boot:run"
-
-security="mvn -f ./security-svc clean spring-boot:run"
+society="mvn -f ./society clean spring-boot:run"
+security="mvn -f ./security clean spring-boot:run"
+team="mvn -f ./team clean spring-boot:run"
 
 run() {
-  if declare -f "$1" > /dev/null
-  then
-    prefixwith $1 "$1"
-  fi
+    eval ${!1}
 }
 
 if [ $# -eq 0 ] 
