@@ -2,13 +2,10 @@ package com.campusme.gateway.config;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.springdoc.core.AbstractSwaggerUiConfigProperties.SwaggerUrl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +20,8 @@ public class SwaggerUIConfig {
     List<SwaggerUrl> urls = Arrays.asList(
       new SwaggerUrl("gateway", "/v3/api-docs", "gateway"),
       new SwaggerUrl("society", "/api/core/v3/api-docs", "society"),
-      new SwaggerUrl("security", "/admin/v3/api-docs", "security")
+      new SwaggerUrl("security", "/admin/v3/api-docs", "security"),
+      new SwaggerUrl("teams", "/api/team/v3/api-docs", "teams")
     );
 
     // discoveryClient.getServices()

@@ -44,6 +44,9 @@ public class SpringCloudGatewayApplication {
         .route("society-api", r -> r.path("/api/core/**")
             .filters(f -> f.rewritePath("/api/core", "/"))
             .uri("lb://SOCIETY"))
+        .route("teams-api", r -> r.path("/api/team/**")
+            .filters(f -> f.rewritePath("/api/team", "/"))
+            .uri("lb://TEAM"))
         .route("admin-panel", r -> r.path("/admin/**")
             .uri("lb://SECURITY"))
         .build();
