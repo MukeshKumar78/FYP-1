@@ -1,8 +1,28 @@
+import { View as RNView, StyleSheet, Text as RNText, TextProps, TouchableOpacity, Dimensions, ViewProps } from 'react-native'
 import { ReactNode } from 'react';
-import { TouchableOpacity, Dimensions, Text, StyleSheet, View } from 'react-native';
 import { MotiLink } from 'solito/moti'
 
 const width = Dimensions.get('window').width
+
+export function Hr() {
+  return <RNView
+    style={{
+      borderBottomColor: 'gray',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      margin: 10
+    }}
+  />
+}
+export function Text(props: TextProps) { 
+  return <RNText {...props} 
+    style={[{ fontFamily: 'Helvetica' }, props.style]}>
+      {props.children}
+  </RNText>
+}
+
+export function View(props: ViewProps) {
+  return <RNView {...props}>{props.children}</RNView>
+}
 
 export function Button({ text = '', onPress, href, type = 'filled', bordered = false, size = 'large', disabled = false}: {
   text: string,
@@ -71,8 +91,6 @@ export function AnimatedLink({ href, children }: {
     {children}
   </MotiLink>
 }
-
-
 
 const styles = StyleSheet.create({
   btnContainerStyle: {

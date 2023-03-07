@@ -1,9 +1,9 @@
-import { View, Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
 import Text from '../../components/Text'
 import { Ionicons } from '@expo/vector-icons'
 import PostContent from './post-content-draw'
-import { getPublicUri } from 'app/api/util';
-import { TextLink, Link } from 'solito/link';
+import { getPublicUri, toShortDateString } from 'app/api/util';
+import { TextLink } from 'solito/link';
 import { AnimatedLink } from 'app/components/Button'
 
 export default function PostDraw({ data, contentOnly = false }: {
@@ -17,7 +17,7 @@ export default function PostDraw({ data, contentOnly = false }: {
         <AnimatedLink href={`/user/${data.createdBy.code}`}>
           <Image
             style={styles.societyImage}
-            source={{ uri: getPublicUri(data.event.society.image) }}
+            source={{ uri: getPublicUri(data.createdBy.photo) }}
           />
         </AnimatedLink>
         {/* User NAME */}
@@ -27,6 +27,11 @@ export default function PostDraw({ data, contentOnly = false }: {
             posted in <TextLink href={`/society/${data.event.society.code}`} >
               <Text style={{ color: '#6677cc', fontWeight: 'bold' }}>{data.event.society.fullName}
               </Text>
+              {!contentOnly &&
+                <Text style={styles.postInfoText}>
+                  {''} on {toShortDateString(data.createdAt)} 
+                </Text>
+              }
             </TextLink>
           </Text>
         </View>
@@ -38,15 +43,17 @@ export default function PostDraw({ data, contentOnly = false }: {
       </View>
 
       {!contentOnly &&
-        <View style={styles.interactiveBarContainer}>
-          <Text style={styles.interactiveBarText}>{data.event.title}</Text>
-          <TouchableOpacity style={styles.redirectButton}>
-            <Ionicons
-              name="chevron-forward-sharp"
-              {...interactiveButtonProps}
-            />
-          </TouchableOpacity>
-        </View>
+        <AnimatedLink href={`/event/${data.event.id}`}>
+          <View style={styles.interactiveBarContainer}>
+            <Text style={styles.interactiveBarText}>{data.event.title}</Text>
+            <View style={styles.redirectButton}>
+              <Ionicons
+                name="chevron-forward-sharp"
+                {...interactiveButtonProps}
+              />
+            </View>
+          </View>
+        </AnimatedLink>
       }
       {/* POST INTERACTIVE BAR RENDER */}
     </View>

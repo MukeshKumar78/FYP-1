@@ -5,12 +5,11 @@ import { Button } from '../../components/Button'
 import { PostMap } from '../post/post-map'
 import { ScaledImage } from 'app/components/ScaledImage'
 import EventOptionsModal from './event-options-modal'
-import Dater from 'app/components/DateRender'
 import { InteractiveBar } from 'app/components/InteractiveBar'
 import { useGetEventQuery } from './event-api';
 import { useSocietyHeader } from 'app/hooks/headers';
 import { createParam } from 'solito';
-import { getPublicUri } from 'app/api/util'
+import { getPublicUri, toShortDateString } from 'app/api/util'
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -65,14 +64,12 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
           {/* EVENT TITLE AND BUTTON RENDER*/}
           <View style={styles.titleAndButtonContainer}>
             <Text style={styles.eventTitle}>{data.title}</Text>
-            <View style={styles.buttonContainer}>
-              <EventOptionsModal style={styles.eventOptionButton} />
-            </View>
+            <View><EventOptionsModal/></View>
           </View>
           {/* EVENT DATE RENDER */}
           <Text style={styles.eventDate}>
-            <Dater date={data.startDate} /> {`  to  `}
-            {data.endDate && <Dater date={data.endDate} />}
+          {toShortDateString(data.startDate)} {`  to  `}
+            {data.endDate && toShortDateString(data.endDate)}
           </Text>
         </View>
 
@@ -82,7 +79,7 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
             <ScaledImage key={key} uri={getPublicUri(image)} />
           )}
         </View>
-        <Text style={styles.eventText}>{data.text}</Text>
+        <Text>{data.text}</Text>
 
       {/* EVENT INTERACTIVE BAR RENDER */}
       <InteractiveBar id={data.id} />
@@ -123,7 +120,6 @@ const styles = StyleSheet.create({
     borderColor: 'gainsboro',
     marginVertical: 4,
   },
-
   contentContainer: {
     padding: 7,
   },
@@ -134,48 +130,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-
   entireTitleContainer: {
-    //borderWidth: 2,
     padding: 10,
   },
-
   titleAndButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    //alignItems: 'center',
-    //borderWidth: 2,
-    borderColor: 'red',
   },
-
   eventTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    flex: 11,
-    //borderWidth: 1,
+    flex: 1,
   },
-
   buttonContainer: {
-    //borderWidth: 2,
     borderColor: 'blue',
     flex: 1,
     justifyContent: 'center',
   },
-
-  eventOptionButton: {
-    //borderWidth: 2,
-    aspectRatio: 1,
-    alignSelf: 'center',
-    paddingTop: 5,
-  },
-
   societyImage: {
     margin: 5,
     width: 50,
     height: 50,
     borderRadius: 50,
   },
-
   societyNameDateContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -187,9 +164,5 @@ const styles = StyleSheet.create({
   eventDate: {
     color: 'gray',
     fontSize: 12,
-  },
-
-  eventText: {
-    //padding: 4,
   },
 })

@@ -1,25 +1,12 @@
-import { View, Image, StyleSheet, Text } from 'react-native'
-import DateRender from 'app/components/DateRender'
-import DropdownModal from './comment-option'
-import { useRemoveCommentMutation } from './comment-api'
+import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { OptionsModalButton, Option } from 'app/components/OptionsModalButton'
+import { toShortDateString } from 'app/api/util';
 
-const options = ['Delete', 'Report'] as const
-
-export type CommentModalOption = typeof options[number];
-
-export default function CommentDraw({ comment }: {
+export default function CommentDraw({ comment, handleDelete, handleReport }: {
   comment: EventComment
+  handleDelete?: () => void
+  handleReport?: () => void 
 }) {
-
-  const [remove] = useRemoveCommentMutation();
-
-  async function handleSelectOption(option: CommentModalOption) {
-    if(option === 'Delete') {
-      const res = await remove(comment.id);
-      console.log(res);
-    }
-  }
-
   return (
     <View style={styles.featureContainer}>
       {/* IMAGE RENDER*/}
@@ -33,13 +20,14 @@ export default function CommentDraw({ comment }: {
           <View style={styles.nameDateContainer}>
             <Text style={styles.userName}>{comment.createdBy.firstName + ' ' + comment.createdBy.lastName}</Text>
             <Text style={styles.commentDate}>
-              <DateRender date={comment.createdAt} />
+              {toShortDateString(comment.createdAt)}
             </Text>
           </View>
-          <DropdownModal
-            options={options}
-            onSelectOption={handleSelectOption}
-          />
+
+          <OptionsModalButton>
+              {handleDelete && <Option text="Delete" onPress={handleDelete}/>}
+              {handleReport && <Option text="Report" onPress={handleReport}/>}
+          </OptionsModalButton>
         </View>
 
         {/* COMMENT TEXT */}

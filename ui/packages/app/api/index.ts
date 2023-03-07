@@ -19,9 +19,6 @@ export const api = createApi({
         headers.set('Authorization', `Bearer ${userToken}`)
       }
 
-      // if(!headers.has('Content-Type'))
-      //   headers.set('Content-Type', 'application/json')
-
       return headers
     },
     timeout: 10000,

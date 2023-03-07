@@ -14,7 +14,10 @@ declare global {
   }
 
   type Membership = {
+    id: number
+    user: User
     role: string
+    permissions: string[]
     society: Society
   }
 
@@ -73,17 +76,19 @@ declare global {
     text: string
     createdBy: User
     createdAt: Date
+    eventId: number
   }
 
-  enum Permissions {
-    EVENT_CREATE = 'EVENT_CREATE',
-    EVENT_READ = 'EVENT_READ',
-    EVENT_PUBLISH = 'EVENT_PUBLISH',
-    EVENT_DELETE = 'EVENT_DELETE',
-    POST_CREATE = 'POST_CREATE',
-    POST_DELETE = 'POST_DELETE',
-    MEMBER_ADD = 'MEMBER_ADD',
-    MEMBER_REMOVE = 'MEMBER_REMOVE',
-    MEMBER_UPDATE = 'MEMBER_UPDATE'
-  }
+  type Permission =
+    'EVENT_CREATE' |
+    'EVENT_READ' |
+    'EVENT_PUBLISH' |
+    'EVENT_DELETE' |
+    'POST_CREATE' |
+    'POST_DELETE' |
+    'COMMENT_CREATE' |
+    'COMMENT_DELETE' |
+    'MEMBER_ADD' |
+    'MEMBER_REMOVE' |
+    'MEMBER_UPDATE'
 }

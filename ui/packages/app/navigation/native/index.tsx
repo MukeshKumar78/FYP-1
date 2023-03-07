@@ -176,6 +176,7 @@ export function NativeNavigation() {
         component={CommentScreen}
         options={{
           headerTitleAlign: "center",
+          title: "Comments"
         }}
       />
       <Stack.Screen

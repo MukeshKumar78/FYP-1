@@ -90,3 +90,14 @@ export default function useAuth() {
     },
   };
 }
+
+export function usePermissions(
+  society: string, 
+  permissions: Permission[]
+) {
+  const { user } = useAuth();
+
+  const userPermissions = user?.memberships.find(m => m.society.code === society)?.permissions ?? [];
+
+  return permissions.map(p => !!userPermissions.find(u => u == p))
+}

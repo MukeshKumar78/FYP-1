@@ -11,6 +11,8 @@ import com.campusme.society.event.EventRepository;
 import com.campusme.society.user.AppUser;
 import com.campusme.society.user.AppUserAuthenticationToken;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,14 +35,28 @@ public class PostController {
   private PostAttachmentRepository postAttachmentRepository;
 
   /**
-   * Endpoint for posts of an event, publicly accessible
-   * 
-   * @param event Long
-   * @return {@code Collection} of {@code Post}s
+   * Endpoint to get all posts paginated and sorted based on query parameters
+   *
+   * @param pageNo Integer (default: 0)
+   * @param pageSize Integer (default: 10)
+   * @param sortBy Integer (default: createdAt) sorts by descending
    */
-  @GetMapping(value = "/posts")
-  public List<Post> find(@RequestParam Long event) {
-    List<Post> posts = postRepository.findByEventId(event, Sort.by("createdAt").descending());
+  @Operation(summary = "get all posts")
+  @GetMapping("/posts")
+  public List<Post> findAll(
+      @RequestParam(defaultValue = "0") Integer pageNo,
+      @RequestParam(defaultValue = "10") Integer pageSize,
+      @RequestParam(defaultValue = "createdAt") String sortBy,
+      @RequestParam(required = false) Long event) {
+
+    Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+
+    List<Post> posts;
+    if(event == null)
+      posts = postRepository.findAll(paging).getContent();
+    else
+      posts = postRepository.findByEventId(event, paging).getContent();
+
     return posts;
   }
 

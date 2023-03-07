@@ -12,8 +12,11 @@ export const societyApi = api.injectEndpoints({
       providesTags: ['Society'],
       query: (code) => `/api/core/societies/${code}`
     }),
+    getMemberships: build.query<Membership[], string>({
+      query: (code) => `/api/core/memberships?society=${code}`
+    })
   }),
   overrideExisting: false
 })
 
-export const { useGetSocietyQuery, useGetCurrentSocietyQuery, useLazyGetCurrentSocietyQuery } = societyApi;
+export const { useGetSocietyQuery, useGetCurrentSocietyQuery, useLazyGetCurrentSocietyQuery, useGetMembershipsQuery } = societyApi;

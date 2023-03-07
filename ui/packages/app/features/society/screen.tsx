@@ -5,7 +5,6 @@ import { EventMap } from '../event/event-map';
 import { SocietyInfo } from './society-info-draw';
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
-import { LoadingScreen } from '../loading/screen';
 
 const { useParam } = createParam<{ code: string }>()
 

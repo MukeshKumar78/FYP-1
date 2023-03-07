@@ -1,12 +1,10 @@
 import { ScaledImage } from 'app/components/ScaledImage'
 import { View, Image, StyleSheet } from 'react-native'
 import Text from '../../components/Text'
-import EventOptionsModal from './event-options-modal'
-import Dater from 'app/components/DateRender'
 import { InteractiveBar } from 'app/components/InteractiveBar'
-import { Link } from 'solito/link'
-import { getPublicUri } from 'app/api/util';
+import { getPublicUri, toTimeAndDateString } from 'app/api/util';
 import { AnimatedLink } from 'app/components/Button'
+import EventOptionsModal from './event-options-modal'
 
 /**
 * Displays event with header, content and interactive bar sections
@@ -32,11 +30,11 @@ export default function EventDraw({ event }: {
 
               {/* DATE COMPONENT */}
               <Text style={styles.eventDate}>
-                <Dater date={event.startDate} /> {`\t`}
-                {event.endDate && <Dater date={event.endDate} />}
+                {toTimeAndDateString(event.startDate)} {` - `}
+                {event.endDate && toTimeAndDateString(event.endDate)}
               </Text>
             </View>
-            <EventOptionsModal style={styles.eventOptionButton} />
+            <EventOptionsModal/>
           </View>
         </AnimatedLink>
 
@@ -64,21 +62,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
     marginVertical: 4,
   },
-
+  modalButton: {
+    right: 10,
+    position: 'absolute'
+  },
   titleBarContainer: {
     backgroundColor: '#EFEFEF',
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
   },
-
   societyImage: {
     margin: 5,
     width: 50,
     height: 50,
     borderRadius: 50,
   },
-
   societyNameDateContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -90,11 +89,6 @@ const styles = StyleSheet.create({
   eventDate: {
     color: 'gray',
   },
-  eventOptionButton: {
-    right: 10,
-    position: 'absolute',
-  },
-
   eventTitle: {
     fontSize: 24,
     fontWeight: 'bold',

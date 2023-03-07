@@ -1,8 +1,9 @@
-import { ScrollView, StyleSheet } from 'react-native'
+import { View, ScrollView, StyleSheet } from 'react-native'
 import Text from 'app/components/Text'
 import { useListPostsQuery } from './post-api'
-import PostContent from './post-content-draw'
 import PostDraw from './post-draw'
+import { useState } from 'react'
+import { toShortDateString } from 'app/api/util'
 
 /**
 * Component to fetch and display a scrollable list of posts given an event ID
@@ -12,26 +13,29 @@ export function PostMap({ event, contentOnly = false }: {
   contentOnly?: boolean
 
 }) {
-  const { data = [] } = useListPostsQuery(event.id);
-  let date: string = (new Date(0)).toDateString().slice(0,-5); 
+  const [page, setPage] = useState(0);
+  const { data } = useListPostsQuery({
+    event: event.id,
+    page,
+  });
+
+  let date: string = (new Date(0)).toDateString().slice(0, -5);
 
   return (
     <ScrollView style={styles.eventWrapper}>
       {
-        data.map((p, i) => {
-          const pdate = (new Date(p.createdAt)).toUTCString().slice(0, 16)
-          if(pdate !== date) {
+        data?.posts.map((p, i) => {
+          const pdate = toShortDateString(p.createdAt) 
+          if (pdate !== date) {
             date = pdate;
-            return <>
-            <Text style={{color: 'gray', marginTop: 20, textAlign: 'center'}}>{pdate}</Text>
-            <PostDraw contentOnly data={p} key={i} />
-            </>
+            return <View key={i}>
+              <Text style={{ color: 'gray', marginTop: 20, textAlign: 'center' }}>{pdate}</Text>
+              <PostDraw contentOnly data={p} />
+            </View>
           }
           else
             return <PostDraw contentOnly data={p} key={i} />
-      })
-
-
+        })
       }
     </ScrollView>
   )

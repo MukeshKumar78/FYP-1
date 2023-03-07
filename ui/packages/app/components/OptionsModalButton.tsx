@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { ReactNode, useState } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import type { CommentModalOption } from './comment-draw';
 
-const DropdownModal = ({ options, onSelectOption }: {
-  options: Readonly<CommentModalOption[]>,
-  onSelectOption: (option: CommentModalOption) => void
-}) => {
+export function OptionsModalButton({ children }: {
+  children: ReactNode[] | ReactNode 
+}) {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -22,17 +20,7 @@ const DropdownModal = ({ options, onSelectOption }: {
           style={styles.modal}
         >
           <View style={styles.dropdown}>
-            {options.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  onSelectOption(option);
-                  setVisible(false);
-                }}
-              >
-                <Text style={styles.option}>{option}</Text>
-              </TouchableOpacity>
-            ))}
+            {children}
           </View>
         </TouchableOpacity>
       </Modal>
@@ -40,13 +28,20 @@ const DropdownModal = ({ options, onSelectOption }: {
   );
 };
 
+export function Option({ text, onPress }: {
+  text: string,
+  onPress: () => void
+}) {
+  return <TouchableOpacity onPress={onPress} >
+    <Text style={styles.option}>{text}</Text>
+  </TouchableOpacity>
+}
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    //marginVertical: 20,
   },
   button: {
-    //backgroundColor: "gray",
     height: 25,
     width: 25,
     borderRadius: 5,
@@ -71,14 +66,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontSize: 16,
     alignSelf: "center",
-    //borderBottomWidth: 3,
   },
   box: {
-    //borderWidth: 1,
     height: "100%",
     width: "100%",
     alignItems: "center",
   },
 });
-
-export default DropdownModal;
