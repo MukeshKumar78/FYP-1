@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -23,15 +25,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(uniqueConstraints={
-    @UniqueConstraint(columnNames = {"uri", "event_id"})
-}) 
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = { "uri", "event_id" })
+})
+@Audited
 public class EventAttachment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonIgnore
   private Long id;
-  
+
   @Column
   private String uri;
 

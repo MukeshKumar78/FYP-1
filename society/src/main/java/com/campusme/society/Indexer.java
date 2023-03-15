@@ -6,6 +6,8 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.campusme.society.event.Event;
+
 import javax.persistence.EntityManager;
 
 @Transactional
@@ -23,9 +25,9 @@ public class Indexer {
   public void indexPersistedData(Class<?>... classes) throws Exception {
     SearchSession searchSession = Search.session(entityManager);
 
-    MassIndexer indexer = searchSession
-        .massIndexer(classes)
-        .threadsToLoadObjects(THREAD_NUMBER);
+    MassIndexer indexer = searchSession.massIndexer(classes);
+    indexer.type(Event.class).reindexOnly("published = true");
+    indexer.threadsToLoadObjects(THREAD_NUMBER);
 
     indexer.startAndWait();
   }

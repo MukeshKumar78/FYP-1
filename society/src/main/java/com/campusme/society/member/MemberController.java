@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.campusme.society.security.RoleService;
 import com.campusme.society.society.Society;
 import com.campusme.society.society.SocietyRepository;
 import com.campusme.society.user.AppUser;
@@ -33,6 +34,9 @@ public class MemberController {
   private AppUserRepository userRepository;
   @Autowired
   private SocietyRepository societyRepository;
+  @Autowired
+  private RoleService roleService;
+
 
   /**
    * Endpoint for getting memberships
@@ -122,5 +126,10 @@ public class MemberController {
     memberRepository.deleteByUserIdAndSocietyId(user.getId(), society.getId());
 
     return;
+  }
+
+  @GetMapping("/roles")
+  public List<String> roles() {
+    return roleService.getRoles();
   }
 }

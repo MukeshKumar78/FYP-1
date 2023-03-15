@@ -74,6 +74,11 @@ public class RoleService {
     this.roleClient = roleClient;
   }
 
+
+  public List<String> getRoles() {
+    return roleClient.readRoles().stream().map(r -> r.getCode()).toList();
+  }
+
   public boolean hasPermission(String role, String target, String permission) {
     List<Permission> permissions = roleClient.readRole(role).getPermissions();
 

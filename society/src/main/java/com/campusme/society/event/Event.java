@@ -1,11 +1,10 @@
 package com.campusme.society.event;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
 import javax.persistence.Column;
-
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -18,6 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hibernate.envers.Audited;
+import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.RoutingBinderRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -36,8 +37,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Indexed
+@Indexed(routingBinder = @RoutingBinderRef(type = EventPublishedRoutingBinder.class))
 @Data
 @Builder
 @NoArgsConstructor
@@ -47,54 +47,66 @@ import lombok.NoArgsConstructor;
 public class Event {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Audited
   private Long id;
 
   @Column(nullable = false)
+  @Audited
   private String code;
 
   @Column
+  @Audited
   private String description;
 
   @FullTextField
   @Column(nullable = false)
+  @Audited
   private String title;
 
   @CreatedDate
   @Column(updatable = false)
+  @Audited
   private Date createdAt;
 
   @LastModifiedDate
   @Column
+  @Audited
   private Date updatedAt;
 
   @Column
+  @Audited
   private Date publishedAt;
 
   @Column(nullable = false)
+  @Audited
   private Date startDate;
 
   @Column
+  @Audited
   private Date endDate;
 
   @Column
   @Builder.Default
+  @Audited
   private boolean published = false;
 
   @FullTextField
   @Column(columnDefinition = "TEXT", nullable = false)
+  @Audited
   private String text;
 
   // Link for event registration
   @Column(columnDefinition = "TEXT")
+  @Audited
   private String registrationLink;
 
   @ManyToOne
   @JoinColumn(name = "society_id", nullable = false)
-  @JsonIgnoreProperties({"tenure", "base"})
+  @JsonIgnoreProperties({ "tenure", "base" })
   private Society society;
 
   @OneToOne
-  @JoinColumn(name= "user_id", nullable = false)
+  @JoinColumn(name = "user_id", nullable = false)
   @JsonIgnoreProperties("memberships")
   private AppUser createdBy;
 
@@ -105,6 +117,7 @@ public class Event {
 
   @OneToMany(mappedBy = "event")
   @Builder.Default
+  @Audited
   private List<EventAttachment> attachments = new ArrayList<>();
 
   public List<String> getAttachments() {

@@ -1,11 +1,15 @@
 package com.campusme.society.event;
 
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
-  Page<Event> findBySocietyId(long id, Pageable paging);
-  Page<Event> findBySocietyCode(String code, Pageable paging);
+  Optional<Event> findByIdAndPublished(Long id, Boolean published);
+
+  Page<Event> findByPublished(Boolean published, Pageable paging);
+
+  Page<Event> findBySocietyCodeAndPublished(String code, Boolean published, Pageable paging);
 }
