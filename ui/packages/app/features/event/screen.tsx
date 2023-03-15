@@ -1,7 +1,6 @@
-import { ScrollView, View, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import { useEffect } from 'react'
-import Text from '../../components/Text'
-import { Button } from '../../components/Button'
+import { View, Text, Button } from 'app/components'
 import { PostMap } from '../post/post-map'
 import { ScaledImage } from 'app/components/ScaledImage'
 import EventOptionsModal from './event-options-modal'
@@ -10,6 +9,7 @@ import { useGetEventQuery } from './event-api';
 import { useSocietyHeader } from 'app/hooks/headers';
 import { createParam } from 'solito';
 import { getPublicUri, toShortDateString } from 'app/api/util'
+import { usePermissions } from '../auth/useAuth'
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -23,16 +23,12 @@ export function EventScreen() {
 
   useEffect(createHeader);
 
-
   if (!data)
     return <EventScreenError />
 
   return (
     <ScrollView style={styles.eventWrapper}>
       <EventPageDraw data={data} />
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Button href={`/event/${id}/new-post`} text="New Post" size='full' />
-      </View>
       <View style={{
         marginTop: 20,
         flex: 1,
@@ -47,7 +43,7 @@ export function EventScreen() {
       }}>
         <Text style={{ fontSize: 32, margin: 0 }}>Posts</Text>
         <Text style={{ fontSize: 12, color: 'gray', marginTop: -5, marginBottom: 10 }}>Latest updates for this event</Text>
-      <PostMap contentOnly event={data} />
+        <PostMap contentOnly event={data} />
       </View>
     </ScrollView >
   )
@@ -56,34 +52,46 @@ export function EventScreen() {
 // RENDERER COMPONENT FOR ALL EVENT COMPONENT ELEMENTS
 export default function EventPageDraw(props: { data: SocietyEvent }) {
   const data = props.data
+  const [canAddPost] = usePermissions(data.society.code, [
+    "POST_CREATE"
+  ])
 
-  return (
+  console.log(canAddPost)
+
+  return (<>
     <View style={styles.eventContainer}>
       {/* EVENT TITLE IMAGE CONTENT RENDER*/}
-        <View style={styles.entireTitleContainer}>
-          {/* EVENT TITLE AND BUTTON RENDER*/}
-          <View style={styles.titleAndButtonContainer}>
-            <Text style={styles.eventTitle}>{data.title}</Text>
-            <View><EventOptionsModal/></View>
-          </View>
-          {/* EVENT DATE RENDER */}
-          <Text style={styles.eventDate}>
+      <View style={styles.entireTitleContainer}>
+        {/* EVENT TITLE AND BUTTON RENDER*/}
+        <View style={styles.titleAndButtonContainer}>
+          <Text style={styles.eventTitle}>{data.title}</Text>
+          <View><EventOptionsModal /></View>
+        </View>
+        {/* EVENT DATE RENDER */}
+        <Text style={styles.eventDate}>
           {toShortDateString(data.startDate)} {`  to  `}
-            {data.endDate && toShortDateString(data.endDate)}
-          </Text>
-        </View>
+          {data.endDate && toShortDateString(data.endDate)}
+        </Text>
+      </View>
 
-        {/* TODO: make a slideshow component for images */}
-        <View>
-          {data.attachments.map((image, key) =>
-            <ScaledImage key={key} uri={getPublicUri(image)} />
-          )}
-        </View>
-        <Text>{data.text}</Text>
+      {/* TODO: make a slideshow component for images */}
+      <View>
+        {data.attachments.map((image, key) =>
+          <ScaledImage key={key} uri={getPublicUri(image)} />
+        )}
+      </View>
+      <Text>{data.text}</Text>
 
       {/* EVENT INTERACTIVE BAR RENDER */}
       <InteractiveBar id={data.id} />
     </View>
+    {
+      canAddPost &&
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Button href={`/event/${data.id}/new-post`} text="New Post" size='full' />
+      </View>
+    }
+  </>
   )
 }
 

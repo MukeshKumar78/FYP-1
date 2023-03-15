@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { getPublicUri } from 'app/api/util';
-import { View, StyleSheet } from 'react-native'
-import { Image, Text } from 'react-native';
+import { StyleSheet } from 'react-native'
+import { Image} from 'react-native';
+import { Text, View } from 'app/components'
 
 function SocietyHeader({ society }: {
   society: Pick<Society, 'name' | 'image'>

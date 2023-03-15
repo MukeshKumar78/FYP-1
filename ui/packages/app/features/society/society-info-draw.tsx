@@ -1,65 +1,36 @@
 import {
   Image,
   StyleSheet,
-  View,
   TouchableOpacity,
-  Pressable,
 } from 'react-native'
-import Text from '../../components/Text'
-import { Link } from 'solito/link';
+import { Text, View, Button, Hr } from 'app/components'
 import { getPublicUri } from 'app/api/util';
 
-export function SocietyInfo({ society } : {
+export function SocietyInfo({ society }: {
   society: Society
 }) {
 
   return (
-    <View style={styles.moduleWrapper}>
-      {/*ALL MODULE INFO CONTAINER*/}
-      <View style={styles.societyContainer}>
-        {/*SOCIETY PROFILEPIC + NAMES CONTAINER*/}
-        <View style={styles.infoContainer}>
-          {/*SOCIETY PROFILE PIC */}
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.profilePicture}
-              source={{ uri: getPublicUri(society.image) }}
-            />
-          </View>
-
-          {/*SOCIETY SHORTNAME + FULLNAME + BUTTON*/}
-          <View style={styles.allNamesContainer}>
-            <View style={styles.nameButtonContainer}>
-              <Text style={styles.societyNameShort}>{society.name}</Text>
-              <TouchableOpacity style={styles.followButtonContainer}>
-                <Image
-                  source={{
-                    uri: 'https://cdn.discordapp.com/attachments/1059750891512664084/1061053326164238337/Pngtreebell_vector_icon_3791353.png',
-                  }}
-                  style={styles.followButton}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <Text style={styles.societyfullName} adjustsFontSizeToFit={true} >
-              {society.fullName}
-            </Text>
-          </View>
+    <View
+      style={{ margin: 10, alignItems: 'center' }}
+    >
+      <Image
+        style={{ width: 120, height: 120, borderRadius: 60 }}
+        source={{ uri: getPublicUri(society.image) }}
+      />
+      <Text style={{ fontSize: 30, fontWeight: '600' }}>{society.name}</Text>
+      <Text style={{ fontSize: 22 }}> {society.fullName}</Text>
+      <Text
+        style={{ color: 'gray', textAlign: 'center', marginBottom: 16, fontWeight: 'bold' }}
+      >{society.description}</Text>
+      {/*SOCIETY DESCRIPTION + EDITSOCIETY + CREATEEVENT CONTAINER*/}
+      <Hr />
+      <View style={styles.buttonsContainer}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Button href={`/society/${society.code}/edit`} text="Edit" style={{ minWidth: 100 }} />
         </View>
-
-        {/*SOCIETY DESCRIPTION + EDITSOCIETY + CREATEEVENT CONTAINER*/}
-        <View style={styles.descNfuncsContainer}>
-          <Text style={styles.societyDescription}>
-            {society.description}
-          </Text>
-          <View style={styles.buttonsContainer}>
-            <Link href={`/society/${society.code}/edit`}>
-              <Text style={styles.functionalButton}>Edit Society</Text>
-            </Link>
-              <Link href={`/society/${society.code}/new-event`}>
-                <Text style={styles.functionalButton}>Create Event</Text>
-              </Link>
-          </View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Button href={`/society/${society.code}/new-event`} text="New Event" style={{ minWidth: 100 }} />
         </View>
       </View>
     </View>
@@ -67,15 +38,6 @@ export function SocietyInfo({ society } : {
 }
 
 const styles = StyleSheet.create({
-  moduleWrapper: {
-    borderColor: 'red',
-    borderRadius: 30,
-    marginVertical: 10,
-    backgroundColor: '#F5F5F5',
-  },
-  societyContainer: {
-    margin: '3.5%',
-  },
   infoContainer: {
     borderColor: 'blue',
     marginBottom: '5%',
@@ -85,10 +47,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: 'auto',
-    borderColor: 'pink',
   },
   profilePicture: {
-    borderRadius: 55,
+    borderRadius: 500,
     aspectRatio: 1,
     justifyContent: 'center',
   },
@@ -120,16 +81,11 @@ const styles = StyleSheet.create({
   },
   societyfullName: {
     fontStyle: 'italic',
-    flex: 2,
     marginLeft: '8.5%',
     fontWeight: 'bold',
   },
 
   descNfuncsContainer: {
-    paddingTop: '2.5%',
-    borderTopWidth: 1,
-    borderTopEndRadius: 40,
-    borderTopStartRadius: 40,
     borderColor: '#DCDCDC',
     flex: 1,
   },
@@ -140,6 +96,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
+    width: '100%',
     justifyContent: 'space-evenly',
   },
   functionalButton: {

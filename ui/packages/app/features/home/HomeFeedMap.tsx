@@ -1,5 +1,5 @@
 import { View, RefreshControl, ScrollView, StyleSheet } from 'react-native'
-import { Button } from 'app/components/Button';
+import { Button } from 'app/components';
 import { useListEventsQuery } from '../event/event-api';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 import { useListPostsQuery } from '../post/post-api';
@@ -34,7 +34,7 @@ export function HomeFeedMap() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch({ postIndex: 0, eventIndex: 0, postPage: 0, eventPage: 0})
+    dispatch({ postIndex: 0, eventIndex: 0, postPage: 0, eventPage: 0 })
     setRefreshing(false);
   }, []);
 
@@ -51,7 +51,7 @@ export function HomeFeedMap() {
   )
 
   const { data: eventPageData } = useListEventsQuery(state.eventPage);
-  const { data: postsPageData} = useListPostsQuery({
+  const { data: postsPageData } = useListPostsQuery({
     page: state.postPage,
     size: pageSize
   });
@@ -61,20 +61,20 @@ export function HomeFeedMap() {
     let eventIndex = state.eventIndex;
     let postIndex = state.postIndex;
     const curIndex = eventIndex + postIndex;
-    
-    eventPageData?.events.map<Feed>(e => ({ type: 'event', content: e }))
-    .concat(
-      postsPageData?.posts.map(p => ({ type: 'post', content: p })).filter(Boolean) as Feed[]
-    ) // combine events and posts
-    .sort((a, b) => new Date(b.content.createdAt).getTime() - new Date(a.content.createdAt).getTime()) // sort by date
-    .slice(0, curIndex + pageSize) // get max size
-    .filter(Boolean) // filter undefined ( side effect of getting fixed length above )
-    .forEach(item => {
-      if(item.type == 'event') eventIndex++; 
-      if(item.type == 'post') postIndex++; 
 
-      items.push(item);
-    })
+    eventPageData?.events.map<Feed>(e => ({ type: 'event', content: e }))
+      .concat(
+        postsPageData?.posts.map(p => ({ type: 'post', content: p })).filter(Boolean) as Feed[]
+      ) // combine events and posts
+      .sort((a, b) => new Date(b.content.createdAt).getTime() - new Date(a.content.createdAt).getTime()) // sort by date
+      .slice(0, curIndex + pageSize) // get max size
+      .filter(Boolean) // filter undefined ( side effect of getting fixed length above )
+      .forEach(item => {
+        if (item.type == 'event') eventIndex++;
+        if (item.type == 'post') postIndex++;
+
+        items.push(item);
+      })
 
     setFeed(items);
     dispatch({ eventIndex, postIndex })
@@ -84,26 +84,26 @@ export function HomeFeedMap() {
   function loadMore() {
     let eventPage = state.eventPage;
     let postPage = state.postPage;
-    if(eventPageData && state.eventIndex >= eventPageData.events.length/2) eventPage++;
-    if(postsPageData && state.postIndex >= postsPageData.posts.length/2) postPage++;
+    if (eventPageData && state.eventIndex >= eventPageData.events.length / 2) eventPage++;
+    if (postsPageData && state.postIndex >= postsPageData.posts.length / 2) postPage++;
 
     dispatch({ eventPage, postPage })
   }
 
   return <ScrollView
-      style={styles.eventWrapper}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      {feed?.map((item, i) => (
-        item.type === 'event' ?
-          <EventDraw event={item.content} key={i} />
-        : <PostDraw  data={item.content} key={i} />
-      ))}
-      <View style={{ marginVertical: 10, alignItems: 'center'}}>
-        <Button type="outlined" text="Load more" onPress={loadMore} />
-      </View>
-    </ScrollView>
+    style={styles.eventWrapper}
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
+    {feed?.map((item, i) => (
+      item.type === 'event' ?
+        <EventDraw event={item.content} key={i} />
+        : <PostDraw data={item.content} key={i} />
+    ))}
+    <View style={{ marginVertical: 10, alignItems: 'center' }}>
+      <Button type="outlined" text="Load more" onPress={loadMore} />
+    </View>
+  </ScrollView>
 }
 
 const styles = StyleSheet.create({

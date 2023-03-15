@@ -1,9 +1,8 @@
 import { ScaledImage } from 'app/components/ScaledImage'
-import { View, Image, StyleSheet } from 'react-native'
-import Text from '../../components/Text'
+import { Image, StyleSheet } from 'react-native'
 import { InteractiveBar } from 'app/components/InteractiveBar'
 import { getPublicUri, toTimeAndDateString } from 'app/api/util';
-import { AnimatedLink } from 'app/components/Button'
+import { View, Text, AnimatedLink } from 'app/components'
 import EventOptionsModal from './event-options-modal'
 
 /**
@@ -34,12 +33,12 @@ export default function EventDraw({ event }: {
                 {event.endDate && toTimeAndDateString(event.endDate)}
               </Text>
             </View>
-            <EventOptionsModal/>
+            <EventOptionsModal />
           </View>
         </AnimatedLink>
 
         {/* EVENT TITLE IMAGE CONTENT RENDER*/}
-        <View style={{}}>
+        <View style={styles.contentContainer}>
           <Text style={styles.eventTitle}>{event.title}</Text>
           <AnimatedLink href={`/event/${event.id}`}>
             {event.attachments.map((image, key) =>
@@ -58,9 +57,11 @@ export default function EventDraw({ event }: {
 
 const styles = StyleSheet.create({
   eventContainer: {
-    width: '100%',
-    paddingHorizontal: 3,
-    marginVertical: 4,
+    marginVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    overflow: 'hidden',
+    borderColor: 'gainsboro',
   },
   modalButton: {
     right: 10,
@@ -71,6 +72,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+  },
+  contentContainer: {
+    padding: 3
   },
   societyImage: {
     margin: 5,

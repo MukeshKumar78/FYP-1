@@ -1,3 +1,4 @@
+import "../global.css"
 import 'raf/polyfill'
 
 const fixReanimatedIssue = () => {
@@ -15,7 +16,7 @@ import { Provider } from 'app/provider'
 import Head from 'next/head'
 import React from 'react'
 import type { SolitoAppProps } from 'solito'
-import Layout from './layout'
+import Layout from './_layout'
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
 

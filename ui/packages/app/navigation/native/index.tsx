@@ -17,7 +17,7 @@ import { ProfileScreen } from 'app/features/user/profile-screen';
 import { EventScreen } from 'app/features/event/screen';
 import { SocietyPage } from 'app/features/society/screen';
 import { EventCreateScreen } from 'app/features/event/event-create';
-import { SocietyEditPage } from 'app/features/society/edit-screen';
+import { SocietyEditScreen } from 'app/features/society/edit-screen';
 import { CommentScreen } from 'app/features/comment/screen';
 import { PostCreateScreen } from 'app/features/post/post-create';
 
@@ -30,7 +30,7 @@ const Stack = createNativeStackNavigator<{
     id: string
   }
   comments: {
-    eventId: string
+    id: string
   }
   society: {
     code: string
@@ -42,7 +42,7 @@ const Stack = createNativeStackNavigator<{
     code: string
   }
   "post-create": {
-    eventId: string
+    id: string
   }
   login: undefined
   loading: undefined
@@ -204,7 +204,7 @@ export function NativeNavigation() {
       />
       <Stack.Screen
         name="edit-society"
-        component={SocietyEditPage}
+        component={SocietyEditScreen}
         options={{
           headerTitleAlign: "center",
         }}

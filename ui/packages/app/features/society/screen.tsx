@@ -1,8 +1,9 @@
 import { createParam } from 'solito';
-import { View, ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import React, { useEffect } from 'react';
 import { EventMap } from '../event/event-map';
 import { SocietyInfo } from './society-info-draw';
+import { View, Text } from 'app/components'
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
 
@@ -24,7 +25,6 @@ export function SocietyPage() {
   return (
     <View
       style={{
-        backgroundColor: '$background',
         flex: 1,
         alignItems: 'center',
       }}

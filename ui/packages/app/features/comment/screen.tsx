@@ -1,25 +1,26 @@
 import { createParam } from 'solito';
-import { ScrollView, View, StyleSheet, TextInput } from 'react-native'
+import { ScrollView, StyleSheet, TextInput } from 'react-native'
 import CommentDraw from './comment-draw'
 import { useAddCommentMutation, useListCommentsQuery, useRemoveCommentMutation } from './comment-api';
-import { Text, Button, Hr } from 'app/components';
+import { Text, View, Button, Hr } from 'app/components';
 import { useState } from 'react';
 import { useGetEventQuery } from '../event/event-api';
 import useAuth, { usePermissions } from 'app/features/auth/useAuth'
 
-const { useParam } = createParam<{ eventId: string }>()
+// Event ID param: e.g. /event/1/comments
+const { useParam } = createParam<{ id: string }>()
 
 /**
 * 
 */
 export function CommentScreen() {
-  const [eventId] = useParam('eventId');
+  const [id] = useParam('id');
 
 
-  if (!eventId || !Number(eventId))
+  if (!id || !Number(id))
     return <CommentScreenError />
 
-  return <CommentView eventId={Number(eventId)}/>
+  return <CommentView eventId={Number(id)} />
 }
 
 function CommentView({ eventId }: {
@@ -30,7 +31,7 @@ function CommentView({ eventId }: {
   const [text, setText] = useState("");
   const { data: event } = useGetEventQuery(eventId);
 
-  if(!event)
+  if (!event)
     return <CommentScreenError />
 
   return <View>
@@ -44,11 +45,11 @@ function CommentView({ eventId }: {
       />
     </View>
     <View style={{ alignItems: 'center' }}>
-      <Button onPress={() => { 
-        addComment({ event: eventId, text}).unwrap().catch(console.error)
-      }} text="Comment" size='full' disabled={text.length < 3}/>
+      <Button onPress={() => {
+        addComment({ event: eventId, text }).unwrap().catch(console.error)
+      }} text="Comment" style={{ width: '100%' }} disabled={text.length < 3} />
     </View>
-    <Hr/>
+    <Hr />
     <CommentMap event={event} />
   </View>
 }
@@ -61,7 +62,7 @@ function CommentMap({ event }: {
   const [remove] = useRemoveCommentMutation();
   const [canCreate, canDelete] = usePermissions(event.society.code, [
     'COMMENT_CREATE', 'COMMENT_DELETE'
-  ]) 
+  ])
 
   async function removeComment(id: number) {
     const res = await remove(id);
@@ -74,10 +75,10 @@ function CommentMap({ event }: {
 
   return <ScrollView style={styles.commentWrapper}>
     {data?.map((comment, i) =>
-      <CommentDraw 
-        key={i} 
-        comment={comment} 
-        handleDelete={canDelete || comment.createdBy.code == user?.code 
+      <CommentDraw
+        key={i}
+        comment={comment}
+        handleDelete={canDelete || comment.createdBy.code == user?.code
           ? () => removeComment(comment.id)
           : undefined}
         handleReport={() => reportComment(comment.id)}
@@ -109,7 +110,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 3,
+    marginVertical: 5,
+    minHeight: 0,
     color: 'black',
+    borderColor: 'gainsboro',
+    borderWidth: 1
   },
 })

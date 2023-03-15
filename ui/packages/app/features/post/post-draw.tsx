@@ -1,15 +1,29 @@
-import { View, Image, StyleSheet } from 'react-native'
-import Text from '../../components/Text'
+import { Image, StyleSheet } from 'react-native'
+import { Option, OptionsModalButton } from 'app/components/OptionsModalButton'
+import { View, Text, AnimatedLink } from '../../components'
 import { Ionicons } from '@expo/vector-icons'
 import PostContent from './post-content-draw'
 import { getPublicUri, toShortDateString } from 'app/api/util';
 import { TextLink } from 'solito/link';
-import { AnimatedLink } from 'app/components/Button'
+import { usePermissions } from '../auth/useAuth'
+import { useRemovePostMutation } from './post-api'
 
 export default function PostDraw({ data, contentOnly = false }: {
   data: SocietyPost,
   contentOnly?: boolean
 }) {
+
+  const [canRemove] = usePermissions(data.event.society.code, [
+    "POST_DELETE"
+  ])
+  const [removePost] = useRemovePostMutation();
+
+  function remove() {
+    removePost(data.id)
+      .unwrap()
+      .catch(error => console.error(error.data?.message))
+  }
+
   return (
     <View style={styles.mainContainer}>
       {/* TITLE BAR RENDER*/}
@@ -29,12 +43,20 @@ export default function PostDraw({ data, contentOnly = false }: {
               </Text>
               {!contentOnly &&
                 <Text style={styles.postInfoText}>
-                  {''} on {toShortDateString(data.createdAt)} 
+                  {''} on {toShortDateString(data.createdAt)}
                 </Text>
               }
             </TextLink>
           </Text>
         </View>
+        {
+          canRemove &&
+          <View style={{ right: 0, position: 'absolute' }}>
+            <OptionsModalButton>
+              <Option text="Remove" onPress={remove} />
+            </OptionsModalButton>
+          </View>
+        }
       </View>
 
       {/* POST CONTENT RENDER */}
@@ -79,7 +101,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    paddingHorizontal: '1.5%',
   },
 
   contentContainer: {

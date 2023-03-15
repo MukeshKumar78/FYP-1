@@ -22,11 +22,11 @@ export function NavigationProvider({
               'user-detail': 'user/:code',
               event: 'event/:id',
               "event-create": "society/:code/new-event",
-              "post-create": "event/:eventId/new-post",
+              "post-create": "event/:id/new-post",
               society: 'society/:code',
               "edit-society": 'society/:code/edit',
               settings: 'settings',
-              comments: 'event/:eventId/comments'
+              comments: 'event/:id/comments'
             },
           },
         }),

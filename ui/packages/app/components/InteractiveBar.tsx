@@ -2,13 +2,14 @@ import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { Ionicons  } from '@expo/vector-icons'
 import { Link } from 'solito/link'
 
-const width = Dimensions.get('window').width
-const btnWidth = width / 3;
 const iconSize = 20;
 
 export function InteractiveBar({ id }: {
   id: number
 }) {
+
+  const width = Dimensions.get('window').width
+  const btnWidth = width / 3;
 
   return (
     <View style={styles.interactiveBarContainer}>
@@ -28,18 +29,18 @@ function InteractiveIcon({ icon, onPress, href, width }: {
 }) {
 
   const iconButton =
-    <View style={{ width, paddingVertical: 8, alignItems: 'center', borderColor: '#e7e7e7', borderWidth: 0, borderRadius: 5 }}>
+    <View style={{ paddingVertical: 8, alignItems: 'center', borderColor: '#e7e7e7', borderWidth: 0, borderRadius: 5 }}>
       {icon}
     </View>
 
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       {href
         ? <Link href={href}>{iconButton}</Link>
         : <TouchableOpacity onPress={onPress} activeOpacity={0.7}>{iconButton}</TouchableOpacity>
       }
-    </>
+    </View>
   )
 }
 

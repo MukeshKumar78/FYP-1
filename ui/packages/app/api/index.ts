@@ -41,7 +41,7 @@ export const api = createApi({
     })
   }),
   reducerPath: 'api',
-  tagTypes: ['Event', 'Society', 'Post', 'Comment'],
+  tagTypes: ['Event', 'Society', 'Post', 'Comment', 'Member'],
 })
 
 export const { useLoginMutation, useUserQuery, useMeQuery, useLazyMeQuery } = api;

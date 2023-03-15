@@ -1,3 +1,3 @@
-import { EventCreate } from 'app/features/event/event-create';
+import { EventCreateScreen } from 'app/features/event/event-create';
 
-export default EventCreate;
+export default EventCreateScreen;

@@ -22,8 +22,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: 10,
+    marginHorizontal: 5
   },
   postText: {
     paddingVertical: 10,
+    marginHorizontal: 5
   },
 })

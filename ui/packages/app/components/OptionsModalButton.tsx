@@ -1,14 +1,17 @@
-import { ReactNode, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
+import React, { ReactNode, useState } from "react";
+import { View, Text, Modal, TouchableOpacity, StyleSheet, ViewStyle, StyleProp } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-export function OptionsModalButton({ children }: {
-  children: ReactNode[] | ReactNode 
+const ModalContext = React.createContext(() => { });
+
+export function OptionsModalButton({ children, style }: {
+  children: ReactNode[] | ReactNode
+  style?: StyleProp<ViewStyle>
 }) {
   const [visible, setVisible] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <TouchableOpacity onPress={() => setVisible(true)} style={styles.button}>
         <View style={styles.box}>
           <Ionicons name="ellipsis-vertical" size={18} />
@@ -20,7 +23,9 @@ export function OptionsModalButton({ children }: {
           style={styles.modal}
         >
           <View style={styles.dropdown}>
-            {children}
+            <ModalContext.Provider value={() => setVisible(false)}>
+              {children}
+            </ModalContext.Provider>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -28,11 +33,17 @@ export function OptionsModalButton({ children }: {
   );
 };
 
-export function Option({ text, onPress }: {
+export function Option({ text, onPress, closeOnTouch = true }: {
   text: string,
+  closeOnTouch?: boolean,
   onPress: () => void
 }) {
-  return <TouchableOpacity onPress={onPress} >
+  const close = React.useContext(ModalContext);
+
+  return <TouchableOpacity onPress={() => {
+    if (closeOnTouch) close();
+    onPress();
+  }} >
     <Text style={styles.option}>{text}</Text>
   </TouchableOpacity>
 }

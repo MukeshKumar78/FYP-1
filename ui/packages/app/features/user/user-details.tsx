@@ -1,4 +1,5 @@
-import { View, StyleSheet, Text, Image } from 'react-native'
+import { StyleSheet, Image } from 'react-native'
+import { AnimatedLink, Hr, Text, View } from 'app/components'
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'solito/link'
 import { getPublicUri } from 'app/api/util'
@@ -34,9 +35,8 @@ export default function UserDetailsOrError({ user }: {
       >{user.email}</Text>
       <View style={styles.userInfo}>
         <View style={{ width: '100%', }}>
-          <View style={styles.headingContainer}>
-            <Text style={styles.heading}>Memberships</Text>
-          </View>
+          <Text style={styles.heading}>Memberships</Text>
+          <Hr/>
           <View>
             {user.memberships && user.memberships.map((m, i) =>
               <MembershipBox data={m} key={i} />
@@ -52,22 +52,22 @@ function MembershipBox({ data }: {
   data: Membership
 }) {
   return <View>
-    <Link href={`/society/${data.society.code}`}>
+    <AnimatedLink href={`/society/${data.society.code}`}>
       <View style={styles.membershipContainer}>
-        <View style={styles.membershipCard}>
           <Image
             style={styles.societyImage}
             source={{ uri: getPublicUri(data.society.image) }}
           />
-          <Text style={styles.membershipTitle}>{data.society.fullName}</Text>
+        <View style={styles.membershipCard}>
+        <View style={{borderRightWidth: 1, borderRightColor: 'gainsboro', marginRight: 5}}>
+          <Text style={styles.membershipTitle}>{data.society.fullName} </Text>
         </View>
-        <View style={styles.membershipContent}>
-          <Text style={[styles.membershipSubtitle, { fontStyle: 'italic' }]}>Example Team</Text>
-          <Text style={styles.membershipSubtitle}>as {data.role}</Text>
+          <Text style={[styles.membershipSubtitle]}>Example Team • </Text>
+          <Text style={styles.membershipSubtitle}>{data.role}</Text>
         </View>
-        <Ionicons name="arrow-forward" size={25} style={{ color: '#696969', position: 'absolute', right: 5, bottom: 5 }} />
+        {/* <Ionicons name="arrow-forward" size={25} style={{ color: '#696969', position: 'absolute', right: 5, bottom: 5 }} /> */}
       </View>
-    </Link>
+    </AnimatedLink>
   </View>
 }
 
@@ -89,11 +89,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center'
   },
-  headingContainer: {
-    borderColor: 'gainsboro',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    width: '100%',
-  },
   societyImage: {
     marginRight: 5,
     marginVertical: 5,
@@ -102,21 +97,22 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   membershipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     margin: 10,
-    padding: 10,
+    padding: 5,
     backgroundColor: 'white',
     borderRadius: 10,
     shadowColor: 'gray',
     shadowOffset: {
-      width: 2,
-      height: 2,
+      width: 1,
+      height: 1,
     },
     shadowOpacity: 0.5,
-    shadowRadius: 3,
-    elevation: 10,
+    shadowRadius: 2,
+    elevation: 1,
   },
   membershipCard: {
-
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -131,6 +127,7 @@ const styles = StyleSheet.create({
   membershipSubtitle: {
     fontSize: 17,
     fontWeight: '400',
+    color: '#777777'
   }
 
 })

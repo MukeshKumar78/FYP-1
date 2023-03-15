@@ -1,19 +1,19 @@
 import { createParam } from 'solito';
-import {  useReducer, useState } from 'react';
+import { useReducer, useState } from 'react';
 import {
   StyleSheet,
-  View,
-  Text,
   TextInput,
 } from 'react-native'
-import { Button } from 'app/components/Button'
+import { Text, View, Button } from 'app/components'
 import { ScrollView } from 'react-native-gesture-handler'
 import ImagePicker, { ImagePickerAsset } from 'app/components/ImagePicker';
 import { useAddPostMutation } from './post-api';
 import { useRouter } from 'solito/router';
 import { z } from 'zod';
 
-const { useParam } = createParam<{ eventId: string }>()
+
+// Event ID param: e.g. /event/1/new-post
+const { useParam } = createParam<{ id: string }>()
 
 interface LocalFormState {
   title: string
@@ -34,12 +34,12 @@ const eventSchema = z.object({
 })
 
 export function PostCreateScreen() {
-  const [eventId] = useParam('eventId');
+  const [id] = useParam('id');
 
-  if(!eventId)
-    return <PostCreateError/>
+  if (!id)
+    return <PostCreateError />
 
-  return <PostCreateDraw eventId={eventId}/>
+  return <PostCreateDraw eventId={id} />
 }
 
 function PostCreateDraw({ eventId }: {
@@ -135,12 +135,12 @@ function PostCreateDraw({ eventId }: {
         </View>
 
         {/* Submit Button */}
-        <View style={styles.submitContainer} >
-          <Button
-            disabled={!isValid}
-            onPress={handleSubmit}
-            text="submit" />
-        </View>
+        <Button
+          style={{ width: '95%', alignSelf: 'center' }}
+          disabled={!isValid}
+          onPress={handleSubmit}
+          text="Submit"
+        />
 
       </View>
     </ScrollView>
@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 2,
   },
-
   inputTitle: {
     fontSize: 18,
   },
@@ -213,8 +212,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'flex-start',
   },
-  submitContainer: {
-    alignItems: 'center'
-  },
-  imageContainer: {},
 })

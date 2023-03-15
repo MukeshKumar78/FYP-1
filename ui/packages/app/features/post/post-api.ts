@@ -48,8 +48,6 @@ export const postApi = api.injectEndpoints({
           body,
         }
       },
-      // Invalidates all Post-type queries providing the `LIST` id - after all, depending of the sort order,
-      // that newly created event could show up in any lists.
       invalidatesTags: [{ type: 'Post', id: 'PAGE' }],
     }),
     removePost: build.mutation<void, number>({
@@ -58,10 +56,15 @@ export const postApi = api.injectEndpoints({
           url: `/api/core/posts/${id}`,
           method: 'DELETE',
         }
-      }
+      },
+      invalidatesTags: [{ type: 'Post', id: 'PAGE' }],
     })
   }),
   overrideExisting: false
 })
 
-export const { useListPostsQuery, useAddPostMutation } = postApi;
+export const { 
+  useListPostsQuery, 
+  useAddPostMutation ,
+  useRemovePostMutation
+} = postApi;
