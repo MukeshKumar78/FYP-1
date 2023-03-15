@@ -1,5 +1,6 @@
 INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_CREATE', 'permission to create event', 'EVENT', 'CREATE');
 INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_READ', 'permission to read society events', 'EVENT', 'READ');
+INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_UPDATE', 'permission to update society events', 'EVENT', 'UPDATE');
 INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_PUBLISH', 'permission to publish society events', 'EVENT', 'PUBLISH');
 INSERT INTO permission (code, description, target, permission) VALUES ('EVENT_DELETE', 'permission to delete society events', 'EVENT', 'DELETE');
 INSERT INTO permission (code, description, target, permission) VALUES ('POST_CREATE', 'permission to create posts', 'POST', 'CREATE');
