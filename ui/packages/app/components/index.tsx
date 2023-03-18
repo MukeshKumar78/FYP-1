@@ -52,7 +52,6 @@ export function Button({ text = '', onPress, href, type = 'filled', bordered = f
       ...border,
       backgroundColor: btnBgColor,
       width: btnSize,
-      flex: 1,
       borderRadius: btnBorderRadius,
     }, style]}>
       <Text style={[styles.btnTextStyle, { color: btnTextColor, textAlign: 'center' }]}> {text} </Text>
@@ -101,6 +100,7 @@ export function AnimatedLink({ href, children, style }: {
 const styles = StyleSheet.create({
   btnContainerStyle: {
     paddingVertical: 8,
+    marginVertical: 5,
     alignItems: 'center',
   },
   btnTextStyle: {

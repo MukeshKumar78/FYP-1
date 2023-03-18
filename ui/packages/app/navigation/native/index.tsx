@@ -20,6 +20,8 @@ import { EventCreateScreen } from 'app/features/event/event-create';
 import { SocietyEditScreen } from 'app/features/society/edit-screen';
 import { CommentScreen } from 'app/features/comment/screen';
 import { PostCreateScreen } from 'app/features/post/post-create';
+import { EventMap } from 'app/features/event/event-map';
+import { DraftsScreen } from 'app/features/society/drafts-screen';
 
 const Stack = createNativeStackNavigator<{
   home: undefined
@@ -43,6 +45,9 @@ const Stack = createNativeStackNavigator<{
   }
   "post-create": {
     id: string
+  }
+  drafts: {
+    code: string
   }
   login: undefined
   loading: undefined
@@ -198,6 +203,13 @@ export function NativeNavigation() {
       <Stack.Screen
         name="society"
         component={SocietyPage}
+        options={{
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="drafts"
+        component={DraftsScreen}
         options={{
           headerTitleAlign: "center",
         }}

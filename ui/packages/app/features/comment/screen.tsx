@@ -34,7 +34,7 @@ function CommentView({ eventId }: {
   if (!event)
     return <CommentScreenError />
 
-  return <View>
+  return <View style={{ padding: 5 }}>
     <View style={styles.textContainer} >
       <TextInput
         style={styles.textInput}

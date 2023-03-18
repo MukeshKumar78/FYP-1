@@ -3,7 +3,9 @@ import { Image, StyleSheet } from 'react-native'
 import { InteractiveBar } from 'app/components/InteractiveBar'
 import { getPublicUri, toTimeAndDateString } from 'app/api/util';
 import { View, Text, AnimatedLink } from 'app/components'
-import EventOptionsModal from './event-options-modal'
+import { Option, OptionsModalButton } from 'app/components/OptionsModalButton'
+import { usePermissions } from '../auth/useAuth';
+import { usePublishEventMutation } from './event-api';
 
 /**
 * Displays event with header, content and interactive bar sections
@@ -11,6 +13,14 @@ import EventOptionsModal from './event-options-modal'
 export default function EventDraw({ event }: {
   event: SocietyEvent
 }) {
+  const [canPublish] = usePermissions(event.society.code, ["EVENT_PUBLISH"])
+  const [publishEvent] = usePublishEventMutation();
+
+  function publish() {
+    publishEvent(event.id)
+      .unwrap()
+      .catch(console.error)
+  }
 
   return (
     <View style={{ elevation: 2 }}>
@@ -33,7 +43,14 @@ export default function EventDraw({ event }: {
                 {event.endDate && toTimeAndDateString(event.endDate)}
               </Text>
             </View>
-            <EventOptionsModal />
+            <View style={styles.modalButton}>
+              <OptionsModalButton>
+                {
+                  !event.published && canPublish &&
+                  <Option text="Publish" onPress={publish} />
+                }
+              </OptionsModalButton>
+            </View>
           </View>
         </AnimatedLink>
 
@@ -64,7 +81,7 @@ const styles = StyleSheet.create({
     borderColor: 'gainsboro',
   },
   modalButton: {
-    right: 10,
+    right: 0,
     position: 'absolute'
   },
   titleBarContainer: {

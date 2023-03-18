@@ -13,9 +13,10 @@ import DateTimePicker from 'app/components/DateTimePicker';
 import ImagePicker, { ImagePickerAsset } from 'app/components/ImagePicker';
 import { useAddEventMutation } from './event-api';
 import { useRouter } from 'solito/router';
-import { TypeOf, z } from 'zod';
+import { z } from 'zod';
 import { toDateString } from 'app/api/util';
 import { useSocietyHeader } from 'app/hooks/headers';
+import { FormDateInput, FormSubmitButton, FormTextInput } from 'app/components/Form';
 
 const { useParam } = createParam<{ code: string }>()
 
@@ -27,7 +28,7 @@ interface LocalFormState {
   attachments: (File | ImagePickerAsset)[]
 }
 
-interface FormState extends LocalFormState, Partial<Event> {}
+interface FormState extends LocalFormState, Partial<Event> { }
 
 type FormAction = {
   key: string
@@ -37,8 +38,8 @@ type FormAction = {
 const eventSchema = z.object({
   title: z.string().min(5),
   text: z.string().min(10),
-  startDate: z.date().min(new Date()),
-  endDate: z.date().min(new Date()).optional(),
+  startDate: z.date().refine(date => date > new Date(), { message: "Start date must be in the future" }),
+  endDate: z.date().optional().refine(date => !date || date > new Date(), { message: "Start date must be in the future" }),
 })
 
 export function EventCreateScreen() {
@@ -58,7 +59,7 @@ export function EventCreateDraw({ society }: {
   society: string
 }) {
   const [postEvent] = useAddEventMutation();
-  const [isValid, setIsValid] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const [state, dispatch] = useReducer(
@@ -67,14 +68,10 @@ export function EventCreateDraw({ society }: {
         ...prevState,
         [key]: value
       }
-      const parsed = eventSchema.safeParse(data);
-      if (parsed.success) {
-        setIsValid(true);
-      }
-      else {
-        setIsValid(false);
-      }
-      return data;
+
+      validate(data)
+
+      return data
     },
     {
       title: '',
@@ -85,7 +82,28 @@ export function EventCreateDraw({ society }: {
     }
   )
 
+  const validateField = (field: keyof FormState) =>
+    (value: unknown): boolean => {
+      return eventSchema
+        .pick({ [field]: true })
+        .safeParse({ [field]: value }).success
+    }
+
+  function validate(data: FormState) {
+    const parsed = eventSchema
+      .refine(data => data.endDate ? data.endDate > data.startDate : true, {
+        message: 'End Date must be after Start Date'
+      })
+      .safeParse(data);
+
+    setError(!parsed.success ? parsed.error.errors[0]?.message ?? "" : "");
+
+    return parsed.success
+  }
+
   async function handleSubmit() {
+    if (!validate(state)) return;
+
     const formData = new FormData();
     formData.append('title', state.title)
     formData.append('text', state.text)
@@ -108,45 +126,37 @@ export function EventCreateDraw({ society }: {
         <Text style={styles.heading}>Create an Event</Text>
 
         {/* Title Input */}
-        <View style={styles.textContainer}>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Title* </Text>
-            <Text style={styles.subLabel}>(min: 5 char)</Text>
-          </View>
-          <TextInput
-            style={[styles.textInput, !state.title ? styles.invalidInput : {}]}
-            onChangeText={(value) => dispatch({ key: 'title', value })}
-          />
-        </View>
+        <FormTextInput
+          label="Title*"
+          subLabel="(min: 5 char)"
+          onChangeText={(value) => dispatch({ key: 'title', value })}
+          validate={validateField("title")}
+        />
 
         {/* Text Input */}
-        <View style={styles.textContainer} >
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Text* </Text>
-            <Text style={styles.subLabel}>(min: 10 char)</Text>
-          </View>
-          <TextInput
-            style={[styles.textInput, !state.text ? styles.invalidInput : {}]}
-            multiline={true}
-            onChangeText={(value) => dispatch({ key: 'text', value })}
-          />
-        </View>
+
+        <FormTextInput
+          label="Text*"
+          subLabel="(min: 10 char)"
+          multiline
+          onChangeText={(value) => dispatch({ key: 'text', value })}
+          validate={validateField("text")}
+        />
 
         {/* Start Date Input */}
-        <View style={styles.textContainer} >
-          <Text style={styles.label}>Start Date*</Text>
-          <DateTimePicker
-            value={state.startDate}
-            onChangeDate={(value) => dispatch({ key: 'startDate', value })} />
-        </View>
+        <FormDateInput
+          label="Start Date*"
+          value={state.startDate}
+          onChangeDate={(value) => dispatch({ key: 'startDate', value })}
+          validate={validateField("startDate")}
+        />
 
         {/* End Date Input */}
-        <View style={styles.textContainer} >
-          <Text style={styles.label}>End Date</Text>
-          <DateTimePicker
-            value={state.endDate}
-            onChangeDate={(value) => dispatch({ key: 'endDate', value })} />
-        </View>
+        <FormDateInput
+          label="End Date"
+          value={state.endDate}
+          onChangeDate={(value) => dispatch({ key: 'endDate', value })}
+          validate={validateField("endDate")} />
 
         {/* Media Input */}
         <View style={styles.textContainer} >
@@ -165,12 +175,14 @@ export function EventCreateDraw({ society }: {
         </View>
 
         {/* Submit Button */}
-        <View style={styles.textContainer} >
-          <Button
-            disabled={!isValid}
-            onPress={handleSubmit}
-            title="submit" />
-        </View>
+        <FormSubmitButton
+          disabled={error != ""}
+          onPress={handleSubmit}
+          label="submit" />
+
+        <Text style={{ color: 'red', textAlign: 'center' }}>
+          {error}
+        </Text>
 
       </View>
     </ScrollView>

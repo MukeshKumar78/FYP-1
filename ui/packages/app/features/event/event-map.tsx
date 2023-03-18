@@ -1,15 +1,22 @@
 import { View, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import EventDraw from './event-draw'
-import { useListEventsQuery } from './event-api';
+import { useListSocietyEventsQuery } from './event-api';
 import { useCallback, useState } from 'react';
 import { Button } from 'app/components';
 
 /*
 * Component to fetch and display a scrollable list of events
 */
-export function EventMap() {
+export function EventMap({ society = '', drafts = false }: {
+  society?: string
+  drafts?: boolean
+}) {
   const [page, setPage] = useState(0);
-  const { data } = useListEventsQuery(page);
+  const { data } = useListSocietyEventsQuery({
+    page,
+    society,
+    drafts
+  });
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(() => {
@@ -28,7 +35,7 @@ export function EventMap() {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      {data?.events.map((event, i) => (
+      {data?.data.map((event, i) => (
         <EventDraw event={event} key={i} />
       ))}
       <View style={{ marginVertical: 10, alignItems: 'center' }}>

@@ -1,16 +1,8 @@
 import { api } from 'app/api';
+import { Page, PageData, paginationProps } from 'app/api/util';
 
-// revalidation example: https://redux-toolkit.js.org/rtk-query/usage/mutations#revalidation-example
-
-type SocietyPostPage = {
-  posts: SocietyPost[]
-  data: PageData 
-}
-
-type PageData = {
-  page: number
-  size?: number
-  event?: number
+interface EventPostPageData extends PageData {
+  event: number
 }
 
 export const postApi = api.injectEndpoints({
@@ -19,26 +11,15 @@ export const postApi = api.injectEndpoints({
       providesTags: ['Post'],
       query: (id) => `/api/core/posts/${id}`
     }),
-    listPosts: build.query<SocietyPostPage, PageData >({
-      providesTags: (_) => [ { type: "Post", id: "PAGE" } ],
-      query: ({ page = 0, event = '', size = 10 }) => `/api/core/posts?pageNo=${page}&event=${event}&pageSize=${size}`,
-      serializeQueryArgs: ({ endpointName }) => {
-        return endpointName
-      },
-      transformResponse(posts: SocietyPost[], _, data) {
-        return { posts, data };
-      },
-      merge(currentCacheData, responseData) {
-        if (responseData.data.page > 0) {
-          currentCacheData.posts.push(...responseData.posts);
-          return currentCacheData;
-        }
-        return responseData;
-      },
-      // Refetch when the page arg changes
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg
-      },
+    listPosts: build.query<Page<SocietyPost>, PageData>({
+      query: ({ page = 0, size = 10 }) => `/api/core/posts?&pageNo=${page}&pageSize=${size}`,
+      providesTags: (_) => [{ type: "Post", id: "PAGE" }],
+      ...paginationProps<SocietyPost, PageData>()
+    }),
+    listEventPosts: build.query<Page<SocietyPost>, EventPostPageData>({
+      query: ({ page = 0, event, size = 10 }) => `/api/core/posts?pageNo=${page}&event=${event}&pageSize=${size}`,
+      providesTags: (_) => [{ type: "Post", id: "EVENTPAGE" }],
+      ...paginationProps<SocietyPost, EventPostPageData>()
     }),
     addPost: build.mutation<SocietyPost, FormData>({
       query: (body) => {
@@ -48,7 +29,7 @@ export const postApi = api.injectEndpoints({
           body,
         }
       },
-      invalidatesTags: [{ type: 'Post', id: 'PAGE' }],
+      invalidatesTags: [{ type: 'Post', id: 'PAGE' }, { type: 'Post', id: 'EVENTPAGE' }],
     }),
     removePost: build.mutation<void, number>({
       query(id) {
@@ -57,14 +38,15 @@ export const postApi = api.injectEndpoints({
           method: 'DELETE',
         }
       },
-      invalidatesTags: [{ type: 'Post', id: 'PAGE' }],
+      invalidatesTags: [{ type: 'Post', id: 'PAGE' }, { type: 'Post', id: 'EVENTPAGE' }],
     })
   }),
   overrideExisting: false
 })
 
-export const { 
-  useListPostsQuery, 
-  useAddPostMutation ,
+export const {
+  useListPostsQuery,
+  useListEventPostsQuery,
+  useAddPostMutation,
   useRemovePostMutation
 } = postApi;

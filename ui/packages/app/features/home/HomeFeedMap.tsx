@@ -1,15 +1,14 @@
 import { View, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'app/components';
 import { useListEventsQuery } from '../event/event-api';
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { useListPostsQuery } from '../post/post-api';
 import EventDraw from '../event/event-draw'
 import PostDraw from '../post/post-draw';
 
 
 type HomeFeedState = {
-  eventIndex: number
-  postIndex: number
+  page: number
   eventPage: number
   postPage: number
 }
@@ -22,19 +21,21 @@ type Feed = {
   content: SocietyPost
 }
 
-const pageSize = 10;
+const pageSize = 5;
 
 /*
  * Merges events and posts and renders as a infinitely scrollable feed
- * TODO (maybe): move merging/sorting logic to database level and create api
+ * TODO: move merging/sorting logic to database level and create api
  */
 export function HomeFeedMap() {
   const [feed, setFeed] = useState<Feed[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const postIndex = useRef(0);
+  const eventIndex = useRef(0);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch({ postIndex: 0, eventIndex: 0, postPage: 0, eventPage: 0 })
+    dispatch({ page: 1, postPage: 0, eventPage: 0 })
     setRefreshing(false);
   }, []);
 
@@ -43,51 +44,54 @@ export function HomeFeedMap() {
       return { ...prevState, ...newState }
     },
     {
-      eventIndex: 0,
+      page: 1,
       eventPage: 0,
-      postIndex: 0,
       postPage: 0
     }
   )
 
-  const { data: eventPageData } = useListEventsQuery(state.eventPage);
+  const { data: eventPageData } = useListEventsQuery({
+    page: state.eventPage,
+    size: pageSize
+  });
   const { data: postsPageData } = useListPostsQuery({
     page: state.postPage,
     size: pageSize
   });
 
+  // console.log({ eventIndex: eventIndex.current, postIndex: postIndex.current, ...state })
+
   useEffect(() => {
     const items: Feed[] = []
-    let eventIndex = state.eventIndex;
-    let postIndex = state.postIndex;
-    const curIndex = eventIndex + postIndex;
 
-    eventPageData?.events.map<Feed>(e => ({ type: 'event', content: e }))
+    postIndex.current = 0
+    eventIndex.current = 0
+
+    eventPageData?.data.map<Feed>(e => ({ type: 'event', content: e }))
       .concat(
-        postsPageData?.posts.map(p => ({ type: 'post', content: p })).filter(Boolean) as Feed[]
+        postsPageData?.data.map(p => ({ type: 'post', content: p })).filter(Boolean) as Feed[]
       ) // combine events and posts
       .sort((a, b) => new Date(b.content.createdAt).getTime() - new Date(a.content.createdAt).getTime()) // sort by date
-      .slice(0, curIndex + pageSize) // get max size
+      .slice(0, pageSize * state.page)
       .filter(Boolean) // filter undefined ( side effect of getting fixed length above )
       .forEach(item => {
-        if (item.type == 'event') eventIndex++;
-        if (item.type == 'post') postIndex++;
+        if (item.type == 'event') eventIndex.current++;
+        if (item.type == 'post') postIndex.current++;
 
         items.push(item);
       })
 
     setFeed(items);
-    dispatch({ eventIndex, postIndex })
-
-  }, [eventPageData, postsPageData])
+  }, [eventPageData?.data, postsPageData?.data])
 
   function loadMore() {
     let eventPage = state.eventPage;
     let postPage = state.postPage;
-    if (eventPageData && state.eventIndex >= eventPageData.events.length / 2) eventPage++;
-    if (postsPageData && state.postIndex >= postsPageData.posts.length / 2) postPage++;
+    if (eventPageData && eventIndex.current >= eventPageData.data.length / 2) eventPage++;
+    if (postsPageData && postIndex.current >= postsPageData.data.length / 2) postPage++;
 
-    dispatch({ eventPage, postPage })
+
+    dispatch({ eventPage, postPage, page: state.page + 1 })
   }
 
   return <ScrollView

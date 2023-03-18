@@ -11,7 +11,7 @@ export default function DateTimePicker({ onChangeDate, value }: {
   const [show, setShow] = useState(false);
 
   function onChange(event: DateTimePickerEvent, selectedDate: Date) {
-    if(event.type !== 'set') {
+    if (event.type !== 'set') {
       return
     }
 
@@ -50,7 +50,7 @@ export default function DateTimePicker({ onChangeDate, value }: {
         </TouchableOpacity>
         <TouchableOpacity style={styles.touchable} onPress={showTimepicker}>
           <Text>
-            {value ? date.toLocaleTimeString().slice(0,-3) : 'N/A'}
+            {value ? date.toLocaleTimeString().slice(0, -3) : 'N/A'}
           </Text>
         </TouchableOpacity>
       </View>

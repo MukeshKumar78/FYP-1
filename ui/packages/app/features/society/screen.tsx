@@ -1,22 +1,25 @@
 import { createParam } from 'solito';
 import { ScrollView, StyleSheet } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { EventMap } from '../event/event-map';
 import { SocietyInfo } from './society-info-draw';
-import { View, Text } from 'app/components'
+import { View, Text, Button, Hr } from 'app/components'
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
+import { useMembership } from '../auth/useAuth';
 
 const { useParam } = createParam<{ code: string }>()
 
 export function SocietyPage() {
   const [societyCode] = useParam('code');
+  const [drafts, setDrafts] = useState(false);
   const { data: society, isLoading } = useGetSocietyQuery(societyCode || '');
   const { createHeader } = useSocietyHeader(society)
+  const membership = useMembership(society?.code);
 
   useEffect(createHeader);
 
-  if(isLoading)
+  if (isLoading)
     return <></>
 
   if (!society)
@@ -31,7 +34,15 @@ export function SocietyPage() {
     >
       <ScrollView style={styles.mainContainer}>
         <SocietyInfo society={society} />
-        <EventMap />
+        <Hr />
+        {
+          membership &&
+          <View style={{ flexDirection: 'row' }}>
+            <Button style={{ padding: 5 }} bordered type={drafts ? "outlined" : "filled"} text="Published" onPress={() => setDrafts(false)} />
+            <Button style={{ padding: 5 }} bordered type={drafts ? "filled" : "outlined"} text="Drafts" onPress={() => setDrafts(true)} />
+          </View>
+        }
+        <EventMap society={society.code} drafts={drafts} />
       </ScrollView>
     </View>
   )

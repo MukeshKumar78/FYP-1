@@ -1,5 +1,4 @@
 import { View } from 'react-native'
-import { EventMap } from '../event/event-map'
 import { HomeFeedMap } from './HomeFeedMap'
 
 export function HomeScreen() {
@@ -12,7 +11,7 @@ export function HomeScreen() {
       }}
     >
       {/* changed current component call for testing */}
-      <HomeFeedMap/>
+      <HomeFeedMap />
     </View>
   )
 }

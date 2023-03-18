@@ -50,19 +50,20 @@ export default function useAuth() {
             dispatch(signOut());
           })
       } else {
+        console.log(3);
         getUser()
-        .then(({data, isError}) => {
-            if(isError || !data)
+          .then(({ data, isError }) => {
+            if (isError || !data)
               dispatch(signOut()); // Sets loading to false
             else
               dispatch(signIn({ user: data }))
-        })
+          })
       }
     })
-    .catch(err => {
+      .catch(err => {
         console.error(err);
         dispatch(signOut());
-    })
+      })
   }, [])
 
   return {
@@ -89,7 +90,7 @@ export default function useAuth() {
 }
 
 export function usePermissions(
-  society: string, 
+  society: string | undefined,
   permissions: Permission[]
 ) {
   const { user } = useAuth();
@@ -97,4 +98,10 @@ export function usePermissions(
   const userPermissions = user?.memberships.find(m => m.society.code === society)?.permissions ?? [];
 
   return permissions.map(p => !!userPermissions.find(u => u == p))
+}
+
+export function useMembership(society?: string) {
+  const { user } = useAuth();
+
+  return user?.memberships.find(m => m.society.code == society);
 }

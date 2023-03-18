@@ -36,10 +36,9 @@ export function EventScreen() {
         borderRadius: 15,
         paddingTop: 10,
         paddingHorizontal: 1,
-        elevation: 5,
         paddingBottom: 30,
         alignSelf: 'stretch',
-        backgroundColor: 'white',
+        backgroundColor: 'white'
       }}>
         <Text style={{ fontSize: 32, margin: 0 }}>Posts</Text>
         <Text style={{ fontSize: 12, color: 'gray', marginTop: -5, marginBottom: 10 }}>Latest updates for this event</Text>

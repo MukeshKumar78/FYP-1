@@ -9,6 +9,8 @@ export function OptionsModalButton({ children, style }: {
   style?: StyleProp<ViewStyle>
 }) {
   const [visible, setVisible] = useState(false);
+  if (!children || Array.isArray(children) && children.length == 0)
+    return <></>
 
   return (
     <View style={[styles.container, style]}>

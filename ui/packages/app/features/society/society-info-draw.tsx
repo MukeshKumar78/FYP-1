@@ -5,10 +5,14 @@ import {
 } from 'react-native'
 import { Text, View, Button, Hr } from 'app/components'
 import { getPublicUri } from 'app/api/util';
+import { useMembership, usePermissions } from '../auth/useAuth';
 
 export function SocietyInfo({ society }: {
   society: Society
 }) {
+
+  const [canCreateEvent] = usePermissions(society.code, ["EVENT_CREATE"])
+  const membership = useMembership(society.code);
 
   return (
     <View
@@ -26,12 +30,15 @@ export function SocietyInfo({ society }: {
       {/*SOCIETY DESCRIPTION + EDITSOCIETY + CREATEEVENT CONTAINER*/}
       <Hr />
       <View style={styles.buttonsContainer}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Button href={`/society/${society.code}/edit`} text="Edit" style={{ minWidth: 100 }} />
-        </View>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {
+          membership && (
+            <Button href={`/society/${society.code}/edit`} text="Edit" style={{ minWidth: 100 }} />
+          )
+        }
+        {
+          canCreateEvent &&
           <Button href={`/society/${society.code}/new-event`} text="New Event" style={{ minWidth: 100 }} />
-        </View>
+        }
       </View>
     </View>
   )
@@ -96,6 +103,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     width: '100%',
     justifyContent: 'space-evenly',
   },
