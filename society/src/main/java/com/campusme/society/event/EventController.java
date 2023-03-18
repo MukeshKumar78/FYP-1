@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Tuple;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -74,23 +75,21 @@ public class EventController {
       @RequestParam(defaultValue = "10") Integer pageSize,
       @RequestParam(defaultValue = "createdAt") String sortBy,
       @RequestParam(required = false) String society,
-      @RequestParam(required = false) Boolean drafts) {
+      @RequestParam(required = false, defaultValue = "false") Boolean drafts) {
 
     Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 
-    if (drafts != null) {
+    if (drafts) {
       if (society == null)
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Society is required");
       if (!webSecurity.isMember((AppUser) auth.getPrincipal(), society))
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Must be a member");
-
-      return eventRepository.findByPublished(false, paging).getContent();
     }
 
-    if (society != null)
-      return eventRepository.findBySocietyCodeAndPublished(society, true, paging).getContent();
+    if (society != null && !society.isEmpty())
+      return eventRepository.findBySocietyCodeAndPublished(society, !drafts, paging).getContent();
 
-    return eventRepository.findAll(paging).getContent();
+    return eventRepository.findByPublished(!drafts, paging).getContent();
   }
 
   /**
@@ -166,6 +165,21 @@ public class EventController {
 
     // Event exists but not published
     throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Endpoint to get feed
+   *
+   * @param pageNo   Integer (default: 0)
+   * @param pageSize Integer (default: 10)
+   */
+  @Operation(summary = "get feed")
+  @GetMapping("/feed")
+  public List<Object> feed(AppUserAuthenticationToken auth,
+      @RequestParam(defaultValue = "0") Integer pageNo,
+      @RequestParam(defaultValue = "10") Integer pageSize) {
+
+    return eventRepository.findLatestFeedItemIds(pageSize);
   }
 
   /**
