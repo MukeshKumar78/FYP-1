@@ -50,7 +50,6 @@ export default function useAuth() {
             dispatch(signOut());
           })
       } else {
-        console.log(3);
         getUser()
           .then(({ data, isError }) => {
             if (isError || !data)

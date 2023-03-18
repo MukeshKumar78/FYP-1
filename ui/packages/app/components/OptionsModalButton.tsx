@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from "react";
-import { View, Text, Modal, TouchableOpacity, StyleSheet, ViewStyle, StyleProp } from "react-native";
+import { View, Text, Modal, TouchableOpacity, StyleSheet, ViewStyle, StyleProp, TouchableWithoutFeedback } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Link } from "solito/link";
 
 const ModalContext = React.createContext(() => { });
 
@@ -9,7 +10,9 @@ export function OptionsModalButton({ children, style }: {
   style?: StyleProp<ViewStyle>
 }) {
   const [visible, setVisible] = useState(false);
-  if (!children || Array.isArray(children) && children.length == 0)
+
+  // If no options provided, render nothing
+  if (!children || Array.isArray(children) && children.filter(Boolean).length == 0)
     return <></>
 
   return (
@@ -35,19 +38,27 @@ export function OptionsModalButton({ children, style }: {
   );
 };
 
-export function Option({ text, onPress, closeOnTouch = true }: {
+export function Option({ text, onPress, href, closeOnTouch = true }: {
   text: string,
   closeOnTouch?: boolean,
-  onPress: () => void
+  onPress?: () => void,
+  href?: string
 }) {
   const close = React.useContext(ModalContext);
 
-  return <TouchableOpacity onPress={() => {
-    if (closeOnTouch) close();
-    onPress();
-  }} >
-    <Text style={styles.option}>{text}</Text>
-  </TouchableOpacity>
+  const button = <Text style={styles.option}>{text}</Text>
+
+  if (href)
+    return <Link href={href}>{button}</Link>
+
+  if (onPress)
+    return <TouchableOpacity onPress={() => {
+      if (closeOnTouch) close();
+      onPress();
+    }} >{button}</TouchableOpacity>
+
+
+  return button
 }
 
 const styles = StyleSheet.create({

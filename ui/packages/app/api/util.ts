@@ -11,7 +11,10 @@ export interface PageData {
   size?: number
 }
 
-export function getPublicUri(name: string): string {
+export function getPublicUri(name?: string): string {
+  // TODO: return default image
+  if (!name) return '';
+
   const uri = name.startsWith('http')
     ? name
     : apiUrl + '/public/' + name
@@ -63,7 +66,6 @@ export function paginationProps<T, U extends PageData = PageData>() {
       if (currentArg && previousArg)
         doRefetch = !(Object.entries(currentArg).toString() === Object.entries(previousArg).toString())
 
-      console.log(previousArg, currentArg, doRefetch)
       return doRefetch
     },
   }

@@ -1,5 +1,6 @@
 import { launchImageLibrary, Asset } from 'react-native-image-picker';
-import { View, TouchableOpacity, Text, StyleSheet, Image, Platform } from 'react-native';
+import { TouchableOpacity, StyleSheet, Image, Platform } from 'react-native';
+import { View, Text } from './'
 import { useState } from 'react';
 
 export type ImagePickerAsset = {
@@ -14,7 +15,7 @@ export type ImagePickerAsset = {
 * Calls @param onPick with the images/videos when selected
 */
 export default function ImagePicker({ onPick }: {
-  onPick: (assets: (File|ImagePickerAsset)[] ) => void
+  onPick: (assets: (File | ImagePickerAsset)[]) => void
 }) {
   const [images, setImages] = useState<Asset[]>([]);
 
@@ -34,7 +35,7 @@ export default function ImagePicker({ onPick }: {
         // fix missing data for web
         if (!a.type) a.type = "image/jpeg"
         if (!a.fileName) a.fileName = (Math.random() + 1).toString(36).substring(7)
-          return { name: a.fileName, type: a.type, uri: a.uri as string}
+        return { name: a.fileName, type: a.type, uri: a.uri as string }
       }));
     }
   }
@@ -75,7 +76,7 @@ export default function ImagePicker({ onPick }: {
               }
             }
             setImages(assets);
-            if(fileList)
+            if (fileList)
               onPick(assets);
           }}
         />

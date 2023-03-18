@@ -82,7 +82,7 @@ export function HomeFeedMap() {
       })
 
     setFeed(items);
-  }, [eventPageData?.data, postsPageData?.data])
+  }, [eventPageData?.data, postsPageData?.data, state.page])
 
   function loadMore() {
     let eventPage = state.eventPage;

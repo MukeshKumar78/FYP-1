@@ -82,7 +82,7 @@ export function AnimatedLink({ href, children, style }: {
       'worklet'
 
       return {
-        scale: pressed ? 0.95 : hovered ? 1.01 : 1,
+        scale: pressed ? 0.98 : hovered ? 1.01 : 1,
       }
     }}
     from={{

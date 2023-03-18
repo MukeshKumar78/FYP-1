@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text, Platform } from "react-native";
+import { StyleSheet, TouchableOpacity, Platform } from "react-native";
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { View, Text } from '../'
 
 export default function DateTimePicker({ onChangeDate, value }: {
   onChangeDate: (date: Date) => void
   value?: Date
 }) {
-  const [date, setDate] = useState<Date>(value || new Date());
+  const [date, setDate] = useState<Date>(value ? new Date(value) : new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 

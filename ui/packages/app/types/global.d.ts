@@ -55,6 +55,7 @@ declare global {
     startDate: Date
     endDate: Date
     createdAt: Date
+    updatedAt: Date
     publishedAt?: Date
     published: boolean
     society: Society
@@ -83,6 +84,7 @@ declare global {
     'EVENT_CREATE' |
     'EVENT_READ' |
     'EVENT_PUBLISH' |
+    'EVENT_UPDATE' |
     'EVENT_DELETE' |
     'POST_CREATE' |
     'POST_DELETE' |

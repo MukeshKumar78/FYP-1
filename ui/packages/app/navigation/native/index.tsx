@@ -16,12 +16,13 @@ import { LoadingScreen } from 'app/features/loading/screen';
 import { ProfileScreen } from 'app/features/user/profile-screen';
 import { EventScreen } from 'app/features/event/screen';
 import { SocietyPage } from 'app/features/society/screen';
-import { EventCreateScreen } from 'app/features/event/event-create';
+import { EventFormScreen } from 'app/features/event/event-form';
 import { SocietyEditScreen } from 'app/features/society/edit-screen';
 import { CommentScreen } from 'app/features/comment/screen';
 import { PostCreateScreen } from 'app/features/post/post-create';
-import { EventMap } from 'app/features/event/event-map';
 import { DraftsScreen } from 'app/features/society/drafts-screen';
+import { EventHistoryScreen } from 'app/features/event/event-history';
+import { EventSearchScreen } from 'app/features/event/event-search';
 
 const Stack = createNativeStackNavigator<{
   home: undefined
@@ -29,6 +30,9 @@ const Stack = createNativeStackNavigator<{
     code: string
   }
   event: {
+    id: string
+  }
+  "event-history": {
     id: string
   }
   comments: {
@@ -42,6 +46,9 @@ const Stack = createNativeStackNavigator<{
   }
   "event-create": {
     code: string
+  }
+  "event-update": {
+    id: string
   }
   "post-create": {
     id: string
@@ -58,6 +65,7 @@ const Drawer = createDrawerNavigator<{
   profile: {
     id: string
   }
+  "event-search": undefined
   settings: undefined
   logout: undefined
 }>();
@@ -133,6 +141,11 @@ export function NativeNavigation() {
           options={{ title: "Profile" }}
         />
         <Drawer.Screen
+          name="event-search"
+          component={EventSearchScreen}
+          options={{ title: "Search" }}
+        />
+        <Drawer.Screen
           name="settings"
           component={SettingsScreen}
           options={{ title: "Settings" }}
@@ -177,6 +190,14 @@ export function NativeNavigation() {
         }}
       />
       <Stack.Screen
+        name="event-history"
+        component={EventHistoryScreen}
+        options={{
+          headerTitle: "Event History",
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
         name="comments"
         component={CommentScreen}
         options={{
@@ -186,9 +207,17 @@ export function NativeNavigation() {
       />
       <Stack.Screen
         name="event-create"
-        component={EventCreateScreen}
+        component={EventFormScreen}
         options={{
           title: "Create an Event",
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="event-update"
+        component={EventFormScreen}
+        options={{
+          title: "Update Event",
           headerTitleAlign: "center",
         }}
       />

@@ -1,4 +1,4 @@
-import { View, RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import { View, RefreshControl, ScrollView } from 'react-native'
 import EventDraw from './event-draw'
 import { useListSocietyEventsQuery } from './event-api';
 import { useCallback, useState } from 'react';
@@ -31,7 +31,6 @@ export function EventMap({ society = '', drafts = false }: {
 
   return <>
     <ScrollView
-      style={styles.eventWrapper}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
@@ -45,10 +44,4 @@ export function EventMap({ society = '', drafts = false }: {
   </>
 }
 
-const styles = StyleSheet.create({
-  eventWrapper: {
-    width: '100%',
-    backgroundColor: '$background',
-    flex: 1,
-  },
-})
+

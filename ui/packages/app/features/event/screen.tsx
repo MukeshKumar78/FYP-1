@@ -4,7 +4,7 @@ import { View, Text, Button } from 'app/components'
 import { PostMap } from '../post/post-map'
 import { ScaledImage } from 'app/components/ScaledImage'
 import EventOptionsModal from './event-options-modal'
-import { InteractiveBar } from 'app/components/InteractiveBar'
+import { EventInteractiveBar } from './event-draw'
 import { useGetEventQuery } from './event-api';
 import { useSocietyHeader } from 'app/hooks/headers';
 import { createParam } from 'solito';
@@ -55,16 +55,15 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
     "POST_CREATE"
   ])
 
-  console.log(canAddPost)
-
   return (<>
     <View style={styles.eventContainer}>
-      {/* EVENT TITLE IMAGE CONTENT RENDER*/}
+
+      {/* TODO: use EventContent */}
       <View style={styles.entireTitleContainer}>
         {/* EVENT TITLE AND BUTTON RENDER*/}
         <View style={styles.titleAndButtonContainer}>
           <Text style={styles.eventTitle}>{data.title}</Text>
-          <View><EventOptionsModal /></View>
+          <View><EventOptionsModal event={data} /></View>
         </View>
         {/* EVENT DATE RENDER */}
         <Text style={styles.eventDate}>
@@ -82,7 +81,7 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
       <Text>{data.text}</Text>
 
       {/* EVENT INTERACTIVE BAR RENDER */}
-      <InteractiveBar id={data.id} />
+      <EventInteractiveBar event={data} />
     </View>
     {
       canAddPost &&
@@ -94,7 +93,7 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
   )
 }
 
-function EventScreenError() {
+export function EventScreenError() {
   return <View style={styles.eventWrapper}>
     <Text>
       Failed to load screen
