@@ -137,7 +137,8 @@ export function EventForm({ society, event }: {
     formData.append('society', society.code)
 
     const result = await postEvent(formData);
-    router.replace(`/society/${society}`)
+    // router.back()
+    router.replace(`/society/${society.code}`)
     console.log('new event', result);
   }
 
@@ -158,7 +159,7 @@ export function EventForm({ society, event }: {
       .catch(err => console.error(err))
 
     router.back()
-    router.replace(`/event/${event.id}`)
+    // router.replace(`/event/${event.id}`)
   }
 
   if (!society && !event) {

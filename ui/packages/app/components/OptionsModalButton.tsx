@@ -17,7 +17,10 @@ export function OptionsModalButton({ children, style }: {
 
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity onPress={() => setVisible(true)} style={styles.button}>
+      <TouchableOpacity
+        onPress={() => setVisible(true)}
+        activeOpacity={1}
+        style={styles.button}>
         <View style={styles.box}>
           <Ionicons name="ellipsis-vertical" size={18} />
         </View>

@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'solito/link'
 import { View, Text, AnimatedLink } from 'app/components'
@@ -18,9 +18,7 @@ export default function EventDraw({ event }: {
     <View style={{ elevation: 2 }}>
       <View style={styles.eventContainer}>
 
-        <AnimatedLink href={`/society/${event.society.code}`}>
-          <EventHeader event={event} />
-        </AnimatedLink>
+        <EventHeader event={event} />
 
         <AnimatedLink href={`/event/${event.id}`}>
           <EventContent event={event} />
@@ -37,22 +35,27 @@ export function EventHeader({ event }: {
   event: SocietyEvent
 }) {
   return (
+
     <View style={styles.titleBarContainer}>
-      <Image
-        style={styles.societyImage}
-        source={{ uri: getPublicUri(event.society.image) }}
-      />
+      <AnimatedLink href={`/society/${event.society.code}`}>
+        <View style={styles.titleBarContainer}>
+          <Image
+            style={styles.societyImage}
+            source={{ uri: getPublicUri(event.society.image) }}
+          />
 
-      <View style={styles.societyNameDateContainer}>
-        {/* SOCIETY NAME */}
-        <Text style={styles.societyName}>{event.society.name}</Text>
+          <View style={styles.societyNameDateContainer}>
+            {/* SOCIETY NAME */}
+            <Text style={styles.societyName}>{event.society.name}</Text>
 
-        {/* DATE COMPONENT */}
-        <Text style={styles.eventDate}>
-          {toTimeAndDateString(event.startDate)} {` - `}
-          {event.endDate && toTimeAndDateString(event.endDate)}
-        </Text>
-      </View>
+            {/* DATE COMPONENT */}
+            <Text style={styles.eventDate}>
+              {toTimeAndDateString(event.startDate)} {` - `}
+              {event.endDate && toTimeAndDateString(event.endDate)}
+            </Text>
+          </View>
+        </View>
+      </AnimatedLink>
       <View style={styles.modalButton}>
         <EventOptionsModal event={event} />
       </View>
