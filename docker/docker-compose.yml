@@ -35,8 +35,8 @@ services:
     environment:
       JWT_SECRET:
       EUREKA_HOST: http://discovery:8761/eureka
-      POSTGRES_HOST:
-      POSTGRES_PASSWORD:
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: postgres
       STATIC_FILES_LOCATION: /public/
     volumes:
       - ./volumes/public/:/public/
@@ -51,8 +51,8 @@ services:
     environment:
       JWT_SECRET:
       EUREKA_HOST: http://discovery:8761/eureka
-      POSTGRES_HOST:
-      POSTGRES_PASSWORD:
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: postgres
       STATIC_FILES_LOCATION: /public/
     volumes:
       - ./volumes/public/:/public/
