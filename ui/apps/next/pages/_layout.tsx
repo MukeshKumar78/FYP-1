@@ -2,6 +2,8 @@ import useAuth from "app/features/auth/useAuth";
 import { PropsWithChildren } from "react";
 import { LoadingScreen } from 'app/features/loading/screen'
 import { useRouter } from 'next/router'
+import SideBar from '/home/mukesh/Projects/FYP-1/ui/packages/app/components/SideBar/SideBar.jsx'
+import PostBar from '/home/mukesh/Projects/FYP-1/ui/packages/app/components/PostBar/PostBar.jsx' 
 
 export default function Layout(props: PropsWithChildren) {
   const router = useRouter();
@@ -19,10 +21,10 @@ export default function Layout(props: PropsWithChildren) {
     router.replace('/')
 
   return (
-    <div style={{ padding: 30, display: 'flex', justifyContent: 'center'  }}>
-      <div style={{ width: '100%', maxWidth: 480 }}>
-        {props.children}
-      </div>
+    <div style={{ textAlign: "center"}}>
+      <SideBar></SideBar>
+      <PostBar {...props}></PostBar>
+      
       {/* TODO: sidebar and navbar components */}
       {/* <div style={{margin: 10, padding: 0}}> */}
       {/* </div> */}

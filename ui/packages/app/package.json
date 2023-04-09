@@ -10,9 +10,15 @@
     "expo-secure-store": "^12.0.0",
     "js-cookie": "^3.0.1",
     "moti": "latest",
+    "nativewind": "^2.0.11",
+    "react-bootstrap": "^2.7.2",
+    "react-icons": "^4.8.0",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-reanimated": "2.9.1",
+    "sass": "^1.61.0",
     "solito": "^2.0.0",
+    "tailwind": "^4.0.0",
+    "tailwindcss": "^3.2.7",
     "zod": "^3.20.2"
   },
   "sideEffects": false

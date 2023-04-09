@@ -1,0 +1,80 @@
+.gpt3__sidebar {
+  /*  */
+  display: inline-flex;
+  height: 100%;
+  position: fixed;
+  margin-top: 3%;
+  font-weight: 500px;
+}
+
+.gpt3__sidebar-links_container_button {
+  border: 0;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 3px;
+
+  text-align: center;
+}
+
+/* styles.css */
+.gpt3__sidebar-links_container_button.active .gpt3__sidebar-links_container_button-link-icon path {
+  color: #ecb502;
+}
+
+.gpt3__sidebar-links_container_button.active {
+  background-color: hsla(0,0%,66.7%,.2);
+}
+
+.gpt3__sidebar-links_container_button.active .gpt3__sidebar-links_container_button-link-label {
+  color: black;
+}
+
+.gpt3__sidebar-links_container_button:hover {
+  background-color: hsla(0,0%,66.7%,.2);
+}
+
+.gpt3__sidebar-links_container_button-link  {
+  color: gray;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 25px;
+  text-transform: capitalize;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+  cursor: pointer;
+}
+
+.gpt3__sidebar-links_container_button-link-label:active {
+  background-color: transparent;
+}
+
+.gpt3__sidebar-links_container_button-link-label:hover {
+  background-color: transparent;
+}
+
+.gpt3__sidebar-links_container_button-link-icon {
+  margin-right: 10px;
+  color: gray;
+}
+
+
+
+.gpt3__sidebar-links_container span:hover {
+  color: black;
+  background-color: gray;
+}
+
+
+@media screen and (max-width: 1000px) {
+  .gpt3__sidebar {
+    display: none;
+  }
+}
+
+/* @media screen and (max-width: 1050px) {
+  .gpt3__sidebar {
+  }
+} */
