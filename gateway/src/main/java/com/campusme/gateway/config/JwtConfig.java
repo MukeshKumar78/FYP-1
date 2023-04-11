@@ -5,10 +5,8 @@ import javax.crypto.SecretKey;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -31,7 +29,8 @@ public class JwtConfig {
   }
 
   /**
-   * @return NimbusJwtEncoder using {@code jwt.secret-key} from application properties
+   * @return NimbusJwtEncoder using {@code jwt.secret-key} from application
+   *         properties
    */
   @Bean
   public JwtEncoder jwtEncoder() {

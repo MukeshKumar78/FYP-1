@@ -21,6 +21,8 @@ services:
       - 8080:8080
     environment:
       EUREKA_HOST: http://discovery:8761/eureka
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
       STATIC_FILES_LOCATION: /public/
     volumes:
       - ./volumes/public/:/public/
@@ -35,6 +37,8 @@ services:
     environment:
       JWT_SECRET:
       EUREKA_HOST: http://discovery:8761/eureka
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
       POSTGRES_HOST: db
       POSTGRES_PASSWORD: postgres
       STATIC_FILES_LOCATION: /public/
@@ -79,3 +83,18 @@ services:
       - ./volumes/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+
+
+  notification-broker:
+    container_name: notification-broker
+    build:
+      context: ../notification-broker
+    environment:
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis

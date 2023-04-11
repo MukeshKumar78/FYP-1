@@ -15,8 +15,6 @@ import com.campusme.gateway.service.TokenService;
 
 import reactor.core.publisher.Mono;
 
-
-
 @Component
 public class AuthenticationSuccessHandler implements ServerAuthenticationSuccessHandler {
 
@@ -32,11 +30,11 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
 
     // Add a session cookie
     ResponseCookie sessionCookie = ResponseCookie
-    .from("_token", tokenService.generateToken(authentication).getTokenValue())
-    .httpOnly(true)
-    .sameSite("Lax").build();
+        .from("_token", tokenService.generateToken(authentication).getTokenValue())
+        .httpOnly(true)
+        .sameSite("Lax").build();
 
     exchange.getExchange().getResponse().addCookie(sessionCookie);
-    return redirectStrategy.sendRedirect(exchange.getExchange(), URI.create("/admin")); 
+    return redirectStrategy.sendRedirect(exchange.getExchange(), URI.create("/admin"));
   }
 }
