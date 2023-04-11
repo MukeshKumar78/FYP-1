@@ -5,7 +5,7 @@ import { useAddCommentMutation, useListCommentsQuery, useRemoveCommentMutation }
 import { Text, View, Button, Hr } from 'app/components';
 import { useState } from 'react';
 import { useGetEventQuery } from '../event/event-api';
-import useAuth, { usePermissions } from 'app/features/auth/useAuth'
+import { useAuth, usePermissions } from 'app/features/auth/hooks'
 
 // Event ID param: e.g. /event/1/comments
 const { useParam } = createParam<{ id: string }>()

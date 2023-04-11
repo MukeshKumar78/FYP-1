@@ -1,5 +1,5 @@
 import { OptionsModalButton, Option } from 'app/components/OptionsModalButton';
-import { useMembership, usePermissions } from '../auth/useAuth';
+import { useMembership, usePermissions } from '../auth/hooks';
 import { usePublishEventMutation } from './event-api';
 
 export default function EventOptionsModal({ event }: {

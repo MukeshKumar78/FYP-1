@@ -1,4 +1,4 @@
-import useAuth from 'app/features/auth/useAuth';
+import { useAuth } from 'app/features/auth/hooks';
 import UserDetailsOrError from './user-details';
 
 

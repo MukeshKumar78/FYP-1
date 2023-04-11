@@ -7,7 +7,7 @@ import { useSocietyHeader } from '../../hooks/headers'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { getPublicUri } from 'app/api/util';
 import { Option, OptionsModalButton } from 'app/components/OptionsModalButton';
-import { usePermissions } from '../auth/useAuth';
+import { usePermissions } from '../auth/hooks';
 import { Text, Button, View } from 'app/components';
 import DropDownPicker from 'react-native-dropdown-picker'
 

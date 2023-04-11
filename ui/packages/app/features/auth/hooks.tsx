@@ -4,13 +4,13 @@ import { setItem } from 'app/api/storage';
 
 import { authState, signIn, signOut } from "./auth-reducer";
 import {
-  signIn as googleSignIn,
   signOut as googleSignOut,
   silentSignIn as googleSilentSignIn
 } from './google';
+import { registerForPushNotifications } from "../notifications";
 import { useLazyMeQuery, useLoginMutation } from "app/api";
 
-export default function useAuth() {
+export function useAuth() {
   const dispatch = useDispatch();
 
   const { user, loading, isSignedIn } = useSelector(authState);
@@ -18,14 +18,19 @@ export default function useAuth() {
   const [getUser] = useLazyMeQuery();
 
   async function login(idToken: string): Promise<User | null> {
-    console.log('login', 'idtoken', idToken)
-    const { token } = await getToken(idToken).unwrap();
+    const pushToken = await registerForPushNotifications();
+
+    console.log('login', { idToken, pushToken });
+
+    const { token } = await getToken({ idToken, pushToken }).unwrap();
     await setItem("jwt", token);
+
     const { data, isError, error } = await getUser();
     console.log({ data, isError, error });
+
     if (isError || !data) {
       console.error(error);
-      throw new Error("Failed to fetch user data: ", { cause: error })
+      throw new Error("Failed to fetch user data:", { cause: error })
     }
 
     console.log("Updated user token");

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import PostContent from './post-content-draw'
 import { getPublicUri, toShortDateString } from 'app/api/util';
 import { TextLink } from 'solito/link';
-import { usePermissions } from '../auth/useAuth'
+import { usePermissions } from '../auth/hooks'
 import { useRemovePostMutation } from './post-api'
 
 export default function PostDraw({ data, contentOnly = false }: {

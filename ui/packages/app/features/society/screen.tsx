@@ -6,7 +6,7 @@ import { SocietyInfo } from './society-info-draw';
 import { View, Text, Button, Hr } from 'app/components'
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
-import { useMembership } from '../auth/useAuth';
+import { useMembership } from '../auth/hooks';
 
 const { useParam } = createParam<{ code: string }>()
 

@@ -1,7 +1,7 @@
 import {
   GoogleSigninButton
 } from './google';
-import useAuth from './useAuth';
+import { useAuth } from './hooks';
 import { useEffect } from 'react';
 import { View, Text } from 'react-native';
 
@@ -15,13 +15,13 @@ export function LoginScreen() {
   return (
     <View
       style={{
-        flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 
+        flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16
       }}
     >
       <Text style={{ fontWeight: '800', fontSize: 25 }}>Welcome to CampusMe.</Text>
       <View style={{ height: 32 }} />
 
-      <GoogleSigninButton handleIdToken={signIn}/>
+      <GoogleSigninButton handleIdToken={signIn} />
     </View>
   )
 }

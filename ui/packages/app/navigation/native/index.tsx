@@ -11,7 +11,7 @@ import { Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'solito/link'
 
-import useAuth from 'app/features/auth/useAuth';
+import { useAuth } from 'app/features/auth/hooks';
 import { LoadingScreen } from 'app/features/loading/screen';
 import { ProfileScreen } from 'app/features/user/profile-screen';
 import { EventScreen } from 'app/features/event/screen';

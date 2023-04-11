@@ -9,7 +9,7 @@ import { useGetEventQuery } from './event-api';
 import { useSocietyHeader } from 'app/hooks/headers';
 import { createParam } from 'solito';
 import { getPublicUri, toShortDateString } from 'app/api/util'
-import { usePermissions } from '../auth/useAuth'
+import { usePermissions } from '../auth/hooks'
 
 const { useParam } = createParam<{ id: string }>()
 

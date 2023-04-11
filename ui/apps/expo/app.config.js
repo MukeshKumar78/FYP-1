@@ -3,10 +3,17 @@ module.exports = {
   version: '1.0.0',
   extra: {
     fact: 'kittens are cool',
-    apiRoot: process.env.API_URL,
+    eas: {
+      projectId: "93228eb7-5f89-49a2-adad-07cbb58ef925"
+    }
   },
-  scheme: "solito-blank",
+  scheme: "campusme",
   android: {
-    package: "com.campusme.app"
+    package: "com.campusme.app",
+    googleServicesFile: "./google-services.json",
+    useNextNotificationsApi: true,
+    compileSdkVersion: 31,
+    targetSdkVersion: 31,
+    buildToolsVersion: "31.0.0"
   }
 };

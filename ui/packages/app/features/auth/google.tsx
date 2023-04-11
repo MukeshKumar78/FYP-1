@@ -19,6 +19,7 @@ export async function signIn() {
   try {
     await GoogleSignin.hasPlayServices();
     const googleUserInfo = await GoogleSignin.signIn();
+
     return googleUserInfo;
   } catch (error) {
     throw new Error("Unable to signin with Google", { cause: error })

@@ -24,12 +24,12 @@ export const api = createApi({
     timeout: 10000,
   }),
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, string>({
-      query: (token) => ({
-        url: '/token',
+    login: builder.mutation<LoginResponse, { idToken: string, pushToken: string }>({
+      query: ({ idToken, pushToken }) => ({
+        url: `/token?pushToken=${pushToken}`,
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}` // override app token with google idtoken
+          'Authorization': `Bearer ${idToken}` // override app token with google idtoken
         },
       }),
     }),

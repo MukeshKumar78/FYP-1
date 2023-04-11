@@ -3,8 +3,15 @@ import { Provider } from 'app/provider'
 import { useEffect } from 'react';
 import { StatusBar, StyleSheet } from 'react-native'
 import { useFonts } from 'expo-font';
+import * as Notifications from 'expo-notifications';
 
-
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function App() {
   const [fontsLoaded] = useFonts({

@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 3.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "API_URL": "http://campusme.tech"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "env": {
+        "API_URL": "http://campusme.tech"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

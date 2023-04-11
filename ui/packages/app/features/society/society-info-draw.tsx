@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import { Text, View, Button, Hr } from 'app/components'
 import { getPublicUri } from 'app/api/util';
-import { useMembership, usePermissions } from '../auth/useAuth';
+import { useMembership, usePermissions } from '../auth/hooks';
 
 export function SocietyInfo({ society }: {
   society: Society
