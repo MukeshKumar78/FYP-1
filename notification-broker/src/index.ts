@@ -1,12 +1,16 @@
-import broker from "./broker"
-import app from './server'
+import client from './redis';
 
+(async () => {
+  const subscriber = client.duplicate()
 
-const port = process.env.PORT || 80;
+  await subscriber.connect()
 
-broker.start()
-
-app.listen(port, () => {
-  console.log("Listening on:", port)
-})
-
+  await subscriber.subscribe('push-notifications', (message: string) => {
+    try {
+      const notification = JSON.parse(message)
+      console.log(notification);
+    } catch (e) {
+      console.log("failed to parse:", message)
+    }
+  })
+})()
