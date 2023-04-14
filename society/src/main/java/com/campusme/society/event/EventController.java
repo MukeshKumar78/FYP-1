@@ -33,11 +33,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.campusme.society.FileUploadUtil;
+import com.campusme.society.notifications.Notification;
+import com.campusme.society.notifications.NotificationService;
 import com.campusme.society.security.WebSecurity;
 import com.campusme.society.society.Society;
 import com.campusme.society.society.SocietyRepository;
 import com.campusme.society.user.AppUser;
 import com.campusme.society.user.AppUserAuthenticationToken;
+import com.campusme.society.user.AppUserRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -59,6 +62,10 @@ public class EventController {
   private FileUploadUtil fileUploadUtil;
   @Autowired
   private SocietyRepository societyRepository;
+  @Autowired
+  private AppUserRepository userRepository;
+  @Autowired
+  private NotificationService notificationService;
 
   /**
    * Endpoint to get all events paginated and sorted based on query parameters
@@ -283,6 +290,16 @@ public class EventController {
 
     event.setPublished(true);
     eventRepository.save(event);
+
+    try {
+      // TODO: filter users who have muted
+      List<String> followers = userRepository.findAll().stream().map(user -> user.getCode()).toList();
+
+      notificationService.publish(new Notification("New Event", event.getTitle()), followers);
+    } catch (Exception e) {
+      System.out.print(e);
+    }
+
     return event;
   }
 }

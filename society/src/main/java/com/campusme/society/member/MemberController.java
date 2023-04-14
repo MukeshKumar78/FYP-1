@@ -37,7 +37,6 @@ public class MemberController {
   @Autowired
   private RoleService roleService;
 
-
   /**
    * Endpoint for getting memberships
    * 
@@ -73,9 +72,11 @@ public class MemberController {
    */
   @PostMapping("/memberships")
   @PreAuthorize("""
+      hasRole('ADMIN')
+      or (
       @webSecurity.hasPermission(#auth.getPrincipal(), #dto.getSociety(), 'member', 'add')
       and
-      @webSecurity.isRoleHigher(#auth.getPrincipal(), #dto.getSociety(), #dto.getRole())""")
+      @webSecurity.isRoleHigher(#auth.getPrincipal(), #dto.getSociety(), #dto.getRole()))""")
   public Member addMember(AppUserAuthenticationToken auth,
       @Valid @RequestBody MemberCreateRequestDTO dto) {
 
@@ -109,7 +110,7 @@ public class MemberController {
    *                                  400 (User is not a member)
    */
   @DeleteMapping("/memberships")
-  @PreAuthorize("@webSecurity.isUserHigher(#auth.getPrincipal(), #dto.getUser(), #dto.getSociety())")
+  @PreAuthorize("hasRole('ADMIN') or @webSecurity.isUserHigher(#auth.getPrincipal(), #dto.getUser(), #dto.getSociety())")
   public void removeMember(AppUserAuthenticationToken auth,
       @Valid @RequestBody MemberRemoveRequestDTO dto) {
     Society society = societyRepository.findByCode(dto.getSociety()).orElseThrow(
