@@ -2,7 +2,7 @@
   "name": "frontend",
   "private": true,
   "scripts": {
-    "build": "tailwindcss -i ./main.css -o ${STATIC_FILES_LOCATION:-'/tmp/public/'}/admin.css",
+    "build": "tailwindcss -i ./main.css -o ${STATIC_FILES_LOCATION:-'/tmp/public'}/admin.css",
     "watch": "tailwindcss -i ./main.css --watch"
   },
   "devDependencies": {

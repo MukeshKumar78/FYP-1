@@ -56,6 +56,11 @@
   }
 
   .tag {
+    display: hidden;
+    color: transparent;
+  }
+
+  .tag-card:hover .tag {
     @apply bg-cyan-500 text-white pb-0.5 px-1 mx-1 rounded-lg inline opacity-80;
   }
 }

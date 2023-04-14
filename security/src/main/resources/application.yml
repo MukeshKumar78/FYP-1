@@ -76,6 +76,12 @@ spring:
                 action: drop-and-create
             sql-load-script-source: META-INF/sql/data.sql
 
+  thymeleaf: # Thymeleaf auto reload templates
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+
 eureka:
   client:
     serviceUrl:

@@ -17,18 +17,17 @@
     <h1 class="title"> Tenures </h1>
   </div>
   <div class="flex justify-center">
-  <a class="px-4 max-w-md py-2 m-1 rounded-md bg-accent text-sky-100 hover:bg-slate-800 cursor-pointer"
-     onclick="confirm('This will archive all societies in the current tenure')"
-    >
-    Start Tenure
-  </a>
+    <a class="px-4 max-w-md py-2 m-1 rounded-md bg-accent text-sky-100 hover:bg-slate-800 cursor-pointer"
+      onclick="confirm('This will archive all societies in the current tenure')">
+      Start Tenure
+    </a>
   </div>
   <div th:switch="${tenures}">
     <h2 th:case="null">No Tenures yet!</h2>
     <div th:case="*">
       <div class="p-6 flex text-center justify-center align-center">
         <div th:each="tenure : ${tenures}" class="flex flex-col justify-start items-start text-left flex-1 p-2">
-          <div class="justify-between items-center flex border-b-2 border-gray-400 flex-1 w-full pb-2">
+          <div class="justify-between tag-card items-center flex border-b-2 border-gray-400 flex-1 w-full pb-2">
             <div>
               <h4 th:text="'Tenure #' + ${tenure.id}"></h4>
               <span class="flex items-center">
@@ -55,7 +54,7 @@
           <div class="flex flex-wrap w-full">
             <div th:each="society: ${tenure.societies}">
               <div
-                class="bg-gray-20  m-6 max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl my-6 p-3 text-left">
+                class="bg-gray-20  m-6 max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl my-6 p-3 text-left tag-card">
                 <div class="flex flex-row items-center justify-center content-center">
                   <img th:src="'/public/' + ${society.image}" class="w-[80px] h-[80px] rounded-full m-2" />
                 </div>
