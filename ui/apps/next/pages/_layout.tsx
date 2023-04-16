@@ -21,8 +21,8 @@ export default function Layout(props: PropsWithChildren) {
     router.replace('/')
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <SideBar></SideBar>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <SideBar />
       <PostBar {...props}></PostBar>
 
       {/* TODO: sidebar and navbar components */}

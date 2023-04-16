@@ -9,6 +9,7 @@ interface MenuItem {
   id: number;
   icon: JSX.Element;
   label: string;
+  link: string
 }
 
 const SideBar: React.FC = () => {
@@ -25,12 +26,11 @@ const SideBar: React.FC = () => {
       {menuItems.map((menuItem) => (
         <button
           key={menuItem.id}
-          className={`gpt3__sidebar-links_container_button ${
-            activeButton === menuItem.id ? 'active' : ''
-          }`}
+          className={`gpt3__sidebar-links_container_button ${activeButton === menuItem.id ? 'active' : ''
+            }`}
           onClick={() => handleButtonClick(menuItem.id)}
         >
-          <Link className="gpt3__sidebar-links_container_button-link" href="/">
+          <Link className="gpt3__sidebar-links_container_button-link" href={menuItem.link}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               {menuItem.icon}
               <div className="gpt3__sidebar-links_container_button-link-label">
@@ -48,21 +48,25 @@ const SideBar: React.FC = () => {
       id: 1,
       icon: <AiFillHome style={{ fontSize: '20px', marginRight: '10px', marginTop: '2px' }} />,
       label: 'Home',
+      link: '/'
     },
     {
       id: 2,
       icon: <FaUser style={{ fontSize: '18px', marginRight: '12px', marginTop: '3px' }} />,
       label: 'Profile',
+      link: '/profile'
     },
     {
       id: 3,
       icon: <RiSettingsFill style={{ fontSize: '20px', marginRight: '10px', marginTop: '3px' }} />,
       label: 'Settings',
+      link: '/404'
     },
     {
       id: 4,
       icon: <RiNotification2Fill style={{ fontSize: '19px', marginRight: '11px', marginTop: '3px' }} />,
       label: 'Notifications',
+      link: '/404'
     },
   ];
 
