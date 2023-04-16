@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
-interface PostBarProps {
-  children: ReactNode;
+type PostBarProps = {
+  children?: ReactNode;
 }
 
 const PostBar: React.FC<PostBarProps> = (props: PostBarProps) => {

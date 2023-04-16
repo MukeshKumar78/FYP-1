@@ -1,30 +1,30 @@
-import useAuth from "app/features/auth/hooks";
+import { useAuth } from "app/features/auth/hooks";
 import { PropsWithChildren } from "react";
 import { LoadingScreen } from 'app/features/loading/screen'
 import { useRouter } from 'next/router'
 import SideBar from '../../../packages/app/components/SideBar/SideBar'
-import PostBar from '../../../packages/app/components/PostBar/PostBar' 
+import PostBar from '../../../packages/app/components/PostBar/PostBar'
 
 export default function Layout(props: PropsWithChildren) {
   const router = useRouter();
   const { isSignedIn, loading } = useAuth();
 
   // probably not best to do routing here 
-  if(loading)
-    return <LoadingScreen/>
+  if (loading)
+    return <LoadingScreen />
 
-  if(!isSignedIn && router.route !== '/login') {
+  if (!isSignedIn && router.route !== '/login') {
     router.replace('login')
   }
 
-  if(isSignedIn && router.route == '/login')
+  if (isSignedIn && router.route == '/login')
     router.replace('/')
 
   return (
-    <div style={{ textAlign: "center"}}>
+    <div style={{ textAlign: "center" }}>
       <SideBar></SideBar>
       <PostBar {...props}></PostBar>
-      
+
       {/* TODO: sidebar and navbar components */}
       {/* <div style={{margin: 10, padding: 0}}> */}
       {/* </div> */}
