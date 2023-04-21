@@ -1,0 +1,11 @@
+services:
+  society:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ../society:/app
+  team:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ../team:/app

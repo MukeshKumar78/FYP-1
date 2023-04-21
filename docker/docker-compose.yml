@@ -25,13 +25,13 @@ services:
       REDIS_PORT: 6379
       STATIC_FILES_LOCATION: /public/
     volumes:
-      - ./volumes/public/:/public/
+      - public:/public/
     depends_on:
       - discovery
     restart: unless-stopped
 
   society:
-    container_name: society 
+    container_name: society
     build:
       context: ../society
     environment:
@@ -39,27 +39,40 @@ services:
       EUREKA_HOST: http://discovery:8761/eureka
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      POSTGRES_HOST: db
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST:
+      POSTGRES_PASSWORD:
       STATIC_FILES_LOCATION: /public/
     volumes:
-      - ./volumes/public/:/public/
-    depends_on: 
+      - public:/public/
+    depends_on:
+      - db
+      - discovery
+
+  team:
+    container_name: team
+    build:
+      context: ../team
+    environment:
+      JWT_SECRET:
+      EUREKA_HOST: http://discovery:8761/eureka
+      POSTGRES_HOST:
+      POSTGRES_PASSWORD:
+    depends_on:
       - db
       - discovery
 
   security:
-    container_name: security 
+    container_name: security
     build:
       context: ../security
     environment:
       JWT_SECRET:
       EUREKA_HOST: http://discovery:8761/eureka
-      POSTGRES_HOST: db
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST:
+      POSTGRES_PASSWORD:
       STATIC_FILES_LOCATION: /public/
     volumes:
-      - ./volumes/public/:/public/
+      - public:/public/
     depends_on: 
       - db
       - discovery
@@ -71,7 +84,8 @@ services:
       - 9002:80
 
   db:
-    image: postgres:14.5
+    build:
+      context: ../db
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
@@ -79,8 +93,6 @@ services:
       retries: 10
     environment:
       POSTGRES_PASSWORD:
-    volumes:
-      - ./volumes/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
 
@@ -98,3 +110,6 @@ services:
       REDIS_URL: redis://redis:6379
     depends_on:
       - redis
+
+volumes:
+  public:
