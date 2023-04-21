@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 class MemberCreateRequestDTO {
-  @NotBlank(message = "user is required")
+  @NotBlank(message = "User is required")
   String user;
-  @NotBlank(message = "society is required")
+  @NotBlank(message = "Society is required")
   String society;
-  @NotBlank(message = "role is required")
+  @NotBlank(message = "Role is required")
   String role;
 }
 
@@ -22,8 +22,8 @@ class MemberCreateRequestDTO {
 @NoArgsConstructor
 @AllArgsConstructor
 class MemberRemoveRequestDTO {
-  @NotBlank(message = "user is required")
+  @NotBlank(message = "User is required")
   String user;
-  @NotBlank(message = "society is required")
+  @NotBlank(message = "Society is required")
   String society;
 }

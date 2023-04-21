@@ -36,6 +36,8 @@ public class MemberController {
   private SocietyRepository societyRepository;
   @Autowired
   private RoleService roleService;
+  @Autowired
+  private TeamMemberService teamMemberService;
 
   /**
    * Endpoint for getting memberships
@@ -49,15 +51,15 @@ public class MemberController {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Either society or user must be provided");
 
-    List<Member> members;
-    if (user == null)
-      members = memberRepository.findBySocietyCode(society);
-    else
-      members = Arrays.asList(
+    if (society != null && user != null)
+      return Arrays.asList(
           memberRepository.findByUserCodeAndSocietyCode(user, society).orElseThrow(
               () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found")));
 
-    return members;
+    if (user == null)
+      return memberRepository.findBySocietyCode(society);
+    else
+      return memberRepository.findByUserCode(user);
   }
 
   /**
@@ -123,6 +125,12 @@ public class MemberController {
 
     if (!memberRepository.existsByUserIdAndSocietyId(user.getId(), society.getId()))
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not a member");
+
+    List<TeamMember> teams = teamMemberService.getUserMemberships(user.getCode());
+
+    if (teams.stream().anyMatch(t -> t.getTeam().getSociety().equals(society.getCode()))) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is in a team");
+    }
 
     memberRepository.deleteByUserIdAndSocietyId(user.getId(), society.getId());
 
