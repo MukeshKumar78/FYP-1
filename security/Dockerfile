@@ -21,7 +21,7 @@ ADD ./META-INF /app/META-INF
 COPY --from=builder target/security-0.0.1-SNAPSHOT.jar security-0.0.1-SNAPSHOT.jar
 
 RUN mkdir static
-COPY --from=builder /tmp/public/ static/ 
+COPY --from=builder /tmp/public/ static/
 
 EXPOSE 8082
 

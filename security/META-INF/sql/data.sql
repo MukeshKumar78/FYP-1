@@ -11,9 +11,10 @@ INSERT INTO permission (code, description, target, permission) VALUES ('MEMBER_U
 INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_CREATE', 'permission to create teams', 'TEAM', 'CREATE');
 INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_UPDATE', 'permission to update teams', 'TEAM', 'UPDATE');
 INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_DELETE', 'permission to delete teams', 'TEAM', 'DELETE');
+INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_MEMBER_ADD', 'permission to add team members', 'TEAM_MEMBER', 'ADD');
+INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_MEMBER_REMOVE', 'permission to remove team members', 'TEAM_MEMBER', 'REMOVE');
+INSERT INTO permission (code, description, target, permission) VALUES ('TEAM_MEMBER_UPDATE', 'permission to update team members', 'TEAM_MEMBER', 'UPDATE');
 INSERT INTO role (code, description, name, precedence) VALUES ('HEAD', 'highest role', 'head', 1000);
 INSERT INTO role (code, description, name, precedence) VALUES ('ADMIN', 'not the highest role', 'head', 999);
-INSERT INTO roles_permissions (permission_id, role_id) VALUES (1, 1);
-INSERT INTO roles_permissions (permission_id, role_id) VALUES (2, 1);
-INSERT INTO roles_permissions (permission_id, role_id) VALUES (10, 1);
+INSERT INTO roles_permissions (SELECT 1, id FROM permission);
 INSERT INTO roles_permissions (permission_id, role_id) VALUES (5, 2);
