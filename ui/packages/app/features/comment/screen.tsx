@@ -11,7 +11,7 @@ import { useAuth, usePermissions } from 'app/features/auth/hooks'
 const { useParam } = createParam<{ id: string }>()
 
 /**
-* 
+*
 */
 export function CommentScreen() {
   const [id] = useParam('id');
@@ -34,7 +34,7 @@ function CommentView({ eventId }: {
   if (!event)
     return <CommentScreenError />
 
-  return <View style={{ padding: 5 }}>
+  return <View style={{ padding: 5, width: '100%' }}>
     <View style={styles.textContainer} >
       <TextInput
         style={styles.textInput}

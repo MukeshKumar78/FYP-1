@@ -3,6 +3,7 @@ package com.campusme.teams.team;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +40,7 @@ public class Team {
   @Column(nullable = false)
   private String society;
 
-  @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "team", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
   @Builder.Default
   @JsonIgnoreProperties({ "team" })
   private List<Member> memberships = new ArrayList<>();

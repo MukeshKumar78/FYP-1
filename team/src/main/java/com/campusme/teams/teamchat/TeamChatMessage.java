@@ -18,39 +18,15 @@ public class TeamChatMessage {
   private long id;
 
   @ManyToOne
-  @JoinColumn(name="user_id", nullable=false)
-  private Member sender;
+  @JoinColumn(name = "membership_id", nullable = false)
+  private Member membership;
 
-  @Column(nullable=false)
+  @Column(nullable = false)
   private String content;
 
   // private MessageType type;
 
   // public enum MessageType {
-  //   CHAT, LEAVE, JOIN
-  // }
-
-  public String getContent() {
-    return content;
-  }
-
-  public void setContent(String content) {
-    this.content = content;
-  }
-
-  public Member getSender() {
-    return sender;
-  }
-
-  public void setSender(Member sender) {
-    this.sender = sender;
-  }
-
-  // public MessageType getType() {
-  //   return type;
-  // }
-
-  // public void setType(MessageType type) {
-  //   this.type = type;
+  // CHAT, LEAVE, JOIN
   // }
 }

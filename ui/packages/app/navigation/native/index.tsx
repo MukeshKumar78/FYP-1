@@ -18,6 +18,7 @@ import { EventScreen } from 'app/features/event/screen';
 import { SocietyPage } from 'app/features/society/screen';
 import { EventFormScreen } from 'app/features/event/event-form';
 import { SocietyEditScreen } from 'app/features/society/edit-screen';
+import { TeamEditScreen } from 'app/features/team/edit-screen';
 import { CommentScreen } from 'app/features/comment/screen';
 import { PostCreateScreen } from 'app/features/post/post-create';
 import { DraftsScreen } from 'app/features/society/drafts-screen';
@@ -42,6 +43,9 @@ const Stack = createNativeStackNavigator<{
     code: string
   }
   "edit-society": {
+    code: string
+  }
+  "edit-team": {
     code: string
   }
   "event-create": {
@@ -246,6 +250,13 @@ export function NativeNavigation() {
       <Stack.Screen
         name="edit-society"
         component={SocietyEditScreen}
+        options={{
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="edit-team"
+        component={TeamEditScreen}
         options={{
           headerTitleAlign: "center",
         }}

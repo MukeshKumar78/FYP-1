@@ -21,6 +21,20 @@ declare global {
     society: Society
   }
 
+  type Team = {
+    id: number,
+    code: string,
+    name: string,
+    society: string,
+    memberships: TeamMember[]
+  }
+
+  type TeamMember = {
+    id: number,
+    team: Team,
+    user: User
+  }
+
   type Society = {
     id: number
     code: string
@@ -92,5 +106,11 @@ declare global {
     'COMMENT_DELETE' |
     'MEMBER_ADD' |
     'MEMBER_REMOVE' |
-    'MEMBER_UPDATE'
+    'MEMBER_UPDATE' |
+    'TEAM_CREATE' |
+    'TEAM_UPDATE' |
+    'TEAM_DELETE' |
+    'TEAM_MEMBER_ADD' |
+    'TEAM_MEMBER_REMOVE' |
+    'TEAM_MEMBER_UPDATE'
 }

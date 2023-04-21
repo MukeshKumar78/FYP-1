@@ -27,12 +27,13 @@ export function Form({ children, style }: {
   </ScrollView>
 }
 
-export function FormTextInput({ label, subLabel, value = '', multiline = false, validate = (_) => false, onChangeText }: {
+export function FormTextInput({ label, subLabel = '', value = '', multiline = false, disabled = false, validate = (_) => false, onChangeText }: {
   label: string,
-  subLabel: string,
+  subLabel?: string,
   value?: string,
   multiline?: boolean,
   validate?: (s: string) => boolean,
+  disabled?: boolean
   onChangeText: (s: string) => void
 }) {
 
@@ -44,6 +45,7 @@ export function FormTextInput({ label, subLabel, value = '', multiline = false, 
       <Text style={styles.subLabel}>{subLabel}</Text>
     </View>
     <RNTextInput
+      editable={!disabled}
       multiline={multiline}
       value={value}
       style={[styles.textInput, !isValid ? styles.invalidInput : {}]}

@@ -23,11 +23,12 @@ export function View(props: ViewProps) {
   return <RNView style={{ zIndex: undefined }} {...props}>{props.children}</RNView>
 }
 
-export function Button({ text = '', onPress, href, type = 'filled', bordered = false, size, disabled = false, style = {} }: {
+export function Button({ text = '', onPress, href, type = 'filled', bg = 'primary', bordered = false, size, disabled = false, style = {} }: {
   text: string,
   onPress?: () => any
   href?: string,
   type?: 'filled' | 'transparent' | 'outlined'
+  bg?: 'primary' | 'warn',
   bordered?: boolean,
   size?: 'tiny' | 'large' | 'small' | 'full',
   disabled?: boolean
@@ -41,7 +42,9 @@ export function Button({ text = '', onPress, href, type = 'filled', bordered = f
   else if (size === 'large') btnSize = large;
   else if (size === 'small') btnSize = small;
 
-  const btnBgColor = disabled ? 'grey' : type === 'filled' ? '#6677cc' : 'transparent'
+  const bgColor = bg === 'primary' ? '#6677cc' : '#F07167'
+
+  const btnBgColor = disabled ? 'grey' : type === 'filled' ? bgColor : 'transparent'
   const btnTextColor = type === 'filled' ? '#ffffff' : '#6371c2'
   const btnBorderRadius = bordered ? 30 : 5
 

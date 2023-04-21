@@ -29,6 +29,7 @@ export function NavigationProvider({
               society: 'society/:code',
               drafts: 'society/:code/drafts',
               "edit-society": 'society/:code/edit',
+              "edit-team": 'team/:code/edit',
               settings: 'settings',
               comments: 'event/:id/comments'
             },
