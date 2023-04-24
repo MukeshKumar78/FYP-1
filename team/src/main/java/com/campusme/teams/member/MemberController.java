@@ -48,17 +48,20 @@ public class MemberController {
    * 
    * @param id
    */
-  @GetMapping("/memberships")
-  public List<Member> memberships(@RequestParam(required = false) String user,
+  @GetMapping("/team/memberships")
+  public List<Member> memberships(AppUserAuthenticationToken auth, @RequestParam(required = false) String user,
       @RequestParam(required = false) String team) {
-    if (team == null && user == null)
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "Either team or user must be provided");
+    if (team == null && user == null) {
+      AppUser authUser = (AppUser) auth.getPrincipal();
+      return memberRepository.findByUserCode(authUser.getCode());
+    }
 
-    if (user != null && team != null)
+    if (user != null && team != null) {
+
       return Arrays.asList(
           memberRepository.findByUserCodeAndTeamCode(user, team).orElseThrow(
               () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found")));
+    }
 
     if (user == null)
       return memberRepository.findByTeamCode(team);
@@ -76,7 +79,7 @@ public class MemberController {
    *                                  found)
    *                                  400 (User is already a member)
    */
-  @PostMapping("/memberships")
+  @PostMapping("/team/memberships")
   @PreAuthorize("""
       hasRole('ADMIN')
       or
@@ -121,7 +124,7 @@ public class MemberController {
    *                                  found)
    *                                  400 (User is not a member)
    */
-  @DeleteMapping("/memberships")
+  @DeleteMapping("/team/memberships")
   @PreAuthorize("""
       hasRole('ADMIN')
       or

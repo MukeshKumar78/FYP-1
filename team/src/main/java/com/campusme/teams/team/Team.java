@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import com.campusme.teams.member.Member;
+import com.campusme.teams.teamchat.TeamChatMessage;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -28,7 +30,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Team {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(unique = true, nullable = false)
@@ -44,6 +46,10 @@ public class Team {
   @Builder.Default
   @JsonIgnoreProperties({ "team" })
   private List<Member> memberships = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "team", cascade = CascadeType.DETACH)
+  private List<TeamChatMessage> messages;
 
   @PrePersist
   protected void onCreate() {

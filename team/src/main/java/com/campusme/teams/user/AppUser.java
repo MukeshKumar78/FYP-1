@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.campusme.teams.member.Member;
+import com.campusme.teams.teamchat.TeamChatMessage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -57,6 +59,10 @@ public class AppUser implements UserDetails {
   @Builder.Default
   @JsonIgnoreProperties({ "user" })
   private List<Member> memberships = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "sender", cascade = CascadeType.DETACH)
+  private List<TeamChatMessage> messages;
 
   @Transient
   @JsonIgnore

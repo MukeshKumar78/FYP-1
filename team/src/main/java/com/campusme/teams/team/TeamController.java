@@ -33,7 +33,7 @@ public class TeamController {
   private TeamRepository teamRepository;
 
   @Operation(summary = "get team")
-  @GetMapping("/{code}")
+  @GetMapping("/team/{code}")
   public Team findOne(@PathVariable String code) {
     Team team = teamRepository.findByCode(code).orElseThrow(
         () -> new ResponseStatusException(
@@ -43,7 +43,7 @@ public class TeamController {
   }
 
   @Operation(summary = "get all society teams")
-  @GetMapping("/")
+  @GetMapping("/team")
   public List<Team> findBySociety(@RequestParam String society) {
     List<Team> teams = teamRepository.findBySociety(society);
     return teams;
@@ -58,7 +58,7 @@ public class TeamController {
    */
   @PreAuthorize("@webSecurity.hasPrivilege(#auth.getPrincipal(), #dto.getSociety(), 'TEAM', 'CREATE')")
   @Operation(summary = "create team")
-  @PostMapping(path = "/")
+  @PostMapping(path = "/team")
   @ResponseStatus(code = HttpStatus.CREATED)
   public Team save(AppUserAuthenticationToken auth, @Valid @RequestBody TeamCreateRequestDTO dto) {
     Team team = dto.toTeam();
@@ -79,7 +79,7 @@ public class TeamController {
    */
   @PreAuthorize("@webSecurity.hasPermission(#auth.getPrincipal(), #code, 'TEAM', 'DELETE')")
   @Operation(summary = "delete team")
-  @DeleteMapping(path = "/{code}")
+  @DeleteMapping(path = "/team/{code}")
   public void delete(AppUserAuthenticationToken auth, @PathVariable String code) {
     Team team = teamRepository.findByCode(code).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found"));

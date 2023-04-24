@@ -16,6 +16,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
   boolean existsByUserIdAndTeamId(Long userId, Long teamId);
 
+  boolean existsByUserCodeAndTeamCode(String user, String team);
+
   @Transactional
   void deleteByUserIdAndTeamId(Long userId, Long teamId);
 }

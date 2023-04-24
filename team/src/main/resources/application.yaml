@@ -39,6 +39,8 @@ spring:
                 create-target: META-INF/sql/create.sql
               database:
                 action: drop-and-create
+            sql-load-script-source: META-INF/sql/data.sql
+
 
 eureka:
   client:

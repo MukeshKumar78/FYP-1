@@ -29,7 +29,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @Builder
 public class Member {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
@@ -41,8 +41,4 @@ public class Member {
   @JoinColumn(name = "user_id")
   @JsonIgnoreProperties({ "memberships" })
   private AppUser user;
-
-  @JsonIgnore
-  @OneToMany(mappedBy = "membership")
-  private List<TeamChatMessage> messages;
 }
