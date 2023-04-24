@@ -36,7 +36,7 @@ public class Comment {
   private String code;
 
   @Column(columnDefinition = "TEXT", nullable = false)
-  @Size(min=3, max=250)
+  @Size(min = 3, max = 250)
   private String text;
 
   @ManyToOne

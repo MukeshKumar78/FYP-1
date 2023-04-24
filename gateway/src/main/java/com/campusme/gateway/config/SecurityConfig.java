@@ -80,7 +80,7 @@ public class SecurityConfig {
         .cors()
         .and()
         .authorizeExchange((exchanges) -> exchanges
-            .pathMatchers("/public/**", "/swagger-config.json")
+            .pathMatchers("/public/**", "/swagger-config.json", "/ws/**")
             .permitAll()
             .anyExchange().authenticated())
         .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
@@ -121,7 +121,8 @@ public class SecurityConfig {
     configuration
         .setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
+    source.registerCorsConfiguration("/api/**", configuration);
+    source.registerCorsConfiguration("/token", configuration);
     return source;
   }
 }

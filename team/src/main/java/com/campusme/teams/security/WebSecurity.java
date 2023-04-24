@@ -24,8 +24,8 @@ public class WebSecurity {
    * @param teamId
    * @return true or false
    */
-  public boolean isMember(AppUser user, Long teamId) {
-    return user.getMemberships().stream().anyMatch(m -> m.getTeam().getId() == teamId);
+  public boolean isMember(AppUser user, String team) {
+    return user.getMemberships().stream().anyMatch(m -> m.getTeam().getCode().equals(team));
   }
 
   /**

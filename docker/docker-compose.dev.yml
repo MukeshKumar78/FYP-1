@@ -9,3 +9,5 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ../team:/app
+    ports:
+      - 8083:8083

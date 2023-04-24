@@ -10,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 
 import com.campusme.teams.security.UserJwtAuthenticationConverter;
 
@@ -32,16 +33,21 @@ public class SecurityConfig {
     http.authorizeRequests(authorize -> authorize
         .antMatchers("/actuator/**").permitAll()
         .antMatchers("/v3/api-docs").permitAll()
+        .antMatchers("/ws/**").permitAll()
         .antMatchers("/**").fullyAuthenticated())
         .cors().and()
         .oauth2ResourceServer(oauth2 -> oauth2
             .jwt(jwt -> jwt
                 .jwtAuthenticationConverter(userJwtAuthenticationConverter)
-                .decoder(NimbusJwtDecoder.withSecretKey(key).build())
-            )
-        );
+                .decoder(NimbusJwtDecoder.withSecretKey(key).build())))
+        .cors().and().csrf().disable();
 
     return http.build();
+  }
+
+  @Bean
+  public JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withSecretKey(key).build();
   }
 
   @Bean
