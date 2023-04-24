@@ -6,7 +6,6 @@ import Link from 'next/link';
 import './sidebar.css';
 
 interface MenuItem {
-  id: number;
   icon: JSX.Element;
   label: string;
   link: string
@@ -17,18 +16,17 @@ const SideBar: React.FC = () => {
   const [activeButton, setActiveButton] = useState(1);
 
   function handleButtonClick(buttonId: number) {
-    console.log(buttonId);
     setActiveButton(buttonId);
   }
 
   const Menu: React.FC = () => (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {menuItems.map((menuItem) => (
+      {menuItems.map((menuItem, i) => (
         <button
-          key={menuItem.id}
-          className={`gpt3__sidebar-links_container_button ${activeButton === menuItem.id ? 'active' : ''
+          key={i}
+          className={`gpt3__sidebar-links_container_button ${activeButton === i ? 'active' : ''
             }`}
-          onClick={() => handleButtonClick(menuItem.id)}
+          onClick={() => handleButtonClick(i)}
         >
           <Link className="gpt3__sidebar-links_container_button-link" href={menuItem.link}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -45,25 +43,26 @@ const SideBar: React.FC = () => {
 
   const menuItems: MenuItem[] = [
     {
-      id: 1,
       icon: <AiFillHome style={{ fontSize: '20px', marginRight: '10px', marginTop: '2px' }} />,
       label: 'Home',
       link: '/'
     },
     {
-      id: 2,
       icon: <FaUser style={{ fontSize: '18px', marginRight: '12px', marginTop: '3px' }} />,
       label: 'Profile',
       link: '/profile'
     },
     {
-      id: 3,
+      icon: <FaUser style={{ fontSize: '18px', marginRight: '12px', marginTop: '3px' }} />,
+      label: 'Your Teams',
+      link: '/team/chats'
+    },
+    {
       icon: <RiSettingsFill style={{ fontSize: '20px', marginRight: '10px', marginTop: '3px' }} />,
       label: 'Settings',
       link: '/404'
     },
     {
-      id: 4,
       icon: <RiNotification2Fill style={{ fontSize: '19px', marginRight: '11px', marginTop: '3px' }} />,
       label: 'Notifications',
       link: '/404'

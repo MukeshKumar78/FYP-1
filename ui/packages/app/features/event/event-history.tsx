@@ -2,9 +2,9 @@ import { ScrollView } from 'react-native'
 import { createParam } from 'solito';
 import { EventContent } from './event-draw'
 import { useGetEventHistoryQuery } from './event-api';
-import { EventScreenError } from './screen';
 import { View, Text, Hr } from 'app/components'
 import { toTimeAndDateString } from 'app/api/util';
+import { Error } from 'app/error';
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -13,7 +13,7 @@ export function EventHistoryScreen() {
   const { data } = useGetEventHistoryQuery(Number(id));
 
   if (!data)
-    return <EventScreenError />
+    return <Error />
 
   return <ScrollView >
     {data.map((event, i) => (<View key={i}>

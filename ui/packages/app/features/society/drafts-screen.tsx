@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { EventMap } from '../event/event-map';
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
-import { SocietyScreenError } from './screen';
+import { Error } from 'app/error';
 
 const { useParam } = createParam<{ code: string }>()
 
@@ -18,7 +18,7 @@ export function DraftsScreen() {
     return <></>
 
   if (!society)
-    return <SocietyScreenError />
+    return <Error />
 
   return <>
     <EventMap society={society.code} drafts /></>

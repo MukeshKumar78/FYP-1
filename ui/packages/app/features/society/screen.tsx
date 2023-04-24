@@ -7,6 +7,7 @@ import { View, Text, Button, Hr } from 'app/components'
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
 import { useMembership } from '../auth/hooks';
+import { Error } from 'app/error';
 
 const { useParam } = createParam<{ code: string }>()
 
@@ -23,7 +24,7 @@ export function SocietyPage() {
     return <></>
 
   if (!society)
-    return <SocietyScreenError />
+    return <Error />
 
   return (
     <View
@@ -46,14 +47,6 @@ export function SocietyPage() {
       </ScrollView>
     </View>
   )
-}
-
-export function SocietyScreenError() {
-  return <View style={styles.mainContainer}>
-    <Text>
-      Failed to load screen
-    </Text>
-  </View>
 }
 
 const styles = StyleSheet.create({

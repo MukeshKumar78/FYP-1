@@ -34,14 +34,14 @@ export const api = createApi({
       }),
     }),
     me: builder.query<User, void>({
-      query: () => 'api/core/me' // change to 'me'
+      query: () => 'api/core/me'
     }),
     user: builder.query<User, string>({
       query: (code: string) => `api/core/users/${code}`
     })
   }),
   reducerPath: 'api',
-  tagTypes: ['Event', 'Society', 'Team', 'Post', 'Comment', 'Member', 'TeamMember'],
+  tagTypes: ['Event', 'Society', 'Team', 'Post', 'Comment', 'Member', 'TeamMember', 'TeamMessage'],
 })
 
 export const { useLoginMutation, useUserQuery, useMeQuery, useLazyMeQuery } = api;

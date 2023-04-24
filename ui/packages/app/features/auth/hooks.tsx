@@ -33,7 +33,7 @@ export function useAuth() {
       throw new Error("Failed to fetch user data:", { cause: error })
     }
 
-    console.log("Updated user token");
+    console.log("Refreshed user token");
 
     return data;
   }

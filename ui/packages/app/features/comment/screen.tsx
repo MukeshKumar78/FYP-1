@@ -6,6 +6,7 @@ import { Text, View, Button, Hr } from 'app/components';
 import { useState } from 'react';
 import { useGetEventQuery } from '../event/event-api';
 import { useAuth, usePermissions } from 'app/features/auth/hooks'
+import { Error } from 'app/error';
 
 // Event ID param: e.g. /event/1/comments
 const { useParam } = createParam<{ id: string }>()
@@ -18,7 +19,7 @@ export function CommentScreen() {
 
 
   if (!id || !Number(id))
-    return <CommentScreenError />
+    return <Error />
 
   return <CommentView eventId={Number(id)} />
 }
@@ -32,7 +33,7 @@ function CommentView({ eventId }: {
   const { data: event } = useGetEventQuery(eventId);
 
   if (!event)
-    return <CommentScreenError />
+    return <Error />
 
   return <View style={{ padding: 5, width: '100%' }}>
     <View style={styles.textContainer} >
@@ -87,14 +88,6 @@ function CommentMap({ event }: {
   </ScrollView>
 }
 
-
-function CommentScreenError() {
-  return <View>
-    <Text>
-      Failed to load screen
-    </Text>
-  </View>
-}
 
 const styles = StyleSheet.create({
   commentWrapper: {

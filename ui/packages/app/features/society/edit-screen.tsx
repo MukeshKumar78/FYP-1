@@ -1,7 +1,6 @@
 import { createParam } from 'solito';
 import { StyleSheet, useWindowDimensions, Image, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { SocietyScreenError } from './screen';
 import { useAddMemberMutation, useGetMembershipsQuery, useGetRolesQuery, useGetSocietyQuery, useRemoveMemberMutation } from './society-api';
 import { useGetTeamsBySocietyQuery, useAddTeamMutation, useRemoveTeamMutation } from 'app/features/team/team-api';
 import { useSocietyHeader } from '../../hooks/headers'
@@ -12,6 +11,7 @@ import { usePermissions } from '../auth/hooks';
 import { Text, Button, View } from 'app/components';
 import DropDownPicker from 'react-native-dropdown-picker'
 import Toast from 'react-native-toast-message';
+import { Error } from 'app/error';
 
 function MembersRoute({ society }: {
   society: string
@@ -141,14 +141,14 @@ const TeamsRoute = ({ society }: {
     margin: 5,
 
   }}>
-    <View style={{ zIndex: -100 }}>
+    <View>
       {
         canAdd &&
         <AddTeamView society={society} />
       }
       {data?.map((team, i) =>
         <View style={styles.teamContainer} key={i}>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View>
               <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{team.name}</Text>
               <Text style={{ color: 'gray', fontSize: 12 }}>{team.memberships.length} members</Text>
@@ -216,7 +216,7 @@ export function SocietyEditScreen() {
   useEffect(createHeader);
 
   if (!society)
-    return <SocietyScreenError />
+    return <Error />
 
   const renderTabBar = props => (
     <TabBar

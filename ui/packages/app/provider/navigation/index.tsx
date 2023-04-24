@@ -30,6 +30,8 @@ export function NavigationProvider({
               drafts: 'society/:code/drafts',
               "edit-society": 'society/:code/edit',
               "edit-team": 'team/:code/edit',
+              "team-chats": 'team/chats',
+              "team-chat": 'team/chats/:code',
               settings: 'settings',
               comments: 'event/:id/comments'
             },

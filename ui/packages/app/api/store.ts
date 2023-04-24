@@ -11,11 +11,11 @@ const rtkQueryErrorLogger: Middleware =
     if (isRejectedWithValue(action)) {
       const data = action.payload.data
       if (!data)
-        Toast.show({ text1: "Something went wrong" })
+        return Toast.show({ text1: "Something went wrong" })
       if (data.status == 403 || data.status == 401)
-        Toast.show({ type: 'error', text1: "Forbidden" })
-      else
-        Toast.show({ type: 'error', text1: 'Error!', text2: data.errors?.[0].defaultMessage || data.message || "Something went wrong" })
+        return Toast.show({ type: 'error', text1: "Forbidden" })
+
+      return Toast.show({ type: 'error', text1: 'Error!', text2: data.errors?.[0].defaultMessage || data.message || "Something went wrong" })
     }
 
     return next(action)

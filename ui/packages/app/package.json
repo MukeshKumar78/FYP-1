@@ -5,6 +5,7 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.5.0",
+    "@stomp/stompjs": "^7.0.0",
     "dripsy": "^3.6.0",
     "expo-linking": "^3.0.0",
     "expo-secure-store": "^12.0.0",
@@ -21,6 +22,9 @@
     "solito": "^2.0.0",
     "tailwind": "^4.0.0",
     "tailwindcss": "^3.2.7",
+    "text-encoding": "^0.7.0",
+    "websocket": "^1.0.34",
+    "ws": "^8.13.0",
     "zod": "^3.20.2"
   },
   "sideEffects": false

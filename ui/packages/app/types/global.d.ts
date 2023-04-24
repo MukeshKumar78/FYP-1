@@ -1,8 +1,6 @@
 export { };
 
 declare global {
-
-
   type User = {
     id: number
     code: string
@@ -33,6 +31,14 @@ declare global {
     id: number,
     team: Team,
     user: User
+  }
+
+  type TeamMessage = {
+    id: number,
+    content: string,
+    sender: User,
+    team: Team,
+    createdAt: Date
   }
 
   type Society = {

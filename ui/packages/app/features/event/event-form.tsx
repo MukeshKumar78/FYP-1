@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { toDateString } from 'app/api/util';
 import { useSocietyHeader } from 'app/hooks/headers';
 import { Form, FormDateInput, FormImagePicker, FormSubmitButton, FormTextInput } from 'app/components/Form';
-import { EventScreenError } from './screen';
+import { Error } from 'app/error';
 
 const { useParam } = createParam<{ code: string, id: string }>()
 
@@ -45,7 +45,7 @@ export function EventFormScreen() {
   if (eventId && Number(eventId))
     return <EventUpdateDraw event={Number(eventId)} />
 
-  return <EventScreenError />
+  return <Error />
 }
 
 function EventCreateDraw({ society }: {
@@ -57,7 +57,7 @@ function EventCreateDraw({ society }: {
   // Set Society image and title on App Bar 
   useEffect(createHeader)
   if (!data)
-    return <EventScreenError />
+    return <Error />
 
   return <EventForm society={data} />
 }
@@ -71,7 +71,7 @@ function EventUpdateDraw({ event }: {
   useEffect(createHeader)
 
   if (!data)
-    return <EventScreenError />
+    return <Error />
 
   return <EventForm event={data} />
 }
@@ -163,7 +163,7 @@ export function EventForm({ society, event }: {
   }
 
   if (!society && !event) {
-    return <EventScreenError />
+    return <Error />
   }
 
   return (

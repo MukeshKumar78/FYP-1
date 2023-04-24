@@ -1,23 +1,14 @@
 import { StyleSheet, Image } from 'react-native'
 import { AnimatedLink, Hr, Text, View } from 'app/components'
-import { Ionicons } from '@expo/vector-icons'
-import { Link } from 'solito/link'
 import { getPublicUri } from 'app/api/util'
-
-function UserErrorPage() {
-  return <View>
-    <Text
-      style={{ textAlign: 'center', marginBottom: 16, fontWeight: 'bold' }}
-    >Error loading user</Text>
-  </View>
-}
+import { Error } from 'app/error'
 
 export default function UserDetailsOrError({ user }: {
   user: User | undefined | null
 }) {
 
   if (!user)
-    return <UserErrorPage />
+    return <Error />
 
   return (
     <View
@@ -36,7 +27,7 @@ export default function UserDetailsOrError({ user }: {
       <View style={styles.userInfo}>
         <View style={{ width: '100%', }}>
           <Text style={styles.heading}>Memberships</Text>
-          <Hr/>
+          <Hr />
           <View>
             {user.memberships && user.memberships.map((m, i) =>
               <MembershipBox data={m} key={i} />
@@ -54,14 +45,14 @@ function MembershipBox({ data }: {
   return <View>
     <AnimatedLink href={`/society/${data.society.code}`}>
       <View style={styles.membershipContainer}>
-          <Image
-            style={styles.societyImage}
-            source={{ uri: getPublicUri(data.society.image) }}
-          />
+        <Image
+          style={styles.societyImage}
+          source={{ uri: getPublicUri(data.society.image) }}
+        />
         <View style={styles.membershipCard}>
-        <View style={{borderRightWidth: 1, borderRightColor: 'gainsboro', marginRight: 5}}>
-          <Text style={styles.membershipTitle}>{data.society.fullName} </Text>
-        </View>
+          <View style={{ borderRightWidth: 1, borderRightColor: 'gainsboro', marginRight: 5 }}>
+            <Text style={styles.membershipTitle}>{data.society.fullName} </Text>
+          </View>
           <Text style={[styles.membershipSubtitle]}>Example Team • </Text>
           <Text style={styles.membershipSubtitle}>{data.role}</Text>
         </View>

@@ -10,6 +10,7 @@ import { useSocietyHeader } from 'app/hooks/headers';
 import { createParam } from 'solito';
 import { getPublicUri, toShortDateString } from 'app/api/util'
 import { usePermissions } from '../auth/hooks'
+import { Error } from 'app/error'
 
 const { useParam } = createParam<{ id: string }>()
 
@@ -24,7 +25,7 @@ export function EventScreen() {
   useEffect(createHeader);
 
   if (!data)
-    return <EventScreenError />
+    return <Error />
 
   return (
     <ScrollView style={styles.eventWrapper}>
@@ -91,14 +92,6 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
     }
   </>
   )
-}
-
-export function EventScreenError() {
-  return <View style={styles.eventWrapper}>
-    <Text>
-      Failed to load screen
-    </Text>
-  </View>
 }
 
 const styles = StyleSheet.create({

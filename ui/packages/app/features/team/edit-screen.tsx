@@ -1,7 +1,7 @@
 import { createParam } from 'solito';
 import { StyleSheet, useWindowDimensions, Image, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useGetTeamsBySocietyQuery, useAddTeamMutation, useRemoveTeamMutation, useGetTeamMembershipsQuery, useAddTeamMemberMutation, useRemoveTeamMemberMutation, useGetTeamQuery } from 'app/features/team/team-api';
+import { useGetTeamsBySocietyQuery, useAddTeamMutation, useRemoveTeamMutation, useGetTeamMembershipsByTeamQuery, useAddTeamMemberMutation, useRemoveTeamMemberMutation, useGetTeamQuery } from 'app/features/team/team-api';
 import { useSocietyHeader } from '../../hooks/headers'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { getPublicUri } from 'app/api/util';
@@ -15,7 +15,7 @@ import Toast from 'react-native-toast-message';
 function MembersRoute({ team }: {
   team: Team
 }) {
-  const { data } = useGetTeamMembershipsQuery(team.code);
+  const { data } = useGetTeamMembershipsByTeamQuery(team.code);
   const [canAdd, canRemove, canEdit] = usePermissions(team.society, [
     "TEAM_MEMBER_ADD",
     "TEAM_MEMBER_REMOVE",

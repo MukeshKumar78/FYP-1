@@ -24,6 +24,8 @@ import { PostCreateScreen } from 'app/features/post/post-create';
 import { DraftsScreen } from 'app/features/society/drafts-screen';
 import { EventHistoryScreen } from 'app/features/event/event-history';
 import { EventSearchScreen } from 'app/features/event/event-search';
+import TeamChatsMapScreen from '../../../../apps/next/pages/team/chats';
+import TeamChatScreen from '../../../../apps/next/pages/team/chats/[code]';
 
 const Stack = createNativeStackNavigator<{
   home: undefined
@@ -48,6 +50,9 @@ const Stack = createNativeStackNavigator<{
   "edit-team": {
     code: string
   }
+  "team-chat": {
+    code: string
+  }
   "event-create": {
     code: string
   }
@@ -69,6 +74,7 @@ const Drawer = createDrawerNavigator<{
   profile: {
     id: string
   }
+  "team-chats": undefined,
   "event-search": undefined
   settings: undefined
   logout: undefined
@@ -148,6 +154,11 @@ export function NativeNavigation() {
           name="event-search"
           component={EventSearchScreen}
           options={{ title: "Search" }}
+        />
+        <Drawer.Screen
+          name="team-chats"
+          component={TeamChatsMapScreen}
+          options={{ title: "Chats" }}
         />
         <Drawer.Screen
           name="settings"
@@ -257,6 +268,13 @@ export function NativeNavigation() {
       <Stack.Screen
         name="edit-team"
         component={TeamEditScreen}
+        options={{
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="team-chat"
+        component={TeamChatScreen}
         options={{
           headerTitleAlign: "center",
         }}

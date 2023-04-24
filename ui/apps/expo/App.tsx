@@ -1,3 +1,7 @@
+import websocket from 'websocket';
+
+Object.assign(global, { WebSocket: websocket.w3cwebsocket });
+
 import { NativeNavigation } from 'app/navigation/native'
 import { Provider } from 'app/provider'
 import { useEffect } from 'react';
