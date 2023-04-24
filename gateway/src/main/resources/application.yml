@@ -12,6 +12,19 @@ spring:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
+
+management:
+  endpoint:
+    health:
+      show-details: "ALWAYS"
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+
 eureka:
   client:
     serviceUrl:
