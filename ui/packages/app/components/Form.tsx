@@ -27,24 +27,27 @@ export function Form({ children, style }: {
   </ScrollView>
 }
 
-export function FormTextInput({ label, subLabel = '', value = '', multiline = false, disabled = false, validate = (_) => false, onChangeText }: {
+export function FormTextInput({ label, subLabel = '', value = '', placeholder = '', multiline = false, disabled = false, validate = (_) => true, onChangeText, style = {} }: {
   label: string,
   subLabel?: string,
+  placeholder?: string,
   value?: string,
   multiline?: boolean,
   validate?: (s: string) => boolean,
   disabled?: boolean
   onChangeText: (s: string) => void
+  style?: StyleProp<ViewStyle>
 }) {
 
   const [isValid, setIsValid] = useState(validate(value));
 
-  return <View style={styles.container}>
+  return <View style={[styles.container, style]}>
     <View style={styles.labelContainer}>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.subLabel}>{subLabel}</Text>
     </View>
     <RNTextInput
+      placeholder={placeholder}
       editable={!disabled}
       multiline={multiline}
       value={value}

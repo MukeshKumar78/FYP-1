@@ -12,7 +12,7 @@ async function getWsClient() {
     const headers = { 'Authorization': jwt as string }
 
     client = new Client({
-      brokerURL: 'ws://192.168.100.12:8080/ws/team/gs-guide-websocket',
+      brokerURL: 'ws://20.247.250.13/ws/team/gs-guide-websocket',
       connectHeaders: headers,
       debug: console.log,
       appendMissingNULLonIncoming: true,

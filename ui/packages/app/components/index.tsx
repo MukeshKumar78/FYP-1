@@ -1,6 +1,7 @@
 import { View as RNView, StyleSheet, Text as RNText, TextProps, TouchableOpacity, Dimensions, ViewProps, StyleProp, ViewStyle } from 'react-native'
 import { ReactNode } from 'react';
 import { MotiLink } from 'solito/moti'
+import { MotiPressable } from 'moti/interactions';
 
 
 export function Hr() {
@@ -73,31 +74,38 @@ export function Button({ text = '', onPress, href, type = 'filled', bg = 'primar
   )
 }
 
-export function AnimatedLink({ href, children, style }: {
-  href: string,
+export function AnimatedLink({ href, children, style, onPress = () => { } }: {
+  href?: string,
   children: ReactNode
-  style?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>,
+  onPress?: () => void
 }) {
-  return <MotiLink
-    style={style}
-    href={href}
-    animate={({ hovered, pressed }) => {
+  const animationProps = {
+    animate: ({ hovered, pressed }) => {
       'worklet'
 
       return {
-        scale: pressed ? 0.98 : hovered ? 1.01 : 1,
+        scale: pressed ? 0.98 : hovered ? 1.05 : 1,
       }
-    }}
-    from={{
+    },
+    from: {
       scale: 0,
-    }}
-    transition={{
+    },
+    transition: {
       type: 'timing',
       duration: 100,
-    }}
-  >
+    }
+  } as any
+
+
+  if (href)
+    return <MotiLink {...animationProps} style={style} href={href}>
+      {children}
+    </MotiLink>
+
+  return <MotiPressable {...animationProps} style={style} onPress={onPress}>
     {children}
-  </MotiLink>
+  </MotiPressable>
 }
 
 const styles = StyleSheet.create({
