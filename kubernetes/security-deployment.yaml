@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: security
+  name: security
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: security
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: security
+    spec:
+      containers:
+        - env:
+            - name: EUREKA_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: eureka_host
+                  name: campusme-secrets
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: jwt_secret
+                  name: campusme-secrets
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_host
+                  name: campusme-secrets
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_password
+                  name: campusme-secrets
+            - name: STATIC_FILES_LOCATION
+              valueFrom:
+                secretKeyRef:
+                  key: static_files_location
+                  name: campusme-secrets
+          image: campusmecr.azurecr.io/security
+          imagePullPolicy: IfNotPresent
+          name: security
+          resources: {}
+          volumeMounts:
+            - mountPath: /public
+              name: public
+      restartPolicy: Always
+      volumes:
+        - name: public
+          persistentVolumeClaim:
+            claimName: public
+status: {}

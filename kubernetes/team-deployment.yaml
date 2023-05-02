@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: team
+  name: team
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: team
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: team
+    spec:
+      containers:
+        - env:
+            - name: EUREKA_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: eureka_host
+                  name: campusme-secrets
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: jwt_secret
+                  name: campusme-secrets
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_host
+                  name: campusme-secrets
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgres_password
+                  name: campusme-secrets
+          image: campusmecr.azurecr.io/team
+          imagePullPolicy: IfNotPresent
+          name: team
+          resources: {}
+      restartPolicy: Always
+status: {}

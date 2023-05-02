@@ -4,6 +4,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ../society:/app
+
   team:
     build:
       dockerfile: Dockerfile.dev

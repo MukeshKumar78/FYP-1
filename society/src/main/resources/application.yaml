@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8084
 
 management:
   endpoint:
@@ -13,9 +13,9 @@ management:
       exposure:
         include: "health,info,metrics"
 
-
-
 spring:
+  profiles: 
+    active: 
   servlet:
     multipart:
       max-file-size: 5MB 
@@ -43,22 +43,13 @@ spring:
           dialect: org.hibernate.dialect.PostgreSQL82Dialect
           search:
             backend:
-              directory: 
+              directory:
                 type: local-filesystem
                 root: indexes
-        javax:
-          persistence:
-            schema-generation:
-              create-source: metadata
-              drop-source: metadata
-              scripts:
-                action: create
-                create-target: META-INF/sql/create.sql
-              database:
-                action: drop-and-create
-            sql-load-script-source: META-INF/sql/data.sql
 
 eureka:
+  instance:
+    hostname: society
   client:
     serviceUrl:
       defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka}
@@ -72,3 +63,22 @@ static:
 redis:
   host: ${REDIS_HOST:127.0.0.1}
   port: ${REDIS_PORT:6379}
+
+
+---
+
+spring:
+  profiles: dev
+  jpa:
+    properties:
+        javax:
+          persistence:
+            schema-generation:
+              create-source: metadata
+              drop-source: metadata
+              scripts:
+                action: create
+                create-target: META-INF/sql/create.sql
+              database:
+                action: drop-and-create
+            sql-load-script-source: META-INF/sql/data.sql

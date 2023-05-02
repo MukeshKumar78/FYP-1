@@ -5,6 +5,7 @@ services:
     container_name: service-discovery
     build:
       context: ../discovery
+    image: campusmecr.azurecr.io/discovery
     ports:
       - 8761:8761
     healthcheck:
@@ -17,6 +18,7 @@ services:
     container_name: api-gateway
     build:
       context: ../gateway
+    image: campusmecr.azurecr.io/gateway
     ports:
       - 8080:8080
     environment:
@@ -34,13 +36,14 @@ services:
     container_name: society
     build:
       context: ../society
+    image: campusmecr.azurecr.io/society
     environment:
-      JWT_SECRET:
+      JWT_SECRET: '9y/B?E(H+KbPeShVmYq3t6w9z@C&F)J@'
       EUREKA_HOST: http://discovery:8761/eureka
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      POSTGRES_HOST:
-      POSTGRES_PASSWORD:
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: postgres
       STATIC_FILES_LOCATION: /public/
     volumes:
       - public:/public/
@@ -52,11 +55,12 @@ services:
     container_name: team
     build:
       context: ../team
+    image: campusmecr.azurecr.io/team
     environment:
-      JWT_SECRET:
+      JWT_SECRET: '9y/B?E(H+KbPeShVmYq3t6w9z@C&F)J@'
       EUREKA_HOST: http://discovery:8761/eureka
-      POSTGRES_HOST:
-      POSTGRES_PASSWORD:
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: postgres
     depends_on:
       - db
       - discovery
@@ -65,11 +69,12 @@ services:
     container_name: security
     build:
       context: ../security
+    image: campusmecr.azurecr.io/security
     environment:
-      JWT_SECRET:
+      JWT_SECRET: '9y/B?E(H+KbPeShVmYq3t6w9z@C&F)J@'
       EUREKA_HOST: http://discovery:8761/eureka
-      POSTGRES_HOST:
-      POSTGRES_PASSWORD:
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: postgres
       STATIC_FILES_LOCATION: /public/
     volumes:
       - public:/public/
@@ -77,22 +82,17 @@ services:
       - db
       - discovery
 
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    ports:
-      - 9002:80
-
   db:
     build:
       context: ../db
+    image: campusmecr.azurecr.io/db
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
       timeout: 5s
       retries: 10
     environment:
-      POSTGRES_PASSWORD:
+      POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
 
@@ -106,6 +106,7 @@ services:
     container_name: notification-broker
     build:
       context: ../notification-broker
+    image: campusmecr.azurecr.io/notification-broker
     environment:
       REDIS_URL: redis://redis:6379
     depends_on:

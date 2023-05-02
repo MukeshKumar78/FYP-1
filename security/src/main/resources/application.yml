@@ -1,5 +1,5 @@
 server:
-  port: 8084
+  port: 8082
   contextPath: /admin
   servlet:
     contextPath: /admin
@@ -31,7 +31,6 @@ spring:
           - label: Swagger
             url: "/swagger-ui.html"
             order: 1001
-        public-url: http://localhost:8080
         cache:
           no-cache: true
         cache-templates: false
@@ -77,6 +76,8 @@ spring:
             sql-load-script-source: META-INF/sql/data.sql
 
 eureka:
+  instance:
+    hostname: security
   client:
     serviceUrl:
       defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka}
