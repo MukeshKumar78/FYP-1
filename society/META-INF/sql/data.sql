@@ -65,7 +65,7 @@ INSERT INTO event (code, description, title, text, user_id, created_at, start_da
 'event-3',
 'Event 3', 
 'Spotlight 2022', 
-'Our newest judge for Spotlight 2022 is Bazelah Mustafa - an impressively talented individual enroute to success and fame, with a vibrant and flourishing range of experience in incredible plays in both Pakistan and the UK, such as Andhera Hone Tak,  Jasoosi Duniya, The Father, Reader and The Bus That Didn''t Stop based on the critically acclaimed book The Footprints of Partition by writer Anam Zakeria. She has also directed the physical theatre productions, 'Soch' and 'Loop'.
+'Our newest judge for Spotlight 2022 is Bazelah Mustafa - an impressively talented individual enroute to success and fame, with a vibrant and flourishing range of experience in incredible plays in both Pakistan and the UK, such as Andhera Hone Tak,  Jasoosi Duniya, The Father, Reader and The Bus That Didn''t Stop based on the critically acclaimed book The Footprints of Partition by writer Anam Zakeria. She has also directed the physical theatre productions, ''Soch'' and ''Loop''.
 With an undergraduate degree in Drama and Fine Arts from the University of Northampton, Ms Mustafa completed her MA in Advanced Theatre Practice from the Royal Central School of Speech and Drama and is currently teaching in the theatre arts department of NAPA.
 A woman who knows what she''s doing and exactly how to do it, a paragon of talent - this is a lady who also choreographed the blockbuster movie Khel Khel Mein!
 We are so proud of to have her on our judges panel, and  we can''t wait to see her reaction to FASTian talent!
@@ -83,7 +83,7 @@ true,
 INSERT INTO event (code, description, title, text, user_id, created_at, start_date, end_date, published, published_at, registration_link, society_id) VALUES (
 'event-4',
 'Event 4', 
-'Let''s catch a lion!', 
+'Let''s catch a lion!',
 'We are pleased to announce that Dr. Muhammad Rafi will be conducting a session on guidelines for final year project selection. The purpose of this session is to provide you with the necessary information and guidelines that will help you select a suitable and impactful final year project.
 During this session, he will discuss the following topics:
 1. Importance of final year project selection.
@@ -144,7 +144,7 @@ INSERT INTO event (code, description, title, text, user_id, created_at, start_da
 'Event 7', 
 'The FAST Olympiad is Open', 
 'Calling all athletes, gamers and sports enthusiasts! The FAST Olympiad is open to everyone, not just students of FAST NUCES! 
-Whether you''re a student, a professional or just love to compete, come join us at the premier sports event of the year. With over 30+ games including traditional sports and esports, there's something for everyone. Don't miss out on the chance to showcase your talents and compete for a chance to win a share of the 1 million rupee prize pool. 
+Whether you''re a student, a professional or just love to compete, come join us at the premier sports event of the year. With over 30+ games including traditional sports and esports, there''s something for everyone. Don''t miss out on the chance to showcase your talents and compete for a chance to win a share of the 1 million rupee prize pool. 
 See you at the FAST Olympiad!              Fall. Rise. Eyes on the prize',
 2,
 '2023-03-04 18:00:20-05',

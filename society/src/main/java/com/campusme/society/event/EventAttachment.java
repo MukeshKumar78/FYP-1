@@ -35,7 +35,7 @@ public class EventAttachment {
   @JsonIgnore
   private Long id;
 
-  @Column
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String uri;
 
   @ManyToOne
