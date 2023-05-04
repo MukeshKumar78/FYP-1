@@ -79,8 +79,7 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
           <ScaledImage key={key} uri={getPublicUri(image)} />
         )}
       </View>
-      <Text>{data.text}</Text>
-
+      <Text style={{ marginTop: 5 }}>{data.text}</Text>
       {/* EVENT INTERACTIVE BAR RENDER */}
       <EventInteractiveBar event={data} />
     </View>

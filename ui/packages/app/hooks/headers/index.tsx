@@ -4,7 +4,18 @@ import { StyleSheet } from 'react-native'
 import { Image } from 'react-native';
 import { Text, View } from 'app/components'
 
-function SocietyHeader({ society }: {
+
+export function useHeader() {
+  const navigation = useNavigation();
+
+  function createHeader(component: JSX.Element) {
+    navigation.setOptions({ headerTitle: () => component })
+  }
+
+  return { header: undefined, createHeader }
+}
+
+export function SocietyHeader({ society }: {
   society: Pick<Society, 'name' | 'image'>
 }) {
   return (

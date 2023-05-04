@@ -1,6 +1,8 @@
 import { createParam } from 'solito';
 import { useUserQuery } from 'app/api';
+import { useHeader } from "app/hooks/headers"
 import { useEffect } from 'react';
+import { H1 } from "app/components";
 import UserDetailsOrError from './user-details';
 import { useUserHeader } from 'app/hooks/headers';
 
@@ -12,10 +14,10 @@ export function UserDetailScreen() {
 
   const { data } = useUserQuery(code || '');
 
-  const { createHeader } = useUserHeader(data);
+  const { createHeader } = useHeader()
 
-  useEffect(createHeader);
+  useEffect(() => createHeader(<H1>{data?.firstName} {data?.lastName}</H1>), [])
 
-  return <UserDetailsOrError user={data}/>
+  return <UserDetailsOrError user={data} />
 
 }

@@ -20,6 +20,14 @@ export function Text(props: TextProps) {
   </RNText>
 }
 
+export function H1(props: TextProps) {
+  return <RNText {...props}
+    style={[{ fontSize: 20, fontWeight: 'bold', fontFamily: 'Raleway', includeFontPadding: false }, props.style]}>
+    {props.children}
+  </RNText>
+
+}
+
 export function View(props: ViewProps) {
   return <RNView style={{ zIndex: undefined }} {...props}>{props.children}</RNView>
 }
@@ -85,7 +93,7 @@ export function AnimatedLink({ href, children, style, onPress = () => { } }: {
       'worklet'
 
       return {
-        scale: pressed ? 0.98 : hovered ? 1.05 : 1,
+        scale: pressed ? 0.98 : hovered ? 1.01 : 1,
       }
     },
     from: {

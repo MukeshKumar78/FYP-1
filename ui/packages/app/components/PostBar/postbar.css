@@ -1,0 +1,19 @@
+.content {
+  position: absolute;
+  top: 5px;
+  transition: width 0.3s;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 10px;
+  height: 100%;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 1000px) {
+  .sidebar-toggle {
+    display: none;
+  }
+  .sidebar {
+    display: none;
+  }
+}

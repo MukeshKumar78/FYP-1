@@ -13,27 +13,20 @@ export default function Layout(props: PropsWithChildren) {
   if (loading)
     return <LoadingScreen />
 
-  if (!isSignedIn && router.route !== '/login') {
-    router.replace('login')
+  if (!isSignedIn) {
+    if (router.route !== '/login')
+      router.replace('/login')
+    else
+      return <>{props.children}</>
   }
 
   if (isSignedIn && router.route == '/login')
     router.replace('/')
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', margin: '10px', justifyContent: 'center' }}>
       <SideBar />
-      <PostBar {...props}></PostBar>
-
-      {/* TODO: sidebar and navbar components */}
-      {/* <div style={{margin: 10, padding: 0}}> */}
-      {/* </div> */}
-      {/* <div style={{boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', width: '100%', borderRadius: 10, margin: 20}}> */}
-      {/*   <Button style={{margin: 15}} title="Home" onPress={()=>{}}/> */}
-      {/*   <Button style={{margin: 15}} title="Profile" onPress={()=>{}}/> */}
-      {/*   <Button style={{margin: 15}} title="Settings" onPress={()=>{}}/> */}
-      {/*   <Button style={{margin: 15}} title="Logout" onPress={()=>{}}/> */}
-      {/* </div> */}
+      <PostBar {...props} />
     </div>
   )
 }

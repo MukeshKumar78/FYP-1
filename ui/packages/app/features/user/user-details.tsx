@@ -2,6 +2,7 @@ import { StyleSheet, Image } from 'react-native'
 import { AnimatedLink, Hr, Text, View } from 'app/components'
 import { getPublicUri } from 'app/api/util'
 import { Error } from 'app/error'
+import { Avatar } from 'app/components/Avatar'
 
 export default function UserDetailsOrError({ user }: {
   user: User | undefined | null
@@ -15,10 +16,7 @@ export default function UserDetailsOrError({ user }: {
       style={{ flex: 1, margin: 10, alignItems: 'center' }}
     >
       {user.photo &&
-        <Image
-          style={{ width: 100, height: 100, borderRadius: 50 }}
-          source={{ uri: getPublicUri(user.photo) }}
-        />
+        <Avatar user={user} size={100} />
       }
       <Text style={{ fontSize: 30 }}>{user.firstName} {user.lastName}</Text>
       <Text

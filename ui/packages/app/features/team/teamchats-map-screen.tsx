@@ -1,13 +1,19 @@
 import { StyleSheet, useWindowDimensions, Image, TextInput } from 'react-native';
-import { View, Text, AnimatedLink } from "app/components";
+import { View, Text, AnimatedLink, H1 } from "app/components";
 import { Ionicons } from '@expo/vector-icons'
 import { getPublicUri } from 'app/api/util';
 import { useGetTeamMembershipsQuery } from "./team-api";
 import { useAuth } from "../auth/hooks";
+import { useHeader } from "app/hooks/headers"
+import { useEffect } from 'react';
 
 export function TeamChatsMapScreen() {
   const { user } = useAuth();
   const { data } = useGetTeamMembershipsQuery()
+
+  const { createHeader } = useHeader();
+
+  useEffect(() => { console.log('teams'); createHeader(<H1>Your Teams</H1>) }, [])
 
   const teams = data?.map(t => ({
     ...t,
@@ -29,16 +35,16 @@ export function TeamChatsMapScreen() {
             justifyContent: 'space-between', alignItems: 'center'
           }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <AnimatedLink href={`/society/${membership.society?.society.code}`}>
-              <Image
-                style={{ margin: 5, width: 50, height: 50, borderRadius: 50 }}
-                source={{ uri: getPublicUri(membership.society?.society.image) }}
-              />
-            </AnimatedLink>
-            <View>
-              <Text style={{ fontSize: 22 }}>{membership.team.name}</Text>
-              <Text style={{ color: 'gray', fontSize: 14 }}>{membership.team.society}</Text>
-            </View>
+              <AnimatedLink href={`/society/${membership.society?.society.code}`}>
+                <Image
+                  style={{ margin: 5, width: 50, height: 50, borderRadius: 50 }}
+                  source={{ uri: getPublicUri(membership.society?.society.image) }}
+                />
+              </AnimatedLink>
+              <View>
+                <Text style={{ fontSize: 22 }}>{membership.team.name}</Text>
+                <Text style={{ color: 'gray', fontSize: 14 }}>{membership.team.society}</Text>
+              </View>
             </View>
             <AnimatedLink href={`/team/chats/${membership.team.code}`}>
               <Ionicons name='md-chatbox-ellipses-outline' size={26} color="gray" />
