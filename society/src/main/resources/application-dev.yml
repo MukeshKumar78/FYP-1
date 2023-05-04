@@ -1,0 +1,15 @@
+
+spring:
+  jpa:
+    properties:
+        javax:
+          persistence:
+            schema-generation:
+              create-source: metadata
+              drop-source: metadata
+              scripts:
+                action: create
+                create-target: META-INF/sql/create.sql
+              database:
+                action: drop-and-create
+            sql-load-script-source: META-INF/sql/data.sql

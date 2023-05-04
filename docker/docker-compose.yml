@@ -22,6 +22,7 @@ services:
     ports:
       - 8080:8080
     environment:
+      JWT_SECRET: '9y/B?E(H+KbPeShVmYq3t6w9z@C&F)J@'
       EUREKA_HOST: http://discovery:8761/eureka
       REDIS_HOST: redis
       REDIS_PORT: 6379

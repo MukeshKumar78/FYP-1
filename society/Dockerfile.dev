@@ -1,4 +1,4 @@
-FROM maven:3.8.1-openjdk-17-slim AS builder
+FROM maven:3.8.1-openjdk-17-slim
 
 WORKDIR /app
 
@@ -6,4 +6,4 @@ COPY docker-entrypoint.sh ./
 RUN chmod +x ./docker-entrypoint.sh
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
-CMD ["mvn", "spring-boot:run"]
+CMD ["mvn", "spring-boot:run", "-Dspring.profiles.active=dev"]
