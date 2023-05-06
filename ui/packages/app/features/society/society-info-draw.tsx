@@ -22,7 +22,7 @@ export function SocietyInfo({ society }: {
         style={{ width: 120, height: 120, borderRadius: 60 }}
         source={{ uri: getPublicUri(society.image) }}
       />
-      <Text style={{ fontSize: 30, fontWeight: '600' }}>{society.fullName}</Text>
+      <Text style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}>{society.fullName}</Text>
       <Text style={{ fontSize: 16, color: 'gray' }}>@{society.code}</Text>
       <Text
         style={{ color: 'gray', textAlign: 'center', marginBottom: 16, fontWeight: 'bold' }}

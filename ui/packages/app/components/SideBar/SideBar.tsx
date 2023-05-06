@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RiMenu3Line, RiCloseLine, RiSettingsFill, RiNotification2Fill } from 'react-icons/ri';
+import { RiSearchFill, RiChat1Fill, RiLogoutCircleFill, RiNotification2Fill } from 'react-icons/ri';
 import { AiFillHome } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
 import Link from 'next/link';
@@ -25,20 +25,20 @@ const menuItems: MenuItem[] = [
     link: '/profile'
   },
   {
-    icon: <FaUser style={{ fontSize: '18px', marginRight: '12px', marginTop: '3px' }} />,
+    icon: <RiChat1Fill style={{ fontSize: '18px', marginRight: '12px', marginTop: '3px' }} />,
     label: 'Your Teams',
     link: '/team/chats'
   },
   {
-    icon: <RiSettingsFill style={{ fontSize: '20px', marginRight: '10px', marginTop: '3px' }} />,
-    label: 'Settings',
-    link: '/404'
+    icon: <RiSearchFill style={{ fontSize: '20px', marginRight: '10px', marginTop: '3px' }} />,
+    label: 'Search',
+    link: '/event/search'
   },
   {
-    icon: <RiNotification2Fill style={{ fontSize: '19px', marginRight: '11px', marginTop: '3px' }} />,
-    label: 'Notifications',
-    link: '/404'
-  },
+    icon: <RiLogoutCircleFill style={{ fontSize: '19px', marginRight: '11px', marginTop: '3px' }} />,
+    label: 'Logout',
+    link: '/logout'
+  }
 ];
 
 export function Menu() {

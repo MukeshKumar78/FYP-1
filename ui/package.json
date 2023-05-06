@@ -15,7 +15,10 @@
   },
   "scripts": {
     "native": "cd apps/expo && expo start",
-    "web": "cd apps/next && cross-env NODE_OPTIONS='--openssl-legacy-provider' yarn next"
+    "web": "cd apps/next && cross-env NODE_OPTIONS='--openssl-legacy-provider' yarn next",
+    "web:build": "yarn workspace next-app build",
+    "web:start": "yarn workspace next-app start",
+    "vercel-build": "yarn workspace next-app build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",

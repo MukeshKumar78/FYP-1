@@ -218,7 +218,7 @@ export function SocietyEditScreen() {
   if (!society)
     return <Error />
 
-  const renderTabBar = props => (
+  const renderTabBar = (props: any) => (
     <TabBar
       indicatorStyle={{ backgroundColor: '#6677cc' }}
       {...props}

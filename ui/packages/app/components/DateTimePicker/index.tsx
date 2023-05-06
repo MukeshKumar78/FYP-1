@@ -11,17 +11,19 @@ export default function DateTimePicker({ onChangeDate, value }: {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
-  function onChange(event: DateTimePickerEvent, selectedDate: Date) {
+  function onChange(event: DateTimePickerEvent, selectedDate?: Date) {
     if (event.type !== 'set') {
       return
     }
 
-    const currentDate = selectedDate;
     setShow(false);
-    setDate(currentDate);
+
+    if (!selectedDate) return
+
+    setDate(selectedDate);
 
     // Execute callback 
-    onChangeDate(currentDate);
+    onChangeDate(selectedDate);
   };
 
   const showMode = (currentMode: string) => {

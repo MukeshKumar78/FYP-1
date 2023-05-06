@@ -4,13 +4,15 @@ import {
 
 import { GoogleSigninButton as _GoogleSigninButton } from '@react-native-google-signin/google-signin'
 
-export function GoogleSigninButton({ handleIdToken }) {
+export function GoogleSigninButton({ handleIdToken }: {
+  handleIdToken: (token?: string) => void
+}) {
   return <_GoogleSigninButton
     onPress={() => {
       signIn()
-      .then(user => {
-        handleIdToken(user.idToken || undefined)
-      })
+        .then(user => {
+          handleIdToken(user.idToken || undefined)
+        })
     }}
   />
 }

@@ -89,7 +89,7 @@ export function AnimatedLink({ href, children, style, onPress = () => { } }: {
   onPress?: () => void
 }) {
   const animationProps = {
-    animate: ({ hovered, pressed }) => {
+    animate: ({ hovered, pressed }: any) => {
       'worklet'
 
       return {

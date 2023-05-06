@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { View } from 'app/components'
 
 import { HomeScreen } from 'app/features/home/screen';
-import { LoginScreen } from 'app/features/auth/screen';
+import { LoginScreen, LogoutScreen } from 'app/features/auth/screen';
 import { UserDetailScreen } from 'app/features/user/detail-screen'
 import { SettingsScreen } from 'app/features/settings/screen';
 
@@ -167,129 +168,123 @@ export function NativeNavigation() {
         />
         <Drawer.Screen
           name="logout"
-          component={LoginScreen}
+          component={LogoutScreen}
           options={{ title: "Logout" }}
         />
       </Drawer.Navigator>
     )
   }
 
-  if (loading) {
-    return <Stack.Navigator>
-      <Stack.Screen
-        name="loading"
-        component={LoadingScreen}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  }
-  else if (isSignedIn) {
-    return <Stack.Navigator>
-      <Stack.Screen
-        name="home"
-        component={DrawerNavigator}
-        options={{
-          headerShown: false
-        }}
-      />
-      <Stack.Screen
-        name="user-detail"
-        component={UserDetailScreen}
-        options={{ title: "User" }}
-      />
-      <Stack.Screen
-        name="event"
-        component={EventScreen}
-        options={{
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="event-history"
-        component={EventHistoryScreen}
-        options={{
-          headerTitle: "Event History",
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="comments"
-        component={CommentScreen}
-        options={{
-          headerTitleAlign: "center",
-          title: "Comments"
-        }}
-      />
-      <Stack.Screen
-        name="event-create"
-        component={EventFormScreen}
-        options={{
-          title: "Create an Event",
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="event-update"
-        component={EventFormScreen}
-        options={{
-          title: "Update Event",
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="post-create"
-        component={PostCreateScreen}
-        options={{
-          title: "Create a Post",
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="society"
-        component={SocietyPage}
-        options={{
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="drafts"
-        component={DraftsScreen}
-        options={{
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="edit-society"
-        component={SocietyEditScreen}
-        options={{
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="edit-team"
-        component={TeamEditScreen}
-        options={{
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
-        name="team-chat"
-        component={TeamChatScreen}
-        options={{
-          headerTitleAlign: "center",
-        }}
-      />
-    </Stack.Navigator>
-  }
-  else {
-    return <Stack.Navigator>
-      <Stack.Screen
-        name="login"
-        component={LoginScreen}
-        options={{
-          title: 'Login',
-        }}
-      />
-    </Stack.Navigator>
-  }
+  return <Stack.Navigator >
+    {
+      loading
+        ? <Stack.Screen
+          name="loading"
+          component={LoadingScreen}
+          options={{ headerShown: false }}
+        />
+        : isSignedIn
+          ? <><Stack.Screen
+            name="home"
+            component={DrawerNavigator}
+            options={{
+              headerShown: false
+            }}
+          />
+            <Stack.Screen
+              name="user-detail"
+              component={UserDetailScreen}
+              options={{ title: "User" }}
+            />
+            <Stack.Screen
+              name="event"
+              component={EventScreen}
+              options={{
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="event-history"
+              component={EventHistoryScreen}
+              options={{
+                headerTitle: "Event History",
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="comments"
+              component={CommentScreen}
+              options={{
+                headerTitleAlign: "center",
+                title: "Comments"
+              }}
+            />
+            <Stack.Screen
+              name="event-create"
+              component={EventFormScreen}
+              options={{
+                title: "Create an Event",
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="event-update"
+              component={EventFormScreen}
+              options={{
+                title: "Update Event",
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="post-create"
+              component={PostCreateScreen}
+              options={{
+                title: "Create a Post",
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="society"
+              component={SocietyPage}
+              options={{
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="drafts"
+              component={DraftsScreen}
+              options={{
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="edit-society"
+              component={SocietyEditScreen}
+              options={{
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="edit-team"
+              component={TeamEditScreen}
+              options={{
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="team-chat"
+              component={TeamChatScreen}
+              options={{
+                headerTitleAlign: "center",
+              }}
+            /></>
+          : <Stack.Screen
+            name="login"
+            component={LoginScreen}
+            options={{
+              title: 'Login',
+            }}
+          />
+    }
+  </Stack.Navigator>
 }

@@ -1,7 +1,7 @@
 import { api } from 'app/api';
 import { Page, paginationProps } from 'app/api/util';
 import { Client, IMessage } from '@stomp/stompjs'
-import { apiHost, apiUrl } from "app/api/config";
+import { apiUrl, websocketUrl } from "app/api/config";
 import { getItem } from 'app/api/storage';
 
 
@@ -11,8 +11,7 @@ async function getWsClient() {
   if (!client) {
     const headers = { 'Authorization': jwt as string }
     client = new Client({
-
-      brokerURL: `ws://${apiHost}/ws/team/gs-guide-websocket`,
+      brokerURL: websocketUrl,
       connectHeaders: headers,
       debug: console.log,
       appendMissingNULLonIncoming: true,

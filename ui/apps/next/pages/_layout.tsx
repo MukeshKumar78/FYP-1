@@ -9,6 +9,8 @@ export default function Layout(props: PropsWithChildren) {
   const router = useRouter();
   const { isSignedIn, loading } = useAuth();
 
+  console.log({isSignedIn, loading})
+
   // probably not best to do routing here 
   if (loading)
     return <LoadingScreen />

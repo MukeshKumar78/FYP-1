@@ -9,10 +9,13 @@ import Toast from 'react-native-toast-message';
 const rtkQueryErrorLogger: Middleware =
   (api: MiddlewareAPI) => (next) => (action) => {
     if (isRejectedWithValue(action)) {
+      if (action.payload.status == '403' || action.payload.status == '401')
+        return Toast.show({ text1: "Sign in to continue" })
+
       const data = action.payload.data
       if (!data)
-        return Toast.show({ text1: "Something went wrong" })
-      if (data.status == 403 || data.status == 401)
+        return Toast.show({ type: 'error', text1: "Something went wrong" })
+      if (data.status == '403' || data.status == '401')
         return Toast.show({ type: 'error', text1: "Forbidden" })
 
       return Toast.show({ type: 'error', text1: 'Error!', text2: data.errors?.[0].defaultMessage || data.message || "Something went wrong" })

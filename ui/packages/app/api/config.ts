@@ -1,5 +1,10 @@
-import { API_URL } from "@env";
+export let apiHost = 'gw.campusme.mohsinsh.tech'
+export let apiUrl = `https://${apiHost}`;
+export let websocketUrl = `wss://${apiHost}/ws/team/gs-guide-websocket`
 
-// export const apiHost = '20.247.250.13'
-export const apiHost = '192.168.100.12:8080'
-export const apiUrl = `http://${apiHost}`; 
+if (process.env.NODE_ENV == 'development') {
+  apiHost = '192.168.100.12:8080'
+  apiUrl = `http://${apiHost}`;
+  websocketUrl = `ws://${apiHost}/ws/team/gs-guide-websocket`
+}
+

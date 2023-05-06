@@ -13,7 +13,7 @@ export function TeamChatsMapScreen() {
 
   const { createHeader } = useHeader();
 
-  useEffect(() => { console.log('teams'); createHeader(<H1>Your Teams</H1>) }, [])
+  useEffect(() => createHeader(<H1>Your Teams</H1>), [])
 
   const teams = data?.map(t => ({
     ...t,

@@ -33,8 +33,18 @@ export const api = createApi({
         },
       }),
     }),
-    me: builder.query<User, void>({
-      query: () => 'api/core/me'
+    me: builder.query<User, string | void>({
+      query: (token) => {
+        if (!token) return '/api/core/me'
+
+        return {
+          url: '/api/core/me',
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        }
+      }
     }),
     user: builder.query<User, string>({
       query: (code: string) => `api/core/users/${code}`

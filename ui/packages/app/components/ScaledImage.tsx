@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Image } from 'react-native';
 
-export function ScaledImage({ uri }) {
+export function ScaledImage({ uri }: { uri: string }) {
   const [aspectRatio, setAspectRatio] = useState(1);
 
   useEffect(() => {

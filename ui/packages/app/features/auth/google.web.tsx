@@ -15,7 +15,9 @@ export async function silentSignIn() {
   return Promise.resolve();
 }
 
-export function GoogleSigninButton({ handleIdToken }) {
+export function GoogleSigninButton({ handleIdToken }: {
+  handleIdToken: (token?: string) => void
+}) {
   return <GoogleLogin
     onSuccess={credentialResponse => {
       const { credential: idToken } = credentialResponse;

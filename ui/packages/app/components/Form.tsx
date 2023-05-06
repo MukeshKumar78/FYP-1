@@ -50,6 +50,7 @@ export function FormTextInput({ label, subLabel = '', value = '', placeholder = 
       placeholder={placeholder}
       editable={!disabled}
       multiline={multiline}
+      numberOfLines={multiline ? 5 : 1}
       value={value}
       style={[styles.textInput, !isValid ? styles.invalidInput : {}]}
       onChangeText={(text) => {

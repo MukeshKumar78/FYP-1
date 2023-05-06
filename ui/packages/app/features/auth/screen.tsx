@@ -2,15 +2,12 @@ import {
   GoogleSigninButton
 } from './google';
 import { useAuth } from './hooks';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { View, Text } from 'react-native';
+import { LoadingScreen } from 'app/features/loading/screen';
 
 export function LoginScreen() {
-  const { signIn, signOut } = useAuth();
-
-  useEffect(() => {
-    signOut();
-  }, [])
+  const { signIn } = useAuth();
 
   return (
     <View
@@ -24,4 +21,15 @@ export function LoginScreen() {
       <GoogleSigninButton handleIdToken={signIn} />
     </View>
   )
+}
+
+
+export function LogoutScreen() {
+  const { signOut } = useAuth();
+
+  useLayoutEffect(() => {
+    signOut()
+  }, [])
+
+  return <LoadingScreen />
 }

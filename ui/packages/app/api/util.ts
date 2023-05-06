@@ -43,7 +43,7 @@ export function toTimeAndDateString(date: Date): string {
 
 export function paginationProps<T, U extends PageData = PageData>() {
   return {
-    serializeQueryArgs: ({ endpointName }) => {
+    serializeQueryArgs: ({ endpointName }: { endpointName: string }) => {
       return endpointName
     },
     transformResponse(data: T[], _: any, args: Required<U>) {

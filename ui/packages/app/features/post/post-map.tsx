@@ -1,5 +1,5 @@
 import { View, ScrollView, StyleSheet } from 'react-native'
-import Text from 'app/components/Text'
+import { Text } from 'app/components'
 import { useListEventPostsQuery, useListPostsQuery } from './post-api'
 import PostDraw from './post-draw'
 import { useState } from 'react'

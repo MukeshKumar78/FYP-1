@@ -134,7 +134,7 @@ export function TeamEditScreen() {
   if (!team?.society)
     return <TeamScreenError />
 
-  const renderTabBar = props => (
+  const renderTabBar = (props: any) => (
     <TabBar
       indicatorStyle={{ backgroundColor: '#6677cc' }}
       {...props}
