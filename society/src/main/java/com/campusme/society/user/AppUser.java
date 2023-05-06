@@ -19,7 +19,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.campusme.society.event.EventReact;
 import com.campusme.society.member.Member;
+import com.campusme.society.society.SocietyMute;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -57,6 +59,16 @@ public class AppUser implements UserDetails {
   @Builder.Default
   @JsonIgnoreProperties({ "user" })
   private List<Member> memberships = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user")
+  @Builder.Default
+  @JsonIgnore
+  private List<SocietyMute> mutes = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user")
+  @Builder.Default
+  @JsonIgnore
+  private List<EventReact> reacts = new ArrayList<EventReact>();
 
   @Transient
   @JsonIgnore

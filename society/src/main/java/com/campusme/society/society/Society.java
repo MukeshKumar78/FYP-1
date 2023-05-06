@@ -18,10 +18,13 @@ import javax.persistence.OneToMany;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.campusme.society.View;
 import com.campusme.society.event.Event;
 import com.campusme.society.member.Member;
+import com.campusme.society.user.AppUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -42,14 +45,14 @@ public class Society {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @Column(nullable = false, unique=true)
+  @Column(nullable = false, unique = true)
   @JsonView(View.Summary.class)
   private String code;
 
   @Column
   private String description;
 
-  @Column(columnDefinition="TEXT")
+  @Column(columnDefinition = "TEXT")
   @JsonView(View.Summary.class)
   private String image;
 
@@ -77,14 +80,35 @@ public class Society {
 
   @ManyToOne
   @JoinColumn(nullable = false)
+  @JsonIgnoreProperties("societies")
   private BaseSociety base;
 
   @OneToMany(mappedBy = "society")
-  @Builder.Default @JsonIgnore
+  @Builder.Default
+  @JsonIgnore
   private List<Event> events = new ArrayList<Event>();
 
   @OneToMany(mappedBy = "society")
-  @Builder.Default @JsonIgnore
+  @Builder.Default
+  @JsonIgnore
   private List<Member> members = new ArrayList<Member>();
-;
+
+  @OneToMany(mappedBy = "society")
+  @Builder.Default
+  @JsonIgnore
+  private List<SocietyMute> mutes = new ArrayList<SocietyMute>();
+
+  @Builder.Default
+  private Boolean muted = false;
+
+  public Boolean getMuted() {
+    try {
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      AppUser user = (AppUser) auth.getPrincipal();
+      return mutes.stream()
+          .anyMatch(mute -> mute.getUser().getId().equals(user.getId()));
+    } catch (Exception e) {
+      return muted || false;
+    }
+  }
 }

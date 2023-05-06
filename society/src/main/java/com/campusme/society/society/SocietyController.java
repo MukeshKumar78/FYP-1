@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import com.campusme.society.user.AppUser;
 
 import com.campusme.society.FileUploadUtil;
 import com.campusme.society.user.AppUserAuthenticationToken;
@@ -29,11 +30,13 @@ public class SocietyController {
   private SocietyRepository societyRepository;
 
   @Autowired
+  private SocietyMuteRepository societyMuteRepository;
+
+  @Autowired
   private BaseSocietyRepository baseSocietyRepository;
 
   @Autowired
   private FileUploadUtil fileUploadUtil;
-
 
   @Operation(summary = "get all societies")
   @GetMapping("/base")
@@ -51,7 +54,7 @@ public class SocietyController {
     return society;
   }
 
-  @Operation(summary = "get current society", description="finds an active society in a tenure given code for the base society")
+  @Operation(summary = "get current society", description = "finds an active society in a tenure given code for the base society")
   @GetMapping("/base/{code}/current")
   public Society findCurrent(@PathVariable String code) {
     Society society = societyRepository.findCurrentByCode(code).orElseThrow(
@@ -66,7 +69,8 @@ public class SocietyController {
    * only accessible to admins
    *
    * @param id         Tenure ID
-   * @param societyDTO {@code SocietyCreateRequestDTO} object as multipart form data
+   * @param societyDTO {@code SocietyCreateRequestDTO} object as multipart form
+   *                   data
    * @return Created {@code Society}
    */
   // @PreAuthorize("hasRole('ADMIN')")
@@ -74,7 +78,7 @@ public class SocietyController {
   @PostMapping(path = "/base", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @ResponseStatus(code = HttpStatus.CREATED)
   public BaseSociety save(AppUserAuthenticationToken auth, @ModelAttribute SocietyCreateRequestDTO dto) {
-    if(baseSocietyRepository.existsByCode(dto.getCode())) {
+    if (baseSocietyRepository.existsByCode(dto.getCode())) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Society with code already exists");
     }
@@ -109,4 +113,32 @@ public class SocietyController {
 
     return society;
   }
+
+  /**
+   * Endpoint to mute or unmute a society<br/>
+   *
+   * @param id Society ID
+   */
+  @Operation(summary = "mute a society")
+  @PostMapping(path = "/societies/{code}/mute")
+  public Society mute(AppUserAuthenticationToken auth, @PathVariable String code) {
+    Society society = societyRepository.findByCode(code).orElseThrow(
+        () -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "Society not found"));
+
+    SocietyMuteId societyMuteId = new SocietyMuteId(
+        society.getId(),
+        ((AppUser) auth.getPrincipal()).getId());
+
+    if (societyMuteRepository.existsById(societyMuteId)) {
+      societyMuteRepository.deleteById(societyMuteId);
+      society.setMuted(false);
+    } else {
+      societyMuteRepository.save(new SocietyMute(societyMuteId));
+      society.setMuted(true);
+    }
+
+    return society;
+  }
+
 }
