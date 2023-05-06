@@ -25,7 +25,10 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.campusme.society.comment.Comment;
 import com.campusme.society.post.Post;
 import com.campusme.society.society.Society;
 import com.campusme.society.user.AppUser;
@@ -120,8 +123,41 @@ public class Event {
   @Audited
   private List<EventAttachment> attachments = new ArrayList<>();
 
+  @OneToMany(mappedBy = "event")
+  @Builder.Default
+  private List<EventReact> reacts = new ArrayList<>();
+
+  @OneToMany(mappedBy = "event")
+  @Builder.Default
+  private List<Comment> comments = new ArrayList<>();
+
+  @Builder.Default
+  private Boolean reacted = false;
+
   public List<String> getAttachments() {
     return attachments.stream().map(a -> a.getUri()).toList();
+  }
+
+  public Integer getReacts() {
+    return reacts.size();
+  }
+
+  public Integer getComments() {
+    return comments.size();
+  }
+
+  public Boolean getReacted() {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null) {
+      return false;
+    }
+    AppUser user = (AppUser) auth.getPrincipal();
+    if (user == null) {
+      return false;
+    }
+
+    return reacts.stream()
+        .anyMatch(a -> a.getUser().getId().equals(user.getId()));
   }
 
   @PrePersist

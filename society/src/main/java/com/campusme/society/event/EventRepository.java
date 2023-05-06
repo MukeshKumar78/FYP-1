@@ -17,13 +17,4 @@ public interface EventRepository extends PagingAndSortingRepository<Event, Long>
   Page<Event> findByPublished(Boolean published, Pageable paging);
 
   Page<Event> findBySocietyCodeAndPublished(String code, Boolean published, Pageable paging);
-
-  @Query(value = """
-      (select id, created_at, 'event' as type from event
-       union
-       select id, created_at, 'post' as type from post)
-       order by created_at desc
-       limit (:limit);
-      """, nativeQuery = true)
-  List<Object> findLatestFeedItemIds(@Param("limit") Integer limit);
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Tuple;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -58,6 +57,8 @@ public class EventController {
   private EventRepository eventRepository;
   @Autowired
   private EventAttachmentRepository eventAttachmentRepository;
+  @Autowired
+  private EventReactRepository eventReactRepository;
   @Autowired
   private FileUploadUtil fileUploadUtil;
   @Autowired
@@ -175,21 +176,6 @@ public class EventController {
   }
 
   /**
-   * Endpoint to get feed
-   *
-   * @param pageNo   Integer (default: 0)
-   * @param pageSize Integer (default: 10)
-   */
-  @Operation(summary = "get feed")
-  @GetMapping("/feed")
-  public List<Object> feed(AppUserAuthenticationToken auth,
-      @RequestParam(defaultValue = "0") Integer pageNo,
-      @RequestParam(defaultValue = "10") Integer pageSize) {
-
-    return eventRepository.findLatestFeedItemIds(pageSize);
-  }
-
-  /**
    * Endpoint to create a new event
    * 
    * @param eventDTO {@code EventCreateRequestDTO} object as multipart form data
@@ -301,5 +287,25 @@ public class EventController {
     }
 
     return event;
+  }
+
+  /**
+   * react or unreact to an event
+   *
+   * @param id Event ID
+   * @throws ResponseStatusException: 404 (Event not found)
+   */
+  @Operation(summary = "publish event", description = "Sets an event's status to published")
+  @PreAuthorize("@webSecurity.hasPermission(#auth.getPrincipal(), @webSecurity.fromEvent(#id), 'event', 'publish')")
+  @PostMapping("/events/{id}/react")
+  @ResponseStatus(code = HttpStatus.OK)
+  public void react(AppUserAuthenticationToken auth, @PathVariable Long id) {
+    EventReactId reactId = new EventReactId(id, ((AppUser) auth.getPrincipal()).getId());
+
+    if (eventReactRepository.existsById(reactId)) {
+      eventReactRepository.deleteById(reactId);
+    } else {
+      eventReactRepository.save(new EventReact(reactId));
+    }
   }
 }
