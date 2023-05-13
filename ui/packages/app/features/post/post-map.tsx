@@ -1,6 +1,6 @@
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Text } from 'app/components'
-import { useListEventPostsQuery, useListPostsQuery } from './post-api'
+import { useListEventPostsQuery } from './post-api'
 import PostDraw from './post-draw'
 import { useState } from 'react'
 import { toShortDateString } from 'app/api/util'
@@ -11,7 +11,6 @@ import { toShortDateString } from 'app/api/util'
 export function PostMap({ event, contentOnly = false }: {
   event: SocietyEvent,
   contentOnly?: boolean
-
 }) {
   const [page, setPage] = useState(0);
   const { data } = useListEventPostsQuery({
@@ -22,8 +21,10 @@ export function PostMap({ event, contentOnly = false }: {
 
   let date: string = (new Date(0)).toDateString().slice(0, -5);
 
+
   return (
-    <ScrollView style={styles.eventWrapper}>
+    <ScrollView
+      style={styles.eventWrapper}>
       {
         data?.data.map((p, i) => {
           const pdate = toShortDateString(p.createdAt)

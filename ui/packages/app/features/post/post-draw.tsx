@@ -35,7 +35,7 @@ export default function PostDraw({ data, contentOnly = false }: {
           />
         </AnimatedLink>
         {/* User NAME */}
-        <View>
+        <View style={{flexShrink: 1, paddingRight: 20}}>
           <Text style={styles.societyName}>{data.createdBy.firstName} {data.createdBy.lastName}</Text>
           <Text style={styles.postInfoText}>
             posted in <TextLink href={`/society/${data.event.society.code}`} >
