@@ -1,28 +1,37 @@
 import {
   Image,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native'
-import { Text, View, Button, Hr } from 'app/components'
+import { Text, View, Button, Hr, AnimatedLink } from 'app/components'
 import { getPublicUri } from 'app/api/util';
 import { useMembership, usePermissions } from '../auth/hooks';
+import { Option, OptionsModalButton } from 'app/components/OptionsModalButton';
+import { useMuteSocietyMutation } from './society-api';
+import { Ionicons } from '@expo/vector-icons';
 
 export function SocietyInfo({ society }: {
   society: Society
 }) {
 
   const [canCreateEvent] = usePermissions(society.code, ["EVENT_CREATE"])
+  const [mute] = useMuteSocietyMutation()
   const membership = useMembership(society.code);
 
   return (
-    <View
-      style={{ margin: 10, alignItems: 'center' }}
-    >
+    <View style={{ margin: 10, alignItems: 'center' }} >
+      <View style={{ position: 'absolute', right: 5, top: 5 }}>
+        <OptionsModalButton>
+          <Option text={society.muted ? "Unmute" : "Mute"} onPress={() => mute(society.code)} />
+        </OptionsModalButton>
+      </View>
       <Image
         style={{ width: 120, height: 120, borderRadius: 60 }}
         source={{ uri: getPublicUri(society.image) }}
       />
-      <Text style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}>{society.fullName}</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={{ fontSize: 30, fontWeight: '600', textAlign: 'center' }}>{society.fullName}{' '}
+          {society.muted && <Ionicons name='volume-mute' size={24} color="gray" />}</Text>
+      </View>
       <Text style={{ fontSize: 16, color: 'gray' }}>@{society.code}</Text>
       <Text
         style={{ color: 'gray', textAlign: 'center', marginBottom: 16, fontWeight: 'bold' }}
