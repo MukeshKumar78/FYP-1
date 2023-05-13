@@ -8,6 +8,7 @@ import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -93,13 +95,21 @@ public class Society {
   @JsonIgnore
   private List<Member> members = new ArrayList<Member>();
 
-  @OneToMany(mappedBy = "society")
+  @OneToMany(mappedBy = "society", fetch = FetchType.EAGER)
   @Builder.Default
   @JsonIgnore
   private List<SocietyMute> mutes = new ArrayList<SocietyMute>();
 
   @Builder.Default
   private Boolean muted = false;
+
+  @Builder.Default
+  @Formula("(select count(*) from Event e where e.society_id = id)")
+  private Integer totalEvents = 0;
+
+  @Builder.Default
+  @Formula("(select count(*) from Member m where m.society_id = id)")
+  private Integer totalMembers = 0;
 
   public Boolean getMuted() {
     try {
@@ -108,7 +118,11 @@ public class Society {
       return mutes.stream()
           .anyMatch(mute -> mute.getUser().getId().equals(user.getId()));
     } catch (Exception e) {
-      return muted || false;
+      System.out.println(e.getMessage());
+      if (this.muted)
+        return muted;
+
+      return false;
     }
   }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,6 +76,7 @@ public class SocietyController {
    */
   // @PreAuthorize("hasRole('ADMIN')")
   @Operation(summary = "create society")
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping(path = "/base", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
   @ResponseStatus(code = HttpStatus.CREATED)
   public BaseSociety save(AppUserAuthenticationToken auth, @ModelAttribute SocietyCreateRequestDTO dto) {
@@ -121,7 +123,7 @@ public class SocietyController {
    */
   @Operation(summary = "mute a society")
   @PostMapping(path = "/societies/{code}/mute")
-  public Society mute(AppUserAuthenticationToken auth, @PathVariable String code) {
+  public Boolean mute(AppUserAuthenticationToken auth, @PathVariable String code) {
     Society society = societyRepository.findByCode(code).orElseThrow(
         () -> new ResponseStatusException(
             HttpStatus.NOT_FOUND, "Society not found"));
@@ -133,12 +135,12 @@ public class SocietyController {
     if (societyMuteRepository.existsById(societyMuteId)) {
       societyMuteRepository.deleteById(societyMuteId);
       society.setMuted(false);
+      return false;
     } else {
       societyMuteRepository.save(new SocietyMute(societyMuteId));
       society.setMuted(true);
+      return true;
     }
-
-    return society;
   }
 
 }
