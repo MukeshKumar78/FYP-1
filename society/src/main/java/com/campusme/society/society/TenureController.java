@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +36,7 @@ public class TenureController {
   private SocietyRepository societyRepository;
 
   @Operation(summary = "get all tenures")
-  @GetMapping("/tenures") 
+  @GetMapping("/tenures")
   public List<Tenure> findAll() {
     return tenureRepository.findAll();
   }
@@ -51,6 +52,7 @@ public class TenureController {
   }
 
   @Operation(summary = "add society to tenure")
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/tenures/{code}")
   public Society addSociety(@PathVariable String code, @RequestBody AddSocietyRequest body) {
     BaseSociety baseSociety = baseSocietyRepository.findByCode(body.getCode()).orElseThrow(
@@ -63,22 +65,21 @@ public class TenureController {
 
     String societyCode = baseSociety.getCode() + "-" + tenure.getCode();
 
-    if(societyRepository.existsByCode(societyCode)) {
+    if (societyRepository.existsByCode(societyCode)) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Society already added to tenure");
     }
 
     Society society = societyRepository.save(
-      Society.builder()
-        .name(baseSociety.getName())
-        .fullName(baseSociety.getFullName())
-        .code(societyCode)
-        .description(baseSociety.getDescription())
-        .image(baseSociety.getImage())
-        .tenure(tenure)
-        .base(baseSociety)
-        .build()
-    );
+        Society.builder()
+            .name(baseSociety.getName())
+            .fullName(baseSociety.getFullName())
+            .code(societyCode)
+            .description(baseSociety.getDescription())
+            .image(baseSociety.getImage())
+            .tenure(tenure)
+            .base(baseSociety)
+            .build());
 
     return society;
   }
