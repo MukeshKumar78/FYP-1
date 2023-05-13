@@ -1,14 +1,17 @@
 import { View, TextInput, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
 import EventDraw from './event-draw'
 import { useLazySearchEventsQuery } from './event-api';
-import { useCallback, useState } from 'react';
-import { Button } from 'app/components';
+import { useCallback, useEffect, useState } from 'react';
+import { useHeader } from 'app/hooks/headers';
+import { Button, H1 } from 'app/components';
 
 export function EventSearchScreen() {
   const [query, setQuery] = useState("");
   const [events, setEvents] = useState<SocietyEvent[]>([]);
   const [search, result] = useLazySearchEventsQuery();
 
+  const { createHeader } = useHeader();
+  useEffect(() => createHeader(<H1>Event Search</H1>), [])
 
   function handleSearch() {
     search(query)

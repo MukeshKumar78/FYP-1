@@ -7,4 +7,3 @@ if (process.env.NODE_ENV == 'development') {
   apiUrl = `http://${apiHost}`;
   websocketUrl = `ws://${apiHost}/ws/team/gs-guide-websocket`
 }
-

@@ -8,7 +8,7 @@ import { Image, RefreshControl } from 'react-native'
 import { ScrollView } from 'react-native'
 import { View, Text, Button, AnimatedLink } from 'app/components'
 import { Ionicons } from '@expo/vector-icons';
-import { FormTextInput } from 'app/components/Form'
+import { FormTextInput, FormSubmitButton } from 'app/components/Form'
 import { toShortDateString } from 'app/api/util'
 
 
@@ -61,7 +61,7 @@ function TeamChatView({ team }: {
 
   let date: string = (new Date(0)).toDateString().slice(0, -5);
 
-  return <View style={{ width: '100%', borderRadius: 10 }}>
+  return <View style={{ borderRadius: 10, margin: 5 }}>
     <ScrollView
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -81,14 +81,16 @@ function TeamChatView({ team }: {
         return <TeamChatBubble key={i} message={msg} />
       })}
     </ScrollView>
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <FormTextInput multiline style={{ flex: 1 }} placeholder="Send a chat..." label="" value={msg} onChangeText={setMsg} />
-      <AnimatedLink onPress={() => {
+    <View>
+      <FormTextInput multiline placeholder="Send a chat..." label="" value={msg} onChangeText={setMsg} />
+      <Button onPress={() => {
         send({ team: team.code, msg })
         setMsg("")
-      }}>
-        <Ionicons name="send" size={18} />
-      </AnimatedLink>
+      }}
+        text="Send"
+        icon="send"
+      />
+      {/* <Ionicons name="send" size={18} style={{ margin: 5 }} /> */}
     </View>
   </View>
 }

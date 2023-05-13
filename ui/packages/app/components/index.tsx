@@ -2,7 +2,7 @@ import { View as RNView, StyleSheet, Text as RNText, TextProps, TouchableOpacity
 import { ReactNode } from 'react';
 import { MotiLink } from 'solito/moti'
 import { MotiPressable } from 'moti/interactions';
-
+import { Ionicons } from '@expo/vector-icons';
 
 export function Hr() {
   return <RNView
@@ -32,8 +32,9 @@ export function View(props: ViewProps) {
   return <RNView style={{ zIndex: undefined }} {...props}>{props.children}</RNView>
 }
 
-export function Button({ text = '', onPress, href, type = 'filled', bg = 'primary', bordered = false, size, disabled = false, style = {} }: {
+export function Button({ text = '', icon = '', onPress, href, type = 'filled', bg = 'primary', bordered = false, size, disabled = false, style = {} }: {
   text: string,
+  icon?: string,
   onPress?: () => any
   href?: string,
   type?: 'filled' | 'transparent' | 'outlined'
@@ -66,6 +67,7 @@ export function Button({ text = '', onPress, href, type = 'filled', bg = 'primar
       width: btnSize,
       borderRadius: btnBorderRadius,
     }, style]}>
+      {icon && <Ionicons name={icon as any} size={20} color={'#ffffff'} />}
       <Text style={[styles.btnTextStyle, { color: btnTextColor, textAlign: 'center' }]}> {text} </Text>
     </View>
 
@@ -118,6 +120,8 @@ export function AnimatedLink({ href, children, style, onPress = () => { } }: {
 
 const styles = StyleSheet.create({
   btnContainerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     paddingVertical: 8,
     marginVertical: 5,
     alignItems: 'center',

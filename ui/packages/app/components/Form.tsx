@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   textInput: {
+    textAlignVertical: 'top',
     paddingVertical: 5,
     paddingHorizontal: 10,
     backgroundColor: 'white',
