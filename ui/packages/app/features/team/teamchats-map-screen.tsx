@@ -1,19 +1,21 @@
-import { StyleSheet, useWindowDimensions, Image, TextInput } from 'react-native';
+import { RefreshControl, Image, ScrollView } from 'react-native';
 import { View, Text, AnimatedLink, H1 } from "app/components";
 import { Ionicons } from '@expo/vector-icons'
 import { getPublicUri } from 'app/api/util';
 import { useGetTeamMembershipsQuery } from "./team-api";
 import { useAuth } from "../auth/hooks";
 import { useHeader } from "app/hooks/headers"
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export function TeamChatsMapScreen() {
   const { user } = useAuth();
-  const { data } = useGetTeamMembershipsQuery()
+  const { data, refetch } = useGetTeamMembershipsQuery()
+  const [refreshing, setRefreshing] = useState(false);
 
   const { createHeader } = useHeader();
 
   useEffect(() => createHeader(<H1>Your Teams</H1>), [])
+
 
   const teams = data?.map(t => ({
     ...t,
@@ -21,10 +23,13 @@ export function TeamChatsMapScreen() {
   }))
 
   return (
-    <View style={{
+    <ScrollView style={{
       width: '100%',
       borderWidth: 1, borderColor: '#EFEFEF', borderRadius: 5,
-    }}>
+    }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={refetch} />
+      }>
       {
         teams?.map((membership, i) =>
           <View key={i} style={{
@@ -52,7 +57,7 @@ export function TeamChatsMapScreen() {
           </View>
         )
       }
-    </View>
+    </ScrollView>
   )
 }
 

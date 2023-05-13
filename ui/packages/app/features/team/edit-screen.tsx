@@ -1,21 +1,19 @@
 import { createParam } from 'solito';
-import { StyleSheet, useWindowDimensions, Image, TextInput } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { useGetTeamsBySocietyQuery, useAddTeamMutation, useRemoveTeamMutation, useGetTeamMembershipsByTeamQuery, useAddTeamMemberMutation, useRemoveTeamMemberMutation, useGetTeamQuery } from 'app/features/team/team-api';
-import { useSocietyHeader } from '../../hooks/headers'
+import { StyleSheet, useWindowDimensions, Image, TextInput, ScrollView, RefreshControl } from 'react-native';
+import { useState, useEffect } from 'react';
+import { useGetTeamMembershipsByTeamQuery, useAddTeamMemberMutation, useRemoveTeamMemberMutation, useGetTeamQuery } from 'app/features/team/team-api';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { getPublicUri } from 'app/api/util';
 import { Option, OptionsModalButton } from 'app/components/OptionsModalButton';
 import { usePermissions } from '../auth/hooks';
-import { Text, Button, View } from 'app/components';
-import { Form, FormDateInput, FormImagePicker, FormSubmitButton, FormTextInput } from 'app/components/Form';
-import DropDownPicker from 'react-native-dropdown-picker'
-import Toast from 'react-native-toast-message';
+import { useHeader } from 'app/hooks/headers';
+import { Text, Button, View, H1 } from 'app/components';
+import { Form, FormTextInput } from 'app/components/Form';
 
 function MembersRoute({ team }: {
   team: Team
 }) {
-  const { data } = useGetTeamMembershipsByTeamQuery(team.code);
+  const { data, refetch } = useGetTeamMembershipsByTeamQuery(team.code);
   const [canAdd, canRemove, canEdit] = usePermissions(team.society, [
     "TEAM_MEMBER_ADD",
     "TEAM_MEMBER_REMOVE",
@@ -31,11 +29,10 @@ function MembersRoute({ team }: {
     })
   }
 
-  return <View style={{
-    flex: 1,
-    margin: 5,
-
-  }}>
+  return <ScrollView style={{ flex: 1, margin: 5, }}
+    refreshControl={
+      <RefreshControl refreshing={false} onRefresh={refetch} />
+    }>
     <View style={{ zIndex: -100 }}>
       {
         canAdd &&
@@ -62,7 +59,7 @@ function MembersRoute({ team }: {
       )
       }
     </View >
-  </View>
+  </ScrollView>
 }
 
 
@@ -125,11 +122,14 @@ export function TeamEditScreen() {
   const { data: team } = useGetTeamQuery(teamCode || '');
 
   const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
     { key: 'first', title: 'Info' },
     { key: 'second', title: 'Members' },
   ]);
+
+  const { createHeader } = useHeader();
+  useEffect(() => createHeader(<H1>{team?.name || "Edit Team"}</H1>), [team, createHeader])
 
   if (!team?.society)
     return <TeamScreenError />

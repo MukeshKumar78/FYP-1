@@ -1,5 +1,5 @@
 import { createParam } from 'solito';
-import { StyleSheet, useWindowDimensions, Image, TextInput } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, useWindowDimensions, Image, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useAddMemberMutation, useGetMembershipsQuery, useGetRolesQuery, useGetSocietyQuery, useRemoveMemberMutation } from './society-api';
 import { useGetTeamsBySocietyQuery, useAddTeamMutation, useRemoveTeamMutation } from 'app/features/team/team-api';
@@ -16,7 +16,7 @@ import { Error } from 'app/error';
 function MembersRoute({ society }: {
   society: string
 }) {
-  const { data } = useGetMembershipsQuery(society);
+  const { data, refetch } = useGetMembershipsQuery(society);
   const [canAdd, canRemove, canEdit] = usePermissions(society, [
     "MEMBER_ADD",
     "MEMBER_REMOVE",
@@ -31,11 +31,10 @@ function MembersRoute({ society }: {
     })
   }
 
-  return <View style={{
-    flex: 1,
-    margin: 5,
-
-  }}>
+  return <ScrollView style={{ flex: 1, margin: 5, }}
+    refreshControl={
+      <RefreshControl refreshing={false} onRefresh={refetch} />
+    }>
     <View style={{ zIndex: -100 }}>
       {
         canAdd &&
@@ -65,7 +64,7 @@ function MembersRoute({ society }: {
       )
       }
     </View >
-  </View>
+  </ScrollView>
 }
 
 function AddMemberView({ society }: {
@@ -127,7 +126,7 @@ function AddMemberView({ society }: {
 const TeamsRoute = ({ society }: {
   society: string
 }) => {
-  const { data } = useGetTeamsBySocietyQuery(society);
+  const { data, refetch } = useGetTeamsBySocietyQuery(society);
   const [canAdd, canRemove, canEdit] = usePermissions(society, [
     "TEAM_CREATE",
     "TEAM_DELETE",
@@ -136,11 +135,10 @@ const TeamsRoute = ({ society }: {
 
   const [remove] = useRemoveTeamMutation();
 
-  return <View style={{
-    flex: 1,
-    margin: 5,
-
-  }}>
+  return <ScrollView style={{ flex: 1, margin: 5, }}
+    refreshControl={
+      <RefreshControl refreshing={false} onRefresh={refetch} />
+    }>
     <View>
       {
         canAdd &&
@@ -154,15 +152,15 @@ const TeamsRoute = ({ society }: {
               <Text style={{ color: 'gray', fontSize: 12 }}>{team.memberships.length} members</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Button href={`/team/${team.code}/edit`} style={{ marginHorizontal: 2, paddingHorizontal: 2 }} text="Edit" />
-              <Button bg='warn' onPress={() => remove(team.code)} style={{ marginHorizontal: 2, paddingHorizontal: 2 }} text="Remove" />
+              {canEdit && <Button href={`/team/${team.code}/edit`} style={{ marginHorizontal: 2, paddingHorizontal: 2 }} text="Edit" />}
+              {canRemove && <Button bg='warn' onPress={() => remove(team.code)} style={{ marginHorizontal: 2, paddingHorizontal: 2 }} text="Remove" />}
             </View>
           </View>
         </View>
       )
       }
     </View >
-  </View>
+  </ScrollView>
 };
 
 

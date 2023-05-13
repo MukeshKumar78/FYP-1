@@ -1,5 +1,5 @@
 import { createParam } from 'solito';
-import { ScrollView, StyleSheet, TextInput } from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet, TextInput } from 'react-native'
 import CommentDraw from './comment-draw'
 import { useAddCommentMutation, useListCommentsQuery, useRemoveCommentMutation } from './comment-api';
 import { Text, View, Button, Hr } from 'app/components';
@@ -58,7 +58,7 @@ function CommentView({ eventId }: {
 function CommentMap({ event }: {
   event: SocietyEvent
 }) {
-  const { data } = useListCommentsQuery(event.id);
+  const { data, refetch } = useListCommentsQuery(event.id);
   const { user } = useAuth();
   const [remove] = useRemoveCommentMutation();
   const [canCreate, canDelete] = usePermissions(event.society.code, [
@@ -74,7 +74,11 @@ function CommentMap({ event }: {
 
   }
 
-  return <ScrollView style={styles.commentWrapper}>
+  return <ScrollView
+    style={styles.commentWrapper}
+    refreshControl={
+      <RefreshControl refreshing={false} onRefresh={refetch} />
+    }>
     {data?.map((comment, i) =>
       <CommentDraw
         key={i}
@@ -82,7 +86,6 @@ function CommentMap({ event }: {
         handleDelete={canDelete || comment.createdBy.code == user?.code
           ? () => removeComment(comment.id)
           : undefined}
-        handleReport={() => reportComment(comment.id)}
       />
     )}
   </ScrollView>

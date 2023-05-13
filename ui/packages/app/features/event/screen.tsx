@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, RefreshControl } from 'react-native'
 import { useEffect } from 'react'
 import { View, Text, Button } from 'app/components'
 import { PostMap } from '../post/post-map'
@@ -19,7 +19,7 @@ const { useParam } = createParam<{ id: string }>()
 */
 export function EventScreen() {
   const [id] = useParam('id');
-  const { data } = useGetEventQuery(Number(id));
+  const { data, refetch } = useGetEventQuery(Number(id));
   const { createHeader } = useSocietyHeader(data?.society);
 
   useEffect(createHeader);
@@ -28,7 +28,11 @@ export function EventScreen() {
     return <Error />
 
   return (
-    <ScrollView style={styles.eventWrapper}>
+    <ScrollView
+      style={styles.eventWrapper}
+      refreshControl={
+        <RefreshControl refreshing={false} onRefresh={refetch} />
+      }>
       <EventPageDraw data={data} />
       <View style={{
         marginTop: 20,
@@ -50,8 +54,9 @@ export function EventScreen() {
 }
 
 // RENDERER COMPONENT FOR ALL EVENT COMPONENT ELEMENTS
-export default function EventPageDraw(props: { data: SocietyEvent }) {
-  const data = props.data
+export default function EventPageDraw({ data }: {
+  data: SocietyEvent
+}) {
   const [canAddPost] = usePermissions(data.society.code, [
     "POST_CREATE"
   ])
@@ -59,7 +64,6 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
   return (<>
     <View style={styles.eventContainer}>
 
-      {/* TODO: use EventContent */}
       <View style={styles.entireTitleContainer}>
         {/* EVENT TITLE AND BUTTON RENDER*/}
         <View style={styles.titleAndButtonContainer}>
@@ -73,7 +77,6 @@ export default function EventPageDraw(props: { data: SocietyEvent }) {
         </Text>
       </View>
 
-      {/* TODO: make a slideshow component for images */}
       <View>
         {data.attachments.map((image, key) =>
           <ScaledImage key={key} uri={getPublicUri(image)} />
