@@ -1,20 +1,21 @@
 import { createParam } from 'solito';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { EventMap } from '../event/event-map';
 import { SocietyInfo } from './society-info-draw';
-import { View, Text, Button, Hr } from 'app/components'
+import { View, Button, Hr } from 'app/components'
 import { useGetSocietyQuery } from './society-api';
 import { useSocietyHeader } from '../../hooks/headers'
 import { useMembership } from '../auth/hooks';
 import { Error } from 'app/error';
 
-const { useParam } = createParam<{ code: string }>()
+const { useParam } = createParam<{ code: string; drafts?: string }>()
 
 export function SocietyPage() {
   const [societyCode] = useParam('code');
-  const [drafts, setDrafts] = useState(false);
-  const { data: society, isLoading } = useGetSocietyQuery(societyCode || '');
+  const [showDrafts] = useParam('drafts')
+  const [drafts, setDrafts] = useState(!!showDrafts);
+  const { data: society, isLoading, refetch } = useGetSocietyQuery(societyCode || '');
   const { createHeader } = useSocietyHeader(society)
   const membership = useMembership(society?.code);
 
@@ -33,7 +34,10 @@ export function SocietyPage() {
         alignItems: 'center',
       }}
     >
-      <ScrollView style={styles.mainContainer}>
+      <ScrollView style={styles.mainContainer}
+        refreshControl={
+          <RefreshControl refreshing={false} onRefresh={refetch} />
+        }>
         <SocietyInfo society={society} />
         <Hr />
         {

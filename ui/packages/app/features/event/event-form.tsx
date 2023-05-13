@@ -138,7 +138,7 @@ export function EventForm({ society, event }: {
 
     const result = await postEvent(formData);
     // router.back()
-    router.replace(`/society/${society.code}`)
+    router.replace(`/society/${society.code}?drafts=true`)
     console.log('new event', result);
   }
 
