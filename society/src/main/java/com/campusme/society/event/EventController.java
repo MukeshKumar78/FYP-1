@@ -92,12 +92,14 @@ public class EventController {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Society is required");
       if (!webSecurity.isMember((AppUser) auth.getPrincipal(), society))
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Must be a member");
+      return eventRepository.findByPublished(false, paging).getContent();
     }
 
     if (society != null && !society.isEmpty())
       return eventRepository.findBySocietyCodeAndPublished(society, !drafts, paging).getContent();
 
-    return eventRepository.findByPublished(!drafts, paging).getContent();
+    // if no options specified, return personalized feed events
+    return eventRepository.findByFollowedSocieties(((AppUser) auth.getPrincipal()).getId(), paging).getContent();
   }
 
   /**
@@ -278,8 +280,11 @@ public class EventController {
     eventRepository.save(event);
 
     try {
-      // TODO: filter users who have muted
-      List<String> followers = userRepository.findAll().stream().map(user -> user.getCode()).toList();
+      List<String> followers = userRepository
+          .findFollowers(event.getSociety().getId())
+          .stream()
+          .map(u -> u.getCode())
+          .toList();
 
       notificationService.publish(new Notification("New Event", event.getTitle()), followers);
     } catch (Exception e) {
@@ -295,8 +300,7 @@ public class EventController {
    * @param id Event ID
    * @throws ResponseStatusException: 404 (Event not found)
    */
-  @Operation(summary = "publish event", description = "Sets an event's status to published")
-  @PreAuthorize("@webSecurity.hasPermission(#auth.getPrincipal(), @webSecurity.fromEvent(#id), 'event', 'publish')")
+  @Operation(summary = "react to an event")
   @PostMapping("/events/{id}/react")
   @ResponseStatus(code = HttpStatus.OK)
   public void react(AppUserAuthenticationToken auth, @PathVariable Long id) {

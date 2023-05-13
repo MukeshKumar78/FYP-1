@@ -37,13 +37,14 @@ public class PostController {
   /**
    * Endpoint to get all posts paginated and sorted based on query parameters
    *
-   * @param pageNo Integer (default: 0)
+   * @param pageNo   Integer (default: 0)
    * @param pageSize Integer (default: 10)
-   * @param sortBy Integer (default: createdAt) sorts by descending
+   * @param sortBy   Integer (default: createdAt) sorts by descending
    */
   @Operation(summary = "get all posts")
   @GetMapping("/posts")
   public List<Post> findAll(
+      AppUserAuthenticationToken auth,
       @RequestParam(defaultValue = "0") Integer pageNo,
       @RequestParam(defaultValue = "10") Integer pageSize,
       @RequestParam(defaultValue = "createdAt") String sortBy,
@@ -52,12 +53,10 @@ public class PostController {
     Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 
     List<Post> posts;
-    if(event == null)
-      posts = postRepository.findAll(paging).getContent();
+    if (event == null)
+      return postRepository.findByFollowedSocieties(((AppUser) auth.getPrincipal()).getId(), paging).getContent();
     else
-      posts = postRepository.findByEventId(event, paging).getContent();
-
-    return posts;
+      return postRepository.findByEventId(event, paging).getContent();
   }
 
   /**
