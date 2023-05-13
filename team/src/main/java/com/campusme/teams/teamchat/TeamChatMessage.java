@@ -2,6 +2,7 @@ package com.campusme.teams.teamchat;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -38,7 +39,7 @@ public class TeamChatMessage {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "team_id", nullable = false)
   @JsonIgnoreProperties({ "messages", "memberships" })
   private Team team;

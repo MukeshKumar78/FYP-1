@@ -48,7 +48,7 @@ public class Team {
   private List<Member> memberships = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "team", cascade = CascadeType.DETACH)
+  @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
   private List<TeamChatMessage> messages;
 
   @PrePersist
