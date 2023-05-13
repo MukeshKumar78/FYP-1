@@ -6,4 +6,4 @@ COPY docker-entrypoint.sh ./
 RUN chmod +x ./docker-entrypoint.sh
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
-CMD ["mvn", "spring-boot:run", "-Dspring.profiles.active=dev"]
+CMD ["mvn", "spring-boot:run"]
