@@ -5,6 +5,9 @@ import { View, Text, AnimatedLink } from 'app/components'
 import { ScaledImage } from 'app/components/ScaledImage'
 import EventOptionsModal from './event-options-modal';
 import { getPublicUri, toTimeAndDateString } from 'app/api/util';
+import { useReactMutation } from './event-api'
+import * as Clipboard from 'expo-clipboard';
+import Toast from 'react-native-toast-message';
 
 const iconSize = 20;
 
@@ -34,6 +37,7 @@ export default function EventDraw({ event }: {
 export function EventHeader({ event }: {
   event: SocietyEvent
 }) {
+
   return (
 
     <View style={styles.titleBarContainer}>
@@ -81,12 +85,14 @@ export function EventContent({ event }: {
 export function EventInteractiveBar({ event }: {
   event: SocietyEvent
 }) {
+  const [react] = useReactMutation()
+
   return (
     <View style={styles.interactiveBarContainer}>
       <InteractiveIcon icon={
-        <Ionicons name="star-outline" size={iconSize} color="#FFD700" />
+        <Ionicons name={event.reacted ? "star-sharp" : "star-outline"} size={iconSize} color="#FFD700" />
       }
-        onPress={() => { }}
+        onPress={() => react(event.id)}
         size={iconSize} />
 
       <InteractiveIcon icon={
@@ -98,7 +104,10 @@ export function EventInteractiveBar({ event }: {
       <InteractiveIcon icon={
         <Ionicons name="share-social-outline" size={iconSize} color="lightblue" />
       }
-        onPress={() => { }}
+        onPress={async () => {
+          await Clipboard.setStringAsync(`https://campusme.tech/event/${event.id}`)
+          Toast.show({ type: 'success', text1: 'Link copied to clipboard' })
+        }}
         size={iconSize} />
     </View>
   )

@@ -14,7 +14,11 @@ interface SearchEventPageData extends PageData {
 export const eventApi = api.injectEndpoints({
   endpoints: (build) => ({
     getEvent: build.query<SocietyEvent, number>({
-      providesTags: ['Event'],
+      providesTags: (event) => {
+        if (event)
+          return ['Event', { type: 'Event', id: event.id }]
+        return ['Event']
+      },
       query: (id) => `/api/core/events/${id}`
     }),
     getEventHistory: build.query<SocietyEvent[], number>({
@@ -23,13 +27,27 @@ export const eventApi = api.injectEndpoints({
     }),
     listEvents: build.query<Page<SocietyEvent>, PageData>({
       query: ({ page = 0, size = 10 }) => `/api/core/events?pageNo=${page}&pageSize=${size}`,
-      providesTags: (_) => [{ type: "Event", id: "PAGE" }],
+      providesTags: (events) => {
+        if (events)
+          return [
+            { type: "Event", id: "PAGE" },
+            ...events.data.map(({ id }) => ({ type: "Event" as const, id }))
+          ]
+        return [{ type: "Event", id: "PAGE" }]
+      },
       ...paginationProps<SocietyEvent>()
     }),
     listSocietyEvents: build.query<Page<SocietyEvent>, SocietyEventPageData>({
       query: ({ page = 0, size = 10, society, drafts = false }) =>
         `/api/core/events?society=${society}&drafts=${drafts}&pageNo=${page}&pageSize=${size}`,
-      providesTags: (_) => [{ type: "Event", id: "SOCIETYPAGE" }],
+      providesTags: (events) => {
+        if (events)
+          return [
+            { type: "Event", id: "PAGE" },
+            ...events.data.map(({ id }) => ({ type: "Event" as const, id }))
+          ]
+        return [{ type: "Event", id: "PAGE" }]
+      },
       ...paginationProps<SocietyEvent, SocietyEventPageData>()
     }),
     searchEvents: build.query<SocietyEvent[], string>({
@@ -65,6 +83,15 @@ export const eventApi = api.injectEndpoints({
       },
       invalidatesTags: ['Event', { type: 'Event', id: 'PAGE' }, { type: 'Event', id: 'SOCIETYPAGE' }],
     }),
+    react: build.mutation<boolean, number>({
+      query(id) {
+        return {
+          url: `/api/core/events/${id}/react`,
+          method: 'POST'
+        }
+      },
+      invalidatesTags: (_, __, id) => [{ type: 'Event', id }]
+    })
   }),
   overrideExisting: false
 })
@@ -78,5 +105,6 @@ export const {
   useGetEventHistoryQuery,
   useAddEventMutation,
   useUpdateEventMutation,
-  usePublishEventMutation
+  usePublishEventMutation,
+  useReactMutation
 } = eventApi;
