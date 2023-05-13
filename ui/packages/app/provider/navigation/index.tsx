@@ -27,6 +27,7 @@ export function NavigationProvider({
               "event-search": "event/search",
               "post-create": "event/:id/new-post",
               society: 'society/:code',
+              societies: 'societies',
               drafts: 'society/:code/drafts',
               "edit-society": 'society/:code/edit',
               "edit-team": 'team/:code/edit',

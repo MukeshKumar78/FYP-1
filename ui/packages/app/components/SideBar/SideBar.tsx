@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RiSearchFill, RiChat1Fill, RiLogoutCircleFill, RiNotification2Fill } from 'react-icons/ri';
+import { RiGroupFill, RiSearchFill, RiChat1Fill, RiLogoutCircleFill, RiNotification2Fill } from 'react-icons/ri';
 import { AiFillHome } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
 import Link from 'next/link';
@@ -33,6 +33,11 @@ const menuItems: MenuItem[] = [
     icon: <RiSearchFill style={{ fontSize: '20px', marginRight: '10px', marginTop: '3px' }} />,
     label: 'Search',
     link: '/event/search'
+  },
+  {
+    icon: <RiGroupFill style={{ fontSize: '20px', marginRight: '10px', marginTop: '3px' }} />,
+    label: 'Societies',
+    link: '/society'
   },
   {
     icon: <RiLogoutCircleFill style={{ fontSize: '19px', marginRight: '11px', marginTop: '3px' }} />,

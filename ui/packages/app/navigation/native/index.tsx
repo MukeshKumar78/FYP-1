@@ -17,6 +17,7 @@ import { LoadingScreen } from 'app/features/loading/screen';
 import { ProfileScreen } from 'app/features/user/profile-screen';
 import { EventScreen } from 'app/features/event/screen';
 import { SocietyPage } from 'app/features/society/screen';
+import { SocietyMapScreen } from 'app/features/society/society-map-screen';
 import { EventFormScreen } from 'app/features/event/event-form';
 import { SocietyEditScreen } from 'app/features/society/edit-screen';
 import { TeamEditScreen } from 'app/features/team/edit-screen';
@@ -43,7 +44,8 @@ const Stack = createNativeStackNavigator<{
     id: string
   }
   society: {
-    code: string
+    code: string;
+    drafts: string
   }
   "edit-society": {
     code: string
@@ -77,7 +79,7 @@ const Drawer = createDrawerNavigator<{
   }
   "team-chats": undefined,
   "event-search": undefined
-  settings: undefined
+  societies: undefined
   logout: undefined
 }>();
 
@@ -162,9 +164,9 @@ export function NativeNavigation() {
           options={{ title: "Chats" }}
         />
         <Drawer.Screen
-          name="settings"
-          component={SettingsScreen}
-          options={{ title: "Settings" }}
+          name="societies"
+          component={SocietyMapScreen}
+          options={{ title: "Societies" }}
         />
         <Drawer.Screen
           name="logout"
