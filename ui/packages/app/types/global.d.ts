@@ -50,12 +50,10 @@ declare global {
     image: string
     createdAt: Date
     base: BaseSociety
-    tenure: {
-      id: number
-      code: string
-      description: string
-      duration: string
-    }
+    tenure: Tenure
+    muted: boolean
+    totalEvents: number
+    totalMembers: number
   }
 
   type BaseSociety = {
@@ -64,6 +62,14 @@ declare global {
     name: string
     fullName: string
     image: string
+  }
+
+  type Tenure = {
+    id: number
+    code: string
+    description: string
+    duration: string
+    societies: Society[]
   }
 
   type SocietyEvent = {
@@ -79,6 +85,7 @@ declare global {
     publishedAt?: Date
     published: boolean
     society: Society
+    reacted: boolean
   };
 
   type SocietyPost = {
