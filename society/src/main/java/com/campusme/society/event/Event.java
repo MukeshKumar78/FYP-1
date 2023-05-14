@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hibernate.annotations.Formula;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.RoutingBinderRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
@@ -137,6 +138,14 @@ public class Event {
   public List<String> getAttachments() {
     return attachments.stream().map(a -> a.getUri()).toList();
   }
+
+  @Builder.Default
+  @Formula("(select count(*) from comment c where c.event_id = id)")
+  private Integer totalComments = 0;
+
+  @Builder.Default
+  @Formula("(select count(*) from event_react r where r.event_id = id)")
+  private Integer totalReacts = 0;
 
   public Integer getReacts() {
     return reacts.size();
