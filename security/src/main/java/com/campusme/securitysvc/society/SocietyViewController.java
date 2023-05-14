@@ -90,7 +90,7 @@ public class SocietyViewController {
     return "redirect:/society";
   }
 
-  @GetMapping("tenure/add")
+  @GetMapping("society/add")
   public String showAddForm(@RequestParam Long tenure, Model model) {
     SocietyCreateForm societyForm = new SocietyCreateForm();
     societyForm.setTenure(tenure);

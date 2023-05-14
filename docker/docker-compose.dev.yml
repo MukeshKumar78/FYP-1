@@ -12,3 +12,7 @@ services:
       - ../team:/app
     ports:
       - 8083:8083
+
+  security:
+    environment:
+      SERVER_URL: http://localhost:8080

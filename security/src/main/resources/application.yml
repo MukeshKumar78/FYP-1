@@ -31,6 +31,7 @@ spring:
           - label: Swagger
             url: "/swagger-ui.html"
             order: 1001
+        public-url: ${SERVER_URL:http://localhost:8080}
         cache:
           no-cache: true
         cache-templates: false
