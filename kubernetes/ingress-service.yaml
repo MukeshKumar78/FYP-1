@@ -21,13 +21,3 @@ spec:
             name: gateway
             port:
               number: 8080
-  - host: campusme.mohsinsh.tech
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: app
-            port:
-              number: 3000

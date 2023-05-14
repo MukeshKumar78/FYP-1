@@ -63,7 +63,7 @@ spec:
                   key: static_files_location
                   name: campusme-secrets
           image: campusmecr.azurecr.io/society
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: society
           resources: {}
           volumeMounts:

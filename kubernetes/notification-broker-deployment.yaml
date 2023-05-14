@@ -32,7 +32,7 @@ spec:
                   key: redis_url
                   name: campusme-secrets
           image: campusmecr.azurecr.io/notification-broker
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: notification-broker
           resources: {}
       restartPolicy: Always

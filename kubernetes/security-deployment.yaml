@@ -52,8 +52,13 @@ spec:
                 secretKeyRef:
                   key: static_files_location
                   name: campusme-secrets
+            - name: SERVER_URL
+              valueFrom:
+                secretKeyRef:
+                  key: server_url
+                  name: campusme-secrets
           image: campusmecr.azurecr.io/security
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: security
           resources: {}
           volumeMounts:

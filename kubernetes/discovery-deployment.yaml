@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - image: campusmecr.azurecr.io/discovery
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: service-discovery
           ports:
             - containerPort: 8761

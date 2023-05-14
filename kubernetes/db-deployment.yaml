@@ -32,7 +32,7 @@ spec:
                   key: postgres_password
                   name: campusme-secrets
           image: campusmecr.azurecr.io/db
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           livenessProbe:
             exec:
               command:
