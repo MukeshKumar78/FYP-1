@@ -8,7 +8,7 @@ import { EventInteractiveBar } from './event-draw'
 import { useGetEventQuery } from './event-api';
 import { useSocietyHeader } from 'app/hooks/headers';
 import { createParam } from 'solito';
-import { getPublicUri, toShortDateString } from 'app/api/util'
+import { getPublicUri, toShortDateString, toTimeAndDateString } from 'app/api/util'
 import { usePermissions } from '../auth/hooks'
 import { Error } from 'app/error'
 
@@ -19,10 +19,13 @@ const { useParam } = createParam<{ id: string }>()
 */
 export function EventScreen() {
   const [id] = useParam('id');
-  const { data, refetch } = useGetEventQuery(Number(id));
+  const { data, refetch, isLoading } = useGetEventQuery(Number(id));
   const { createHeader } = useSocietyHeader(data?.society);
 
   useEffect(createHeader);
+
+  if(isLoading)
+    return <></>
 
   if (!data)
     return <Error />
@@ -72,8 +75,8 @@ export default function EventPageDraw({ data }: {
         </View>
         {/* EVENT DATE RENDER */}
         <Text style={styles.eventDate}>
-          {toShortDateString(data.startDate)} {`  to  `}
-          {data.endDate && toShortDateString(data.endDate)}
+          {toTimeAndDateString(data.startDate)}
+          {data.endDate && ' to ' + toShortDateString(data.endDate)}
         </Text>
       </View>
 

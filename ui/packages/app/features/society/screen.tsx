@@ -14,12 +14,14 @@ const { useParam } = createParam<{ code: string; drafts?: string }>()
 export function SocietyPage() {
   const [societyCode] = useParam('code');
   const [showDrafts] = useParam('drafts')
-  const [drafts, setDrafts] = useState(!!showDrafts);
+
+  const [drafts, setDrafts] = useState(showDrafts == "true");
   const { data: society, isLoading, refetch } = useGetSocietyQuery(societyCode || '');
   const { createHeader } = useSocietyHeader(society)
   const membership = useMembership(society?.code);
 
   useEffect(createHeader);
+  useEffect(() => setDrafts(showDrafts == "true"), [showDrafts])
 
   if (isLoading)
     return <></>

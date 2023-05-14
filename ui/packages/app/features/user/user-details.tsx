@@ -41,48 +41,26 @@ export default function UserDetailsOrError({ user }: {
 function MembershipBox({ data }: {
   data: Membership
 }) {
-  return <View style={{
-    borderBottomWidth: 1, borderColor: 'white', borderRadius: 15,
-    backgroundColor: '#EFEFEF',
-    shadowColor: 'gray', shadowOffset: { width: 0.1, height: 0.1 },
-    flexDirection: 'row', padding: 7, margin: 7,
-    justifyContent: 'space-between', alignItems: 'center'
-  }}>
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <AnimatedLink href={`/society/${data.society.code}`}>
+  return <AnimatedLink href={`/society/${data.society.code}`}>
+    <View style={{
+      borderBottomWidth: 1, borderColor: 'white', borderRadius: 15,
+      backgroundColor: '#EFEFEF',
+      shadowColor: 'gray', shadowOffset: { width: 0.1, height: 0.1 },
+      flexDirection: 'row', flexWrap: 'wrap', padding: 7, margin: 7,
+      justifyContent: 'space-between', alignItems: 'center'
+    }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image
           style={{ margin: 5, width: 50, height: 50, borderRadius: 50 }}
           source={{ uri: getPublicUri(data.society.image) }}
         />
-      </AnimatedLink>
-      <View>
-        <Text style={{ fontSize: 22 }}>{data.society.fullName}</Text>
-        <Text style={{ color: 'gray', fontSize: 14 }}>{data.role}</Text>
+        <View style={{ flexShrink: 1 }}>
+          <Text style={{ fontSize: 22 }}>{data.society.fullName}</Text>
+          <Text style={{ color: 'gray', fontSize: 14 }}>{data.role}</Text>
+        </View>
       </View>
     </View>
-    <AnimatedLink href={`/society/${data.society.code}`}>
-      <Ionicons name='link' style={{ padding: 5 }} size={32} color="gray" />
-    </AnimatedLink>
-  </View>
-
-  //   <View>
-  //   <AnimatedLink href={`/society/${data.society.code}`}>
-  //     <View style={styles.membershipContainer}>
-  //       <Image
-  //         style={styles.societyImage}
-  //         source={{ uri: getPublicUri(data.society.image) }}
-  //       />
-  //       <View style={styles.membershipCard}>
-  //         <View style={{ borderRightWidth: 1, borderRightColor: 'gainsboro', marginRight: 5 }}>
-  //           <Text style={styles.membershipTitle}>{data.society.fullName} </Text>
-  //         </View>
-  //         <Text style={[styles.membershipSubtitle]}>Example Team • </Text>
-  //         <Text style={styles.membershipSubtitle}>{data.role}</Text>
-  //       </View>
-  //       {/* <Ionicons name="arrow-forward" size={25} style={{ color: '#696969', position: 'absolute', right: 5, bottom: 5 }} /> */}
-  //     </View>
-  //   </AnimatedLink>
-  // </View>
+  </AnimatedLink>
 }
 
 const styles = StyleSheet.create({

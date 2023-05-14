@@ -92,7 +92,7 @@ export const teamApi = api.injectEndpoints({
         data.reverse()
         return { data, args };
       },
-      // // Refetch when the page arg changes
+      // // Refetch when the arg changes
       forceRefetch({ currentArg, previousArg }: {
         currentArg?: TeamMessagePageData,
         previousArg?: TeamMessagePageData

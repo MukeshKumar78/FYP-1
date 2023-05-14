@@ -1,6 +1,6 @@
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { OptionsModalButton, Option } from 'app/components/OptionsModalButton'
-import { toShortDateString } from 'app/api/util';
+import { toShortDateString, toTimeAndDateString } from 'app/api/util';
 
 export default function CommentDraw({ comment, handleDelete, handleReport }: {
   comment: EventComment
@@ -8,26 +8,26 @@ export default function CommentDraw({ comment, handleDelete, handleReport }: {
   handleReport?: () => void
 }) {
   return (
-      <View style={{ marginVertical: 10, flexDirection: 'row' }}>
-        {/* IMAGE RENDER*/}
-        <Image style={styles.userImage} source={{ uri: comment.createdBy.photo }} />
+    <View style={{ marginVertical: 10, flexDirection: 'row' }}>
+      {/* IMAGE RENDER*/}
+      <Image style={styles.userImage} source={{ uri: comment.createdBy.photo }} />
 
-        <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start' }}>
-          <Text style={styles.userName}>{comment.createdBy.firstName + ' ' + comment.createdBy.lastName}</Text>
-          <Text style={styles.commentDate}>
-            {toShortDateString(comment.createdAt)}
-          </Text>
+      <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-start' }}>
+        <Text style={styles.userName}>{comment.createdBy.firstName + ' ' + comment.createdBy.lastName}</Text>
+        <Text style={styles.commentDate}>
+          {toTimeAndDateString(comment.createdAt)}
+        </Text>
 
-          <View >
-            <Text>{comment.text}</Text>
-          </View>
+        <View >
+          <Text>{comment.text}</Text>
         </View>
-
-        <OptionsModalButton style={{ position: 'absolute', right: 5 }}>
-          {handleDelete && <Option text="Delete" onPress={handleDelete} />}
-          {handleReport && <Option text="Report" onPress={handleReport} />}
-        </OptionsModalButton>
       </View>
+
+      <OptionsModalButton style={{ position: 'absolute', right: 5 }}>
+        {handleDelete && <Option text="Delete" onPress={handleDelete} />}
+        {handleReport && <Option text="Report" onPress={handleReport} />}
+      </OptionsModalButton>
+    </View>
   )
 }
 

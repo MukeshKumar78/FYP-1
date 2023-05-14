@@ -1,8 +1,8 @@
 import { View, ScrollView, StyleSheet } from 'react-native'
-import { Text } from 'app/components'
+import { Text, Button } from 'app/components'
 import { useListEventPostsQuery } from './post-api'
 import PostDraw from './post-draw'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toShortDateString } from 'app/api/util'
 
 /**
@@ -16,11 +16,18 @@ export function PostMap({ event, contentOnly = false }: {
   const { data } = useListEventPostsQuery({
     event: event.id,
     page,
-    size: 10
+    size: 5
   });
+
 
   let date: string = (new Date(0)).toDateString().slice(0, -5);
 
+  function loadMore() {
+    setPage(page => page + 1);
+  }
+
+  // Refresh posts on event update
+  useEffect(() => setPage(0), [event])
 
   return (
     <ScrollView
@@ -39,6 +46,9 @@ export function PostMap({ event, contentOnly = false }: {
             return <PostDraw contentOnly data={p} key={i} />
         })
       }
+      <View style={{ marginVertical: 10, alignItems: 'center' }}>
+        <Button type="outlined" text="Load more" onPress={loadMore} />
+      </View>
     </ScrollView>
   )
 }

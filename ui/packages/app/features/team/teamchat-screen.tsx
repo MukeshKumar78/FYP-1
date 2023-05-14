@@ -7,8 +7,7 @@ import { getPublicUri } from 'app/api/util';
 import { Image, RefreshControl } from 'react-native'
 import { ScrollView } from 'react-native'
 import { View, Text, Button, AnimatedLink } from 'app/components'
-import { Ionicons } from '@expo/vector-icons';
-import { FormTextInput, FormSubmitButton } from 'app/components/Form'
+import { FormTextInput } from 'app/components/Form'
 import { toShortDateString } from 'app/api/util'
 
 
@@ -41,10 +40,10 @@ function TeamChatView({ team }: {
 }) {
   const [skip, setSkip] = useState(0);
   const [msg, setMsg] = useState("");
-  const { data: messages } = useListMessagesQuery({
+  const { data: messages, refetch } = useListMessagesQuery({
     team: team.code,
     skip: skip,
-    size: 3
+    size: 10
   })
   const [send] = useSendMessageMutation()
   const [refreshing, setRefreshing] = useState(false);
@@ -55,32 +54,38 @@ function TeamChatView({ team }: {
 
   function onRefresh() {
     setRefreshing(true);
-    setSkip(0);
+    if (skip == 0)
+      refetch()
+    else
+      setSkip(0);
     setRefreshing(false);
   }
 
   let date: string = (new Date(0)).toDateString().slice(0, -5);
 
-  return <View style={{ borderRadius: 10, margin: 5 }}>
+  return <View style={{ height: '100%' }}>
     <ScrollView
+      style={{ borderRadius: 10, margin: 5, transform: [{ scaleY: -1 }] }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      <View style={{ marginVertical: 10, alignItems: 'center' }}>
-        {/* <Button type="outlined" text="Load more" onPress={loadMore} /> */}
+      <View style={{ transform: [{ scaleY: -1 }] }}>
+        <View style={{ marginVertical: 10, alignItems: 'center' }}>
+          <Button type="outlined" text="Load more" onPress={loadMore} />
+        </View>
+        {messages?.data.map((msg, i) => {
+          const mdate = toShortDateString(msg.createdAt)
+          if (mdate !== date) {
+            date = mdate;
+            return <View key={i}>
+              <Text style={{ color: 'gray', marginTop: 10, textAlign: 'center' }}>{mdate}</Text>
+              <TeamChatBubble message={msg} />
+            </View>
+          }
+          return <TeamChatBubble key={i} message={msg} />
+        })}
       </View>
-      {messages?.data.map((msg, i) => {
-        const mdate = toShortDateString(msg.createdAt)
-        if (mdate !== date) {
-          date = mdate;
-          return <View key={i}>
-            <Text style={{ color: 'gray', marginTop: 10, textAlign: 'center' }}>{mdate}</Text>
-            <TeamChatBubble message={msg} />
-          </View>
-        }
-        return <TeamChatBubble key={i} message={msg} />
-      })}
-    </ScrollView>
+    </ScrollView >
     <View>
       <FormTextInput multiline placeholder="Send a chat..." label="" value={msg} onChangeText={setMsg} />
       <Button onPress={() => {
@@ -90,9 +95,8 @@ function TeamChatView({ team }: {
         text="Send"
         icon="send"
       />
-      {/* <Ionicons name="send" size={18} style={{ margin: 5 }} /> */}
     </View>
-  </View>
+  </View >
 }
 
 function TeamChatBubble({ message }: {

@@ -7,15 +7,19 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "API_URL": "http://campusme.tech"
-      }
+        "API_URL": "http://gw.campusme.mohsinsh.tech"
+      },
+      "credentialsSource": "local"
     },
     "preview": {
+      "android": {
+        "buildType": "apk"
+      },
       "distribution": "internal"
     },
     "production": {
       "env": {
-        "API_URL": "http://campusme.tech"
+        "API_URL": "http://gw.campusmegw.mohsinsh.tech"
       }
     }
   },

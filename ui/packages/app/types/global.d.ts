@@ -86,6 +86,8 @@ declare global {
     published: boolean
     society: Society
     reacted: boolean
+    totalReacts: number
+    totalComments: number
   };
 
   type SocietyPost = {

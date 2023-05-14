@@ -8,12 +8,15 @@ import { useState, useEffect } from 'react';
 
 
 export function SocietyMapScreen() {
-  const { data, refetch } = useGetTenuresQuery()
+  const { data, refetch, isLoading } = useGetTenuresQuery()
   const { createHeader } = useHeader();
 
   useEffect(() => createHeader(<H1>Societies</H1>), [])
 
-  if (!data) return <Error />
+  if (!data) {
+    if (isLoading) return <></>
+    return <Error />
+  }
 
   return <ScrollView
     style={styles.container}

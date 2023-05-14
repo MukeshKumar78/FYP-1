@@ -1,4 +1,5 @@
 import { api } from 'app/api';
+import { Page, PageData, paginationProps } from 'app/api/util';
 
 // revalidation example: https://redux-toolkit.js.org/rtk-query/usage/mutations#revalidation-example
 
@@ -7,11 +8,16 @@ type CommentCreate = {
   text: string
 }
 
+interface EventCommentPageData extends PageData {
+  event: number | string
+}
+
 export const commentApi = api.injectEndpoints({
   endpoints: (build) => ({
-    listComments: build.query<EventComment[], number>({
-      providesTags: (_) => [ { type: "Comment", id: "PAGE" } ],
-      query: (id) => `/api/core/comments?event=${id}`,
+    listComments: build.query<Page<EventComment>, EventCommentPageData>({
+      query: ({ page = 0, size = 10, event }) => `/api/core/comments?&pageNo=${page}&pageSize=${size}&event=${event}`,
+      providesTags: (_) => [{ type: "Comment", id: "PAGE" }],
+      ...paginationProps<EventComment, EventCommentPageData>()
     }),
     addComment: build.mutation<EventComment, CommentCreate>({
       query(data) {

@@ -30,15 +30,17 @@ export function toShortDateString(date: Date): string {
 }
 
 export function toTimeAndDateString(date: Date): string {
-  date = new Date(date);
+  const d = new Date(date);
 
-  const timeString = date.toTimeString();
-  const dateString = date.toDateString();
 
-  const hhmm = timeString.slice(0, 5)
-  const mmmdd = dateString.slice(4, 10)
-
-  return `${hhmm}, ${mmmdd}`
+  return [
+    d.getDate(),
+    d.getMonth() + 1,
+    d.getFullYear().toString().substr(-2)]
+    .join('/') + ' '
+    + [d.getHours(),
+    d.getMinutes()]
+      .join(':');
 }
 
 export function paginationProps<T, U extends PageData = PageData>() {

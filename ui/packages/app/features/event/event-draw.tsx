@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, Share, Platform } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Link } from 'solito/link'
 import { View, Text, AnimatedLink } from 'app/components'
@@ -8,6 +8,7 @@ import { getPublicUri, toTimeAndDateString } from 'app/api/util';
 import { useReactMutation } from './event-api'
 import * as Clipboard from 'expo-clipboard';
 import Toast from 'react-native-toast-message';
+import { useState } from 'react'
 
 const iconSize = 20;
 
@@ -54,8 +55,8 @@ export function EventHeader({ event }: {
 
             {/* DATE COMPONENT */}
             <Text style={styles.eventDate}>
-              {toTimeAndDateString(event.startDate)} {` - `}
-              {event.endDate && toTimeAndDateString(event.endDate)}
+              {toTimeAndDateString(event.startDate)}
+              {event.endDate && ' - ' + toTimeAndDateString(event.endDate)}
             </Text>
           </View>
         </View>
@@ -85,44 +86,63 @@ export function EventContent({ event }: {
 export function EventInteractiveBar({ event }: {
   event: SocietyEvent
 }) {
-  const [react] = useReactMutation()
+  const [react, data] = useReactMutation()
+  const [reactDisabled, setReactDisabled] = useState(false)
+
+  async function onReact() {
+    setReactDisabled(true)
+    await react(event.id)
+    setReactDisabled(false)
+  }
 
   return (
     <View style={styles.interactiveBarContainer}>
       <InteractiveIcon icon={
         <Ionicons name={event.reacted ? "star-sharp" : "star-outline"} size={iconSize} color="#FFD700" />
       }
-        onPress={() => react(event.id)}
+        onPress={onReact}
+        disabled={reactDisabled}
+        text={event.totalReacts || ''}
         size={iconSize} />
 
       <InteractiveIcon icon={
         <Ionicons name="chatbox-outline" size={iconSize} color="gray" />
       }
         href={`/event/${event.id}/comments`}
+        text={event.totalComments || ''}
         size={iconSize} />
 
       <InteractiveIcon icon={
         <Ionicons name="share-social-outline" size={iconSize} color="lightblue" />
       }
         onPress={async () => {
-          await Clipboard.setStringAsync(`https://campusme.tech/event/${event.id}`)
-          Toast.show({ type: 'success', text1: 'Link copied to clipboard' })
+          if (Platform.OS === 'android') {
+            await Share.share({
+              message: `${event.title}
+https://campusme.tech/event/${event.id}`,
+            })
+          } else {
+            await Clipboard.setStringAsync(`https://campusme.tech/event/${event.id}`)
+            Toast.show({ type: 'success', text1: 'Link copied to clipboard' })
+          }
         }}
         size={iconSize} />
     </View>
   )
 }
 
-function InteractiveIcon({ icon, onPress, href }: {
+function InteractiveIcon({ disabled = false, icon, text = '', onPress, href }: {
   onPress?: () => void,
   href?: string,
   icon: JSX.Element,
+  disabled?: boolean,
+  text?: string | number,
   size: number
 }) {
 
   const iconButton =
-    <View style={{ paddingVertical: 8, alignItems: 'center', borderColor: '#e7e7e7', borderWidth: 0, borderRadius: 5 }}>
-      {icon}
+    <View style={{ flexDirection: 'row', paddingVertical: 8, justifyContent: 'center', alignItems: 'center', borderColor: '#e7e7e7', borderWidth: 0, borderRadius: 5 }}>
+      {icon}<Text style={{ color: 'gray', fontSize: 12 }}>{Number(text) ? nFormatter(Number(text), 3) : ""}</Text>
     </View>
 
 
@@ -130,10 +150,27 @@ function InteractiveIcon({ icon, onPress, href }: {
     <View style={{ flex: 1 }}>
       {href
         ? <Link href={href}>{iconButton}</Link>
-        : <TouchableOpacity onPress={onPress} activeOpacity={0.7}>{iconButton}</TouchableOpacity>
+        : <TouchableOpacity disabled={disabled} onPress={onPress} activeOpacity={0.7}>{iconButton}</TouchableOpacity>
       }
     </View>
   )
+}
+
+function nFormatter(num: number, digits: number) {
+  const lookup = [
+    { value: 1, symbol: "" },
+    { value: 1e3, symbol: "k" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "G" },
+    { value: 1e12, symbol: "T" },
+    { value: 1e15, symbol: "P" },
+    { value: 1e18, symbol: "E" }
+  ];
+  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  var item = lookup.slice().reverse().find(function(item) {
+    return num >= item.value;
+  });
+  return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
 }
 
 const styles = StyleSheet.create({

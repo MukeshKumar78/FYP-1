@@ -1,5 +1,7 @@
 module.exports = {
-  name: "campus-me",
+  name: "CampusMe",
+  slug: "campus-me",
+  icon: "./assets/icon.png",
   version: '1.0.0',
   extra: {
     fact: 'kittens are cool',
@@ -10,6 +12,7 @@ module.exports = {
   scheme: "campusme",
   android: {
     package: "com.campusme.app",
+    icon: "./assets/icon.png",
     googleServicesFile: "./google-services.json",
     useNextNotificationsApi: true,
     compileSdkVersion: 31,

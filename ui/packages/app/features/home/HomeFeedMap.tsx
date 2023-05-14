@@ -35,7 +35,12 @@ export function HomeFeedMap() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch({ page: 1, postPage: 0, eventPage: 0 })
+
+    if (state.postPage == 0) refetchPosts();
+    if (state.eventPage == 0) refetchEvents();
+    if (state.postPage != 0 || state.eventPage != 0)
+      dispatch({ page: 1, postPage: 0, eventPage: 0 })
+
     setRefreshing(false);
   }, []);
 
@@ -50,11 +55,11 @@ export function HomeFeedMap() {
     }
   )
 
-  const { data: eventPageData } = useListEventsQuery({
+  const { data: eventPageData, refetch: refetchEvents } = useListEventsQuery({
     page: state.eventPage,
     size: pageSize
   });
-  const { data: postsPageData } = useListPostsQuery({
+  const { data: postsPageData, refetch: refetchPosts } = useListPostsQuery({
     page: state.postPage,
     size: pageSize
   });

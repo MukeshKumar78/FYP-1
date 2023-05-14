@@ -6,6 +6,7 @@ import { Text, View, Button, Hr } from 'app/components';
 import { useState } from 'react';
 import { useGetEventQuery } from '../event/event-api';
 import { useAuth, usePermissions } from 'app/features/auth/hooks'
+import { FormTextInput } from 'app/components/Form';
 import { Error } from 'app/error';
 
 // Event ID param: e.g. /event/1/comments
@@ -28,27 +29,36 @@ function CommentView({ eventId }: {
   eventId: number
 }) {
 
-  const [addComment] = useAddCommentMutation();
+  const [addComment, { isLoading }] = useAddCommentMutation();
+  const [disabled, setDisabled] = useState(false)
   const [text, setText] = useState("");
   const { data: event } = useGetEventQuery(eventId);
 
   if (!event)
     return <Error />
 
-  return <View style={{ padding: 5, width: '100%' }}>
+  async function onSubmit() {
+    setDisabled(true)
+    setText("");
+    await addComment({ event: eventId, text })
+    setDisabled(false)
+  }
+
+  return <View style={{ padding: 5, width: '100%', maxHeight: '100%' }}>
     <View style={styles.textContainer} >
-      <TextInput
+      <FormTextInput
+        label=""
         style={styles.textInput}
+        value={text}
+        disabled={disabled}
         multiline={true}
-        numberOfLines={2}
         placeholder='add a comment'
         onChangeText={(value) => setText(value)}
       />
     </View>
     <View style={{ alignItems: 'center' }}>
-      <Button onPress={() => {
-        addComment({ event: eventId, text }).unwrap().catch(console.error)
-      }} text="Comment" style={{ width: '100%' }} disabled={text.length < 3} />
+      <Button onPress={onSubmit}
+        text="Comment" style={{ width: '100%' }} disabled={text.length < 3} />
     </View>
     <Hr />
     <CommentMap event={event} />
@@ -58,7 +68,14 @@ function CommentView({ eventId }: {
 function CommentMap({ event }: {
   event: SocietyEvent
 }) {
-  const { data, refetch } = useListCommentsQuery(event.id);
+  const [page, setPage] = useState(0);
+
+  const { data, refetch } = useListCommentsQuery({
+    event: event.id,
+    page,
+    size: 10
+  });
+
   const { user } = useAuth();
   const [remove] = useRemoveCommentMutation();
   const [canCreate, canDelete] = usePermissions(event.society.code, [
@@ -67,19 +84,23 @@ function CommentMap({ event }: {
 
   async function removeComment(id: number) {
     const res = await remove(id);
-    console.log(res);
   }
 
-  async function reportComment(id: number) {
+  function onRefresh() {
+    setPage(0);
+    refetch();
+  }
 
+  function loadMore() {
+    setPage(page => page + 1);
   }
 
   return <ScrollView
     style={styles.commentWrapper}
     refreshControl={
-      <RefreshControl refreshing={false} onRefresh={refetch} />
+      <RefreshControl refreshing={false} onRefresh={onRefresh} />
     }>
-    {data?.map((comment, i) =>
+    {data?.data.map((comment, i) =>
       <CommentDraw
         key={i}
         comment={comment}
@@ -88,6 +109,9 @@ function CommentMap({ event }: {
           : undefined}
       />
     )}
+    <View style={{ marginVertical: 10, alignItems: 'center' }}>
+      <Button type="outlined" text="Load more" onPress={loadMore} />
+    </View>
   </ScrollView>
 }
 

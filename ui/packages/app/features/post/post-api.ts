@@ -17,7 +17,7 @@ export const postApi = api.injectEndpoints({
       ...paginationProps<SocietyPost, PageData>()
     }),
     listEventPosts: build.query<Page<SocietyPost>, EventPostPageData>({
-      query: ({ page = 0, event, size = 10 }) => `/api/core/posts?pageNo=${page}&event=${event}&pageSize=${size}`,
+      query: ({ page = 0, event, size = 5 }) => `/api/core/posts?pageNo=${page}&event=${event}&pageSize=${size}`,
       providesTags: (_) => [{ type: "Post", id: "EVENTPAGE" }],
       ...paginationProps<SocietyPost, EventPostPageData>()
     }),
